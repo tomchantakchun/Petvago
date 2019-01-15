@@ -1,0 +1,89 @@
+.Login {
+    background-color: #718EA4;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Login section {
+    background-color: #dddddd;
+    height: 60vh;
+    width: 30vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    box-shadow: 1px 0 #bbbbbb;
+    border-radius: 5px;
+}
+
+.Login section form {
+    display: flex;
+    flex-flow: column;
+}
+
+.Login section h6 {
+    margin: 5px;
+    text-align: left;
+    font-weight: 400;
+}
+
+.TextBox {
+    background: #ffffff;
+    border: none;
+    border-radius: 3px;
+    color: #5a5656;
+    font-size: 14px;
+    height: 50px;
+    outline: none;
+    padding: 0px 10px;
+    width: 280px;
+}
+
+.Submit {
+    background-color: rgb(84, 129, 163);
+    border: none;
+    border-radius: 3px;
+    color: #f4f4f4;
+    cursor: pointer;
+    font-family: inherit;
+    height: 50px;
+    text-transform: uppercase;
+    width: 300px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+}
+
+.loginFailed {
+    color: red;
+}
+
+.Facebook {
+    background-color: rgb(59, 89, 152);
+    border: none;
+    border-radius: 3px;
+    color: #f4f4f4;
+    cursor: pointer;
+    font-family: inherit;
+    height: 50px;
+    text-transform: uppercase;
+    width: 300px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+}
+
+.Wechat {
+    background-color: rgb(26, 173, 25);
+    border: none;
+    border-radius: 3px;
+    color: #f4f4f4;
+    cursor: pointer;
+    font-family: inherit;
+    height: 50px;
+    text-transform: uppercase;
+    width: 300px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+}
