@@ -1,6 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const db = require('./config/database-init.js').knex;
+
 // var cookieParser = require('cookie-parser');
 // var logger = require('morgan');
 
