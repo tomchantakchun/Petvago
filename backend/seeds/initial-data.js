@@ -36,17 +36,17 @@ exports.seed = function(knex, Promise) {
       return knex('hotel').del()
     })
     .then(function(){
-      console.log('delete user')
-    return knex('user').del()
+      console.log('delete users')
+    return knex('users').del()
     }).then(function () {
-      console.log('create user')
-      return knex('user').insert([
+      console.log('create users')
+      return knex('users').insert([
         {username: 'customer1', password: '12345678', telephone:91700000, email:'customer1@demo.com'},
         {username: 'customer2', password: '12345678', telephone:91700001, email:'customer2@demo.com'},
-
         {username: 'partner1', password: '12345678', telephone:21700000, email:'partner1@demo.com'},
         {username: 'partner2', password: '12345678', telephone:21700001, email:'partner2@demo.com'},
         {username: 'partner3', password: '12345678', telephone:21700002, email:'partner3@demo.com'},
+        {username: 'admin1', password: '123456', telephone:21800000, email:'admin1@demo.com'},
       ]);
     }).then(function () {
       console.log('create hotel')
@@ -118,7 +118,7 @@ exports.seed = function(knex, Promise) {
     }).then(function () {
       console.log('create message')
       return knex('message').insert([
-        {conversationID:1, authorID:{user:1},body:'Hello',type:'text'},
+        {conversationID:1, authorID:{users:1},body:'Hello',type:'text'},
         {conversationID:2, authorID:{hotel:1},body:'How can I help you?',type:'text'},
 
       ]);
