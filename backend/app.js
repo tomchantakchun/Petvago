@@ -9,6 +9,11 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var hotelRouter = require('./routes/hotel');
+var searchRouter = require('./routes/search');
+var chatroomRouter = require('./routes/chatroom');
+var bookingRouter = require('./routes/booking');
+var reviewRouter = require('./routes/review');
 
 // For login {--
 const passport = require('passport');
@@ -43,7 +48,15 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
+// API
+app.use('/api/userprofile', usersRouter);
+app.use('/api/hotel',hotelRouter);
+app.use('/api/search',searchRouter);
+app.use('/api/chatroom',chatroomRouter);
+app.use('/api/booking',bookingRouter);
+app.use('/api/review',reviewRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
