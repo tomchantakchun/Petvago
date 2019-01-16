@@ -5,7 +5,6 @@ const db = require('./config/database-init.js').knex;
 require('dotenv').config();
 
 // var cookieParser = require('cookie-parser');
-// var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -29,9 +28,14 @@ require('./login-signup/passport-service');
 
 var app = express();
 
-// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Connect to DB
+app.use(function(req, res, next) {
+  req.db = db; 
+  next();
+});
 
 // Login
 app.use(cors());
