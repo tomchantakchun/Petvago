@@ -9,7 +9,6 @@ module.exports = () => {
         secretOrKey: process.env.JWTSECRET,
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     },(payload,done)=>{
-        console.log(users);
         const user = users[payload.id];
         console.log(`Looking for user: ${user}`);
         if (user) {

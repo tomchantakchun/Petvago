@@ -17,7 +17,7 @@ class AuthenticatedComponent extends React.Component {
         }
 
         console.log(jwt);
-        axios.get(`http://localhost:8080/api/users`, { headers: { Authorization: `Bearer ${jwt}` } })
+        axios.get(`http://localhost:8080/auth/verifyjwt`, { headers: { Authorization: `Bearer ${jwt}` } })
             .then(res => this.setState({ user: res.data }))
             .catch(err => {
                 // experimental error handling mechanism

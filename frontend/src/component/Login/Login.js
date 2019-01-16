@@ -13,9 +13,9 @@ class Login extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(`http://localhost:8080/api/login`);
+        console.log(`http://localhost:8080/auth/jwt`);
         axios.post(
-            `http://localhost:8080/api/login`,
+            `http://localhost:8080/auth/jwt`,
             {
                 name: this.state.name,
                 password: this.state.password
