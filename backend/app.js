@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 // API
-app.use('/api/userprofile',passport.authenticate('jwt', {session: false}), usersRouter);
+app.use('/api/userprofile', usersRouter);
 app.use('/api/hotel',hotelRouter);
 app.use('/api/search',searchRouter);
 app.use('/api/chatroom',chatroomRouter);
