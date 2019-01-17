@@ -1,7 +1,15 @@
 const router = require('express').Router();
 const passport = require('passport');
-const users = require('./temUser');
 const jwt = require('jwt-simple');
+require('dotenv').config();
+const knex = require('knex')({
+    client: 'pg',
+    connection: {
+        database: process.env.DB_NAME,
+        user: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD
+    }
+});
 
 //auth with facebook
 
@@ -24,30 +32,36 @@ router.get(
 //auth with JWT
 
 router.post("/jwt", function (req, res) {
+    console.log(`/jwt called`);
     if (req.body.name && req.body.password) {
         var name = req.body.name;
         var password = req.body.password;
-        var user = users.find((u) => {
-            return u.name === name && u.password === password;
-        });
-        if (user) {
-            var payload = {
-                id: user.id,
-                username: user.name
-            };
-            var token = jwt.encode(payload, process.env.JWTSECRET);
-            res.json({
-                token: token
-            });
-        } else { res.sendStatus(401) }
+        var user; 
+        knex.select("id","username").from("users")
+            .where("username",name).andWhere("password",password)
+            .then((rows) => {
+                user = rows[0];
+
+                if (user) {
+                    var payload = {
+                        id: user.id,
+                        username: user.username
+                    };
+                    var token = jwt.encode(payload, process.env.JWTSECRET);
+                    res.json({
+                        token: token
+                    });
+                } else { res.sendStatus(401) }
+            })
     } else { res.sendStatus(401) }
 });
 
 router.get('/verifyjwt', passport.authenticate("jwt", { session: false }), (req, res) => {
-    
+    console.log(`/verifyjwt called`);
+
     const responsedInfo = {
-        id: users[req.user.id].id,
-        username: users[req.user.id].name
+        id: req.user.id,
+        username: req.user.id
     }
 
     console.log(`User ID: ${responsedInfo.id}, User username: ${responsedInfo.username}`);
@@ -55,8 +69,6 @@ router.get('/verifyjwt', passport.authenticate("jwt", { session: false }), (req,
 })
 
 router.post("/signupjwt", function (req, res) {
-
-
 
     if (req.body.name && req.body.password) {
         let name = req.body.name;

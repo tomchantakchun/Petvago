@@ -3,7 +3,6 @@ const FacebookStrategy = require('passport-facebook');
 // const LocalStrategy = require('passport-local').Strategy;
 const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
-const temUsers = require('./temUser');
 const bcrypt = require('./bcrypt');
 require('dotenv').config();
 const knex = require('knex')({
@@ -83,12 +82,13 @@ const strategy = new passportJWT.Strategy({
     secretOrKey: process.env.JWTSECRET,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 },(payload,done)=>{
-    const user = temUsers[payload.id];
-    console.log(`Looking for user: ${user}`);
-    if (user) {
-        return done(null, {id: user.id});
-    } else {
-        return done(new Error("User not found"), null);
-    }
+    knex.select('id','username').from('users').where('id',payload.id).then((rows) => {
+        if (rows) {
+            console.log(`rows[0]: ${JSON.stringify(rows[0])}`);
+            return done(null, rows[0]);
+        } else {
+            return done(new Error("User not found"), null);
+        }
+    })
 });
 passport.use(strategy);
