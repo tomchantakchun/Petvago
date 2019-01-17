@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login'
+import Search from './component/Search/Search'
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 
 const Logged = () => {
@@ -16,6 +17,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Switch>
+          <Route exact path='/search' component={Search} />
             <Route exact path='/login' component={Login} />
             <AuthenticatedComponent>
               <Route exact path='/' component={Logged} />

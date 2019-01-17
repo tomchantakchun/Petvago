@@ -98,8 +98,9 @@ exports.seed = function(knex, Promise) {
     }).then(function () {
       console.log('create booking')
       return knex('booking').insert([
-        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:2,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
-        {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:2,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
+        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
+        {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
+        {userID:2, hotelID:3, roomTypeID:1, expiryTime:'2018-01-19T08:36:00',startDate:'2019-1-17', endDate:'2019-1-19',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'}
       ]);
     }).then(function () {
       console.log('create review')
