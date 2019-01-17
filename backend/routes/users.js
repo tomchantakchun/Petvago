@@ -17,11 +17,16 @@ async function jwtVerify(req, res){
 }
 
 // Get user profile information: rows = an array with an object
-router.get('/', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
   var db=req.db;
   let query=db.select("*").from("users").where("id",req.params.id)
   query.then((rows)=>{
-    res.send(rows);
+
+    if (rows.length==0){
+      res.status(500).send({error:'no such user'})
+    } else {
+      res.send(rows);
+    }
 
   }).catch((error)=>{
     console.log(error);
