@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login'
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 
-const Logged = () => {
+const Logged = (props) => {
   return (
-    <h1>You are logged in</h1>
+    <h1>You are logged in as {props.username}</h1>
   )
 }
 

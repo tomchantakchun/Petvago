@@ -7,21 +7,22 @@ class Login extends React.Component {
     state = {
         name: '',
         password: '',
-        loginFailed: false
+        loginFailed: false,
+        signupFailed: false,
+        errorMessage: ''
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
 
         console.log(`http://localhost:8080/auth/jwt`);
-        axios.post(
-            `http://localhost:8080/auth/jwt`,
+        axios.post(`http://localhost:8080/auth/jwt`,
             {
                 name: this.state.name,
                 password: this.state.password
             })
             .then(response => {
-                if (response.data == null) {
+                if (response.data === null) {
                     this.loginFailed();
                 } else if (!response.data.token) {
                     this.loginFailed();
@@ -42,9 +43,39 @@ class Login extends React.Component {
             })
     }
 
+    handleSignup() {
+        axios.post('http://localhost:8080/auth/signupjwt',
+            {
+                name: this.state.name,
+                password: this.state.password
+            })
+            .then(response => {
+                if (response.data === null) {
+                    this.signupFailed();
+                } else if (response.data.token === undefined) {
+                    this.setState({errorMessage:response.body})
+                } else {
+                    console.log('Signup succeeded, setting token');
+                    console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
+                    console.log(`Token: ${response.data.token}`);
+                    localStorage.setItem('petvago-token', response.data.token);
+                    this.props.history.push('/')
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+                this.signupFailed();
+            })
+    }
+
     loginFailed() {
         console.log('Login failed')
         this.setState({ name: '', password: '', loginFailed: true })
+    }
+
+    signupFailed() {
+        console.log('Signup failed')
+        this.setState({ name: '', password: '', signupFailed: true })        
     }
 
     handleChangeName = (e) => {
@@ -65,8 +96,11 @@ class Login extends React.Component {
                         <h6>Password: </h6>
                         <input type='password' name='password' className={classes.TextBox} onChange={this.handleChangePassword} value={this.state.password}></input>
                         {this.state.loginFailed ? <h6 className={classes.loginFailed}>Incorrect username or password</h6> : null}
+                        {this.state.signupFailed ? <h6 className={classes.loginFailed}>Signup failed</h6> : null}
+                        <h6>{this.state.errorMessage}</h6>
                         <input type='submit' value='Submit' className={classes.Submit} onClick={this.handleSubmit}></input>
                     </form>
+                    <button className={classes.Signup} onClick={this.handleSignup}>Signup</button>
                     <button className={classes.Facebook}>Facebook</button>
                     <button className={classes.Wechat}>WeChat</button>
                 </section>

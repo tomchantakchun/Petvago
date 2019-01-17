@@ -24,14 +24,12 @@ router.get(
 //auth with JWT
 
 router.post("/jwt", function (req, res) {
-    console.log(`/auth/jwt called...`);
     if (req.body.name && req.body.password) {
         var name = req.body.name;
         var password = req.body.password;
         var user = users.find((u) => {
             return u.name === name && u.password === password;
         });
-        console.log(user);
         if (user) {
             var payload = {
                 id: user.id,
@@ -46,8 +44,39 @@ router.post("/jwt", function (req, res) {
 });
 
 router.get('/verifyjwt', passport.authenticate("jwt", { session: false }), (req, res) => {
-    res.json(users);
+    
+    const responsedInfo = {
+        id: users[req.user.id].id,
+        username: users[req.user.id].name
+    }
+
+    console.log(`User ID: ${responsedInfo.id}, User username: ${responsedInfo.username}`);
+    res.json(responsedInfo);
 })
 
+router.post("/signupjwt", function (req, res) {
+
+
+
+    if (req.body.name && req.body.password) {
+        let name = req.body.name;
+        let password = req.body.password;
+        let user = users.find((u) => {
+            return u.name === name && u.password === password;
+        });
+        if (user) {
+            res.send('user existed')
+        } else {
+            var payload = {
+                id: user.id,
+                username: user.name
+            };
+            var token = jwt.encode(payload, process.env.JWTSECRET);
+            res.json({
+                token: token
+            });
+        }
+    } else { res.send('user or password not found') }
+});
 
 module.exports = router;
