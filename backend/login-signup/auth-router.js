@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 const jwt = require('jwt-simple');
+const bcrypt = require('./bcrypt');
 require('dotenv').config();
 const knex = require('knex')({
     client: 'pg',
@@ -20,8 +21,7 @@ router.get(
 );
 
 //callback route for google to redirect to
-router.get(
-    '/facebook/redirect',
+router.get('/facebook/redirect',
     passport.authenticate('facebook'), 
     (req, res) => {
         console.log('redirecting');
@@ -31,28 +31,37 @@ router.get(
 
 //auth with JWT
 
-router.post("/jwt", function (req, res) {
+router.post("/jwt", async (req, res) => {
     console.log(`/jwt called`);
     if (req.body.name && req.body.password) {
-        var name = req.body.name;
-        var password = req.body.password;
-        var user; 
-        knex.select("id","username").from("users")
-            .where("username",name).andWhere("password",password)
-            .then((rows) => {
-                user = rows[0];
+        let name = req.body.name;
+        let password = req.body.password;
+        let hashedPassword;
+        await knex.select("password").from('users').where('username',name).then((rows) => {
+            hashedPassword = rows[0].password
+        })
 
-                if (user) {
-                    var payload = {
-                        id: user.id,
-                        username: user.username
-                    };
-                    var token = jwt.encode(payload, process.env.JWTSECRET);
-                    res.json({
-                        token: token
-                    });
-                } else { res.sendStatus(401) }
-            })
+        let result = await bcrypt.checkPassword(password,hashedPassword);
+        let user; 
+        console.log(`Bcrypt match result: ${result}`);
+        if (result) {
+            knex.select("id","username").from("users")
+                .where("username",name)
+                .then((rows) => {
+                    user = rows[0];
+    
+                    if (user) {
+                        var payload = {
+                            id: user.id,
+                            username: user.username
+                        };
+                        var token = jwt.encode(payload, process.env.JWTSECRET);
+                        res.json({
+                            token: token
+                        });
+                    } else { res.sendStatus(401) }
+                })
+        } else { res.sendStatus(401) }
     } else { res.sendStatus(401) }
 });
 
@@ -68,27 +77,47 @@ router.get('/verifyjwt', passport.authenticate("jwt", { session: false }), (req,
     res.json(responsedInfo);
 })
 
-router.post("/signupjwt", function (req, res) {
 
+router.post("/signupjwt", async (req, res) => {
+    console.log(`/signupjwt called`);
     if (req.body.name && req.body.password) {
         let name = req.body.name;
-        let password = req.body.password;
-        let user = users.find((u) => {
-            return u.name === name && u.password === password;
-        });
+        let hash = await bcrypt.hashPassword(req.body.password)
+        let user; 
+        await knex.select("id","username").from("users")
+            .where("username",name)
+            .then((rows) => {
+                user = rows[0];
+            })
+
         if (user) {
-            res.send('user existed')
-        } else {
-            var payload = {
-                id: user.id,
-                username: user.name
-            };
-            var token = jwt.encode(payload, process.env.JWTSECRET);
-            res.json({
-                token: token
-            });
-        }
-    } else { res.send('user or password not found') }
+            res.send('User already existed')
+        } else { 
+            await knex.insert({
+                    username: name,
+                    password: hash
+                })
+                .into('users')
+                .then(() => {})
+
+            await knex.select("id","username").from("users")
+                .where("username",name)
+                .then((rows) => {
+                    console.log(`Rows: `,rows);
+                    user = rows[0]
+
+                    var payload = {
+                        id: user.id,
+                        username: user.username
+                    };
+                    var token = jwt.encode(payload, process.env.JWTSECRET);
+                    res.json({
+                        token: token
+                    });
+                })
+        }    
+    } else { res.send('User or password not found') }
 });
+
 
 module.exports = router;

@@ -43,7 +43,7 @@ class Login extends React.Component {
             })
     }
 
-    handleSignup() {
+    handleSignup = () => {
         axios.post('http://localhost:8080/auth/signupjwt',
             {
                 name: this.state.name,

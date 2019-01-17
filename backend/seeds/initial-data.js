@@ -41,12 +41,12 @@ exports.seed = function(knex, Promise) {
     }).then(function () {
       console.log('create users')
       return knex('users').insert([
-        {username: 'customer1', password: '12345678', telephone:91700000, email:'customer1@demo.com'},
-        {username: 'customer2', password: '12345678', telephone:91700001, email:'customer2@demo.com'},
-        {username: 'partner1', password: '12345678', telephone:21700000, email:'partner1@demo.com'},
-        {username: 'partner2', password: '12345678', telephone:21700001, email:'partner2@demo.com'},
-        {username: 'partner3', password: '12345678', telephone:21700002, email:'partner3@demo.com'},
-        {username: 'admin1', password: '123456', telephone:21800000, email:'admin1@demo.com'},
+        {username: 'customer1', password: '$2b$10$Un1MMdeCMrZy3jHhv3olO.ws0ZGjdraeerfTR7AUJq3osJ1ioApSC', telephone:91700000, email:'customer1@demo.com'},
+        {username: 'customer2', password: '$2b$10$djwYpp6NzvAzvjrY5wvQvOJYl.7Cam4Up4YZqptmdV6rXMx9Lc1xC', telephone:91700001, email:'customer2@demo.com'},
+        {username: 'partner1', password: '$2b$10$LPc4J4m2WBr28RjI2u0RCe5aM4edd9kxT/Jm448cI1iywEkBtAuFi', telephone:21700000, email:'partner1@demo.com'},
+        {username: 'partner2', password: '$2b$10$TRhsghGI2RWLZdW9V8nDAeRYtnlmXU2058n3GVh2/k5AI2n7LdFMi', telephone:21700001, email:'partner2@demo.com'},
+        {username: 'partner3', password: '$2b$10$sLL1sbhfc1LBV8AkGIfHg.KAK1yKahBQStmoiQQtMy5TIhnNdsad6', telephone:21700002, email:'partner3@demo.com'},
+        {username: 'admin1', password: '$2b$10$OsdCXyH8NRr0D68E.xlV6e7TOdZwOPeHNJgpNaTP9nBYtxzSaGOJC', telephone:21800000, email:'admin1@demo.com'},
       ]);
     }).then(function () {
       console.log('create hotel')
