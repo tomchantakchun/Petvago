@@ -4,6 +4,7 @@ const FacebookStrategy = require('passport-facebook');
 const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
 const temUsers = require('./temUser');
+const bcrypt = require('./bcrypt');
 require('dotenv').config();
 const knex = require('knex')({
     client: 'pg',
@@ -91,12 +92,3 @@ const strategy = new passportJWT.Strategy({
     }
 });
 passport.use(strategy);
-
-// return {
-    // initialize: function() {
-    //     return passport.initialize();
-    // },
-    // authenticate: function() {
-    //     return passport.authenticate("jwt", { session: false });
-    // }
-// };

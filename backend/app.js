@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 const db = require('./config/database-init.js').knex;
+const cookieSession = require('cookie-session');
 require('dotenv').config();
 
 // var cookieParser = require('cookie-parser');
