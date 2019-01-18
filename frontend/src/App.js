@@ -18,6 +18,7 @@ class App extends Component {
         <div className="App">
           <Switch>
           <Route exact path='/search' component={Search} />
+          {/* <Route exact path='/result' component={Result} /> */}
             <Route exact path='/login' component={Login} />
             <AuthenticatedComponent>
               <Route exact path='/' component={Logged} />

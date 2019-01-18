@@ -1,5 +1,6 @@
 import React from 'react';
-import axios from 'axios'
+import axios from 'axios';
+// import searchResult from './SearchResult'
 
 //fontawesome
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -29,10 +30,13 @@ class Search extends React.Component {
                 petType: this.state.petType
             })
             .then(response => {
-                if (response.data === null) {
+                if (response === null) {
                     console.log('you are living failure')
                 } else {
-                    console.log(response.data);
+                    console.log(response.data)
+                    for (let i=0; i < response.data.length; i++){
+                    console.log(response.data[i].id)
+                    } 
                 }
             })
             .catch(error => {
@@ -65,8 +69,8 @@ class Search extends React.Component {
         const serachDistricts = (
             <select name="district" onChange={this.districtChange}>
                 <option value="NA" disabled selected hidden>--District--</option>
-                {this.districts.map((district) => {
-                    return <option value={district}>{district}</option>
+                {this.districts.map((district, index) => {
+                    return <option value={district} key={index}>{district}</option>
                 })}
             </select>
         )
