@@ -2,7 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 const db = require('./config/database-init.js').knex;
-const cookieSession = require('cookie-session');
+// const cookieSession = require('cookie-session');
 require('dotenv').config();
 
 // var cookieParser = require('cookie-parser');
@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 // API
-app.use('/api/userprofile',passport.authenticate('jwt', {session: false}), usersRouter);
+app.use('/api/userprofile', usersRouter);
 app.use('/api/hotel',hotelRouter);
 app.use('/api/search',searchRouter);
 app.use('/api/chatroom',chatroomRouter);

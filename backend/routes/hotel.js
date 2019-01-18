@@ -3,6 +3,27 @@ var router = express.Router();
 
 // 1. Get all hotel information with only one icon photo for display in front page/ search result
 router.get('/', function(req, res, next) {
+  /*Information you get from each row:
+        { id,
+          name,
+          address,
+          description,
+          telephone,
+          username,
+          email,
+          vaccineRequirement,
+          facilities,
+          partnershipType,
+          app,
+          averageRating,
+          availablePeriod,
+          created_at,
+          updated_at,
+          latitude,
+          longitude,
+          district,
+          path (icon path)}
+      */
   var db=req.db;
   let query=db.select("hotel.*","photo.path").from("hotel").innerJoin("photo","hotel.id","photo.hotelID").whereNull("photo.roomTypeID")
   query.then((rows)=>{
@@ -10,27 +31,7 @@ router.get('/', function(req, res, next) {
         delete each.password
       })
       res.send(rows);
-      /*Information you get from each row:
-      { id,
-        name,
-        address,
-        description,
-        telephone,
-        username,
-        email,
-        vaccineRequirement,
-        facilities,
-        partnershipType,
-        app,
-        averageRating,
-        availablePeriod,
-        created_at,
-        updated_at,
-        latitude,
-        longitude,
-        district,
-        path (icon path)}
-      */
+      
       
   }).catch((error)=>{
     console.log(error);
@@ -40,22 +41,159 @@ router.get('/', function(req, res, next) {
 
 
 // 2. Get information and photo of one hotel based on params.hotelid
-// router.get('/:hotelid', function(req,res){
-//   var db=req.db;
-//   let query=db.select("h.*","p.photo").from("hotel as h").where('id',req.params.hotelid).innerJoin("photo as p","h.id","p.hotelID").
-//   query.then((rows)=>{
+router.get('/:hotelid', function(req,res){
+  /*Information you get from each row:
+        { id,
+          name,
+          address,
+          description,
+          telephone,
+          username,
+          email,
+          vaccineRequirement,
+          facilities,
+          partnershipType,
+          app,
+          averageRating,
+          availablePeriod,
+          created_at,
+          updated_at,
+          latitude,
+          longitude,
+          district,
+          hotelPhoto:[{photoID, path}],
+          roomType:{
+            [
+              {roomTypeID, 
+                roomType1, 
+                price, 
+                description, 
+                requirement, 
+                additionalPrice,
+                icon, 
+                photo:[{photoID, path, icon}]}
+            ]
+          }
+          }
+      */
+  var db=req.db;
+  let query=db.select('h.*','t.id as roomTypeID','t.roomType','t.price','t.requirement','t.description','t.additionalPrice','p.id as photoID','p.path','p.icon').from("roomType as t").leftJoin("photo as p","t.id","p.roomTypeID").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.params.hotelid).orderBy('p.id','asc')
+  query.then((rows)=>{
 
-//     if (rows.length==0){
-//       res.status(500).send({error:'no such hotel'})
-//     } else {
-//       res.send(rows);
-//     }
+    
+    
 
-//   }).catch((error)=>{
-//     console.log(error);
-//     res.status(500).send({error:'cannot get hotel'})
-//   });
-// })
+    if (rows.length==0){
+      res.status(500).send({error:'no such hotel'})
+    } else {
+
+      let newRow=rows.map((current,index,array)=>{
+
+        let hotelPhoto={
+          photoID: current.photoID,
+          path: current.path
+        }
+        if (index==0){
+          current.hotelPhoto=[hotelPhoto]
+          console.log('aaaa',current.hotelPhoto)
+        }else{
+          current.hotelPhoto=[...array[index-1].hotelPhoto,hotelPhoto]
+          console.log('aaaa',current.hotelPhoto)
+        }
+
+
+        if(index<array.length-1 && current.roomType==array[index+1].roomType){
+
+          let photo={
+            photoID: current.photoID,
+            path: current.path,
+            icon: current.icon
+          }
+          if (current.photo && typeof current.photo =='object' ){
+            array[index+1].photo=[...current.photo,photo]
+
+
+          }else{
+            array[index+1].photo=[photo]
+          }
+
+          
+        
+        }else{
+          let photo={
+            photoID: current.photoID,
+            path: current.path,
+            icon: current.icon
+          }
+
+          if (index==0 || typeof current.photo !='object'){
+            current.photo=photo
+          }else{
+            current.photo=[...current.photo,photo]
+          }
+
+          delete current.password;
+
+          return current
+        }
+
+   
+      }).filter((each)=>{
+        if(each!=null){
+          return true
+        }
+      })
+
+      let finalRow=newRow.map((current,index,array)=>{
+        delete current.icon;
+        delete current.photoID;
+        current.roomType=[{
+          roomTypeID:current.roomTypeID,
+          roomType:current.roomType,
+          price:current.price,
+          description:current.description,
+          requirement:current.requirement,
+          additionalPrice:current.additionalPrice,
+          icon:current.icon,
+          photo:current.photo
+        }]
+
+        if(index>0){
+          console.log('111111',...array[index-1].roomType)
+          current.roomType=[...array[index-1].roomType,...current.roomType]
+        }
+
+        if(index==array.length-1){
+          console.log('22222',current.roomType)
+          return current
+        }
+        
+      }).filter((each)=>{
+        if(each!=null){
+          return true
+        }
+      })
+
+      let lastRow=finalRow.map((current)=>{
+        delete current.roomTypeID;
+        delete current.price;
+        delete current.description;
+        delete current.requirement;
+        delete current.additionalPrice;
+        delete current.path;
+        return current
+      })
+
+      res.send(lastRow);
+      
+    }
+
+  }).catch((error)=>{
+    console.log(error);
+    res.status(500).send({error:'cannot get hotel'})
+  });
+})
+
 
 
 
