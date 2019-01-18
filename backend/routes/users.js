@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 
 // Get user profile information: rows = an array with an object
-router.get('/:id', async function(req, res, next) {
-  console.log(req.user)
+router.get('/', async function(req, res, next) {
+  console.log('111111',req.user)
 
 
 
   var db=req.db;
-  let query=db.select("*").from("users").where("id",req.params.id)
+  let query=db.select("*").from("users").where("id",1)
   query.then((rows)=>{
 
     if (rows.length==0){
