@@ -1,5 +1,12 @@
 var express = require('express');
 var router = express.Router();
+const passport = require('passport');
+
+/* All APIs
+1. Get all reviews of one hotel with hotel id as params
+2. Get all reviews of one user with user id as params
+3. Send review
+*/
 
 //1. Get all reviews of one hotel with hotel id as params
 router.get('/hotel/:hotelid', function(req, res, next) {
@@ -48,10 +55,9 @@ router.get('/user/:userid', function(req, res, next) {
 });
 
 //3. Send review
-router.post('/',function(req, res, next) {
+router.post('/',passport.authenticate("jwt", { session: false }), (req, res) => {
   /* data this function needs:
     {
-      userID,
       hotelID,
       bookingID,
       rating,
@@ -62,7 +68,7 @@ router.post('/',function(req, res, next) {
   */
   
   var db=req.db;
-  let query=db.insert([{userID:req.body.userID},{hotelID:req.body.hotelID}, {bookingID:req.body.bookingID},{rating:req.body.rating},{comment:req.body.comment}]).into('review')
+  let query=db.insert({userID:req.user.id,hotelID:req.body.hotelID,bookingID:req.body.bookingID,rating:req.body.rating,comment:req.body.comment}).into('review')
 
   query.then(()=>{
       res.send({status:'success'});
