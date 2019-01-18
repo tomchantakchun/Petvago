@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Login from './component/Login/Login'
-import User from './component/User/User'
+import Login from './component/Login/Login';
+import User from './component/User';
+import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 
 const Logged = (props) => {
@@ -19,6 +20,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
+            <Route exact path='/messagebox' component={MessageBox} />
             <AuthenticatedComponent>
               <Route exact path='/' component={Logged} />
             </AuthenticatedComponent>
