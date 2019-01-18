@@ -2,6 +2,8 @@ import React from 'react';
 import classes from './Login.module.css'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom';
+import Facebook from './Facebook';
+import Instagram from './Instagram';
 
 class Login extends React.Component {
     state = {
@@ -101,8 +103,8 @@ class Login extends React.Component {
                         <input type='submit' value='Submit' className={classes.Submit} onClick={this.handleSubmit}></input>
                     </form>
                     <button className={classes.Signup} onClick={this.handleSignup}>Signup</button>
-                    <button className={classes.Facebook}>Facebook</button>
-                    <button className={classes.Wechat}>WeChat</button>
+                    <Facebook />
+                    <Instagram />
                 </section>
             </div>
         )
