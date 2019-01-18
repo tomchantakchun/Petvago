@@ -60,6 +60,20 @@
     color: red;
 }
 
+.Signup {
+    background-color:#555;
+    border: none;
+    border-radius: 3px;
+    color: #f4f4f4;
+    cursor: pointer;
+    font-family: inherit;
+    height: 50px;
+    text-transform: uppercase;
+    width: 300px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+}
+
 .Facebook {
     background-color: rgb(59, 89, 152);
     border: none;

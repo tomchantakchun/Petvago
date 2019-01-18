@@ -1,8 +1,8 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema
-    
-    .createTable('user',(table)=>{
+
+      .createTable('users',(table)=>{
         table.increments();
         table.string('username');
         table.string('password');
@@ -79,7 +79,7 @@ exports.up = function(knex, Promise) {
       .createTable('booking',(table)=>{
         table.increments();
         table.integer('userID');
-        table.foreign('userID').references('user.id');
+        table.foreign('userID').references('users.id');
         table.integer('hotelID');
         table.foreign('hotelID').references('hotel.id');
         table.integer('roomTypeID');
@@ -97,7 +97,7 @@ exports.up = function(knex, Promise) {
       .createTable('review',(table)=>{
         table.increments();
         table.integer('userID');
-        table.foreign('userID').references('user.id');
+        table.foreign('userID').references('users.id');
         table.integer('hotelID');
         table.foreign('hotelID').references('hotel.id');
         table.integer('bookingID');
@@ -110,7 +110,7 @@ exports.up = function(knex, Promise) {
       .createTable('conversation',(table)=>{
         table.increments();
         table.integer('userID');
-        table.foreign('userID').references('user.id');
+        table.foreign('userID').references('users.id');
         table.integer('hotelID');
         table.foreign('hotelID').references('hotel.id');
         table.timestamps(false,true);
@@ -129,5 +129,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('photo').dropTable('service').dropTable('booking').dropTable('roomAvailability').dropTable('roomType').dropTable('hotel').dropTable('user');
+    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('photo').dropTable('service').dropTable('booking').dropTable('roomAvailability').dropTable('roomType').dropTable('hotel').dropTable('users');
 };

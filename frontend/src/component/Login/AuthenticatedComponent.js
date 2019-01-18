@@ -6,8 +6,10 @@ class AuthenticatedComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: undefined
+            userid: undefined,
+            username: undefined
         }
+        this.children = null
     }
 
     componentDidMount() {
@@ -16,9 +18,10 @@ class AuthenticatedComponent extends React.Component {
             this.props.history.push('/login')
         }
 
-        console.log(jwt);
         axios.get(`http://localhost:8080/auth/verifyjwt`, { headers: { Authorization: `Bearer ${jwt}` } })
-            .then(res => this.setState({ user: res.data }))
+            .then(res => {
+                this.setState({ userid: res.data.id, username: res.data.username })
+            })
             .catch(err => {
                 // experimental error handling mechanism
                 // error may be caused by server but not wrong user input, need to handle specifically
@@ -28,7 +31,7 @@ class AuthenticatedComponent extends React.Component {
     }
 
     render() {
-        if (this.state.user === undefined) {
+        if (this.state.username === undefined) {
             return (
                 <div>Loading ... </div>
             )
