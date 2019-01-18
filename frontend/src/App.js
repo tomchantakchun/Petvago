@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login'
 import Search from './component/Search/Search'
+import User from './component/User/User'
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 
 const Logged = (props) => {
@@ -20,6 +21,7 @@ class App extends Component {
           <Route exact path='/search' component={Search} />
           {/* <Route exact path='/result' component={Result} /> */}
             <Route exact path='/login' component={Login} />
+            <Route exact path='/user' component={User} />
             <AuthenticatedComponent>
               <Route exact path='/' component={Logged} />
             </AuthenticatedComponent>

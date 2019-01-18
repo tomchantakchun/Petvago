@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
+const passport = require('passport');
 
 // Get user profile information: rows = an array with an object
-router.get('/', async function(req, res, next) {
-  console.log('111111',req.user)
-
+router.get('/', passport.authenticate("jwt", { session: false }), (req, res) => {
 
 
   var db=req.db;
-  let query=db.select("*").from("users").where("id",1)
+  let query=db.select("*").from("users").where("id",req.user.id)
   query.then((rows)=>{
 
     if (rows.length==0){
       res.status(500).send({error:'no such user'})
     } else {
+      delete rows[0].password;
       res.send(rows);
     }
 
