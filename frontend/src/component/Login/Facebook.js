@@ -6,46 +6,48 @@ class Facebook extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            isLoggedIn: false    
+            isLoggedIn: false,
+            isClicked: false
         }
     }
 
     facebookClicked = () => {
-        
+        this.setState({isClicked: true})
     }
 
     responseFacebook = (response) => {
-        console.log(response);
 
-        console.log(`http://localhost:8080/auth/facebook`);
-        axios.post(`http://localhost:8080/auth/facebook`,
-            {
-                name: response.name,
-                password: response.name,
-                email: response.email
-            })
-            .then(response => {
-                if (response.data === null) {
-                    console.log('Login failed')
-                } else if (!response.data.token) {
-                    console.log('Login failed')
-                } else {
-                    console.log('Login succeeded, setting token');
-                    console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
-                    console.log(`Token: ${response.data.token}`);
-                    localStorage.setItem('petvago-token', response.data.token);
-                    this.props.history.push('/')
-                }
-            })
-            .catch((err)=>{ 
-                if (err.response === undefined) {
-                    console.log(err);
-                } else if (err.response.status === undefined) {
-                    console.log('Login failed')
-                } else if (err.response.status === 401) {
-                    console.log('Login failed')
-                }
-            })
+        if (this.state.isClicked) {
+            console.log(`http://localhost:8080/auth/facebook`);
+            axios.post(`http://localhost:8080/auth/facebook`,
+                {
+                    name: response.name,
+                    password: response.name,
+                    email: response.email
+                })
+                .then(response => {
+                    if (response.data === null) {
+                        console.log('Login failed')
+                    } else if (!response.data.token) {
+                        console.log('Login failed')
+                    } else {
+                        console.log('Login succeeded, setting token');
+                        console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
+                        console.log(`Token: ${response.data.token}`);
+                        localStorage.setItem('petvago-token', response.data.token);
+                        this.props.redirectToIndex()
+                    }
+                })
+                .catch((err)=>{ 
+                    if (err.response === undefined) {
+                        console.log(err);
+                    } else if (err.response.status === undefined) {
+                        console.log('Login failed')
+                    } else if (err.response.status === 401) {
+                        console.log('Login failed')
+                    }
+                })
+        }
     }
 
     render () {
@@ -56,11 +58,11 @@ class Facebook extends React.Component {
         } else {
             fbContent = (
                 <FacebookLogin
-                appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
-                autoLoad={true}
-                fields="name,email,picture"
-                onClick={this.facebookClicked}
-                callback={this.responseFacebook} />
+                    appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
+                    autoLoad={false}
+                    fields="name,email,picture"
+                    onClick={this.facebookClicked}
+                    callback={this.responseFacebook} />
             )
         }
 

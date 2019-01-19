@@ -28,7 +28,7 @@ class Instagram extends React.Component {
                     console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
                     console.log(`Token: ${response.data.token}`);
                     localStorage.setItem('petvago-token', response.data.token);
-                    this.props.history.push('/')
+                    this.props.redirectToIndex()
                 }
             })
             .catch((err)=>{ 

@@ -31,7 +31,8 @@ router.post('/facebook', async (req, res) => {
         if (user) {
             var payload = {
                 id: user.id,
-                username: user.username
+                username: user.username,
+                userType: 'user'
             };
             var token = jwt.encode(payload, process.env.JWTSECRET);
             res.json({
@@ -42,7 +43,8 @@ router.post('/facebook', async (req, res) => {
             await knex.insert({
                 username: name,
                 password: hash,
-                email: email
+                email: email,
+                loginMethod: 'facebook'
             })
                 .into('users')
                 .then(() => { })
@@ -54,7 +56,8 @@ router.post('/facebook', async (req, res) => {
 
                     var payload = {
                         id: user.id,
-                        username: user.username
+                        username: user.username,
+                        userType: 'user'
                     };
                     var token = jwt.encode(payload, process.env.JWTSECRET);
                     res.json({
@@ -111,7 +114,8 @@ router.post('/instagram', async (req, res) => {
             if (user) {
                 var payload = {
                     id: user.id,
-                    username: user.username
+                    username: user.username,
+                    userType: 'user'
                 };
                 var token = jwt.encode(payload, process.env.JWTSECRET);
                 res.json({
@@ -122,6 +126,7 @@ router.post('/instagram', async (req, res) => {
                 await knex.insert({
                     username: parsedBody.user.username,
                     password: hash,
+                    loginMethod: 'instagram'
                 })
                     .into('users')
                     .then(() => { })
@@ -133,7 +138,8 @@ router.post('/instagram', async (req, res) => {
 
                         var payload = {
                             id: user.id,
-                            username: user.username
+                            username: user.username,
+                            userType: 'user'
                         };
                         var token = jwt.encode(payload, process.env.JWTSECRET);
                         res.json({
@@ -170,7 +176,8 @@ router.post("/jwt", async (req, res) => {
                     if (user) {
                         var payload = {
                             id: user.id,
-                            username: user.username
+                            username: user.username,
+                            userType: 'user'
                         };
                         var token = jwt.encode(payload, process.env.JWTSECRET);
                         res.json({
@@ -212,7 +219,8 @@ router.post("/signupjwt", async (req, res) => {
         } else {
             await knex.insert({
                 username: name,
-                password: hash
+                password: hash,
+                loginMethod: 'local'
             })
                 .into('users')
                 .then(() => { })
@@ -225,7 +233,8 @@ router.post("/signupjwt", async (req, res) => {
 
                     var payload = {
                         id: user.id,
-                        username: user.username
+                        username: user.username,
+                        userType: 'user'
                     };
                     var token = jwt.encode(payload, process.env.JWTSECRET);
                     res.json({

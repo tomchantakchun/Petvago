@@ -87,6 +87,10 @@ class Login extends React.Component {
         this.setState({ password: e.currentTarget.value })
     }
 
+    redirectToIndex = () => {
+        this.props.history.push('/')
+    }
+
     render() {
         return (
             <div className={classes.Login}>
@@ -103,8 +107,8 @@ class Login extends React.Component {
                         <input type='submit' value='Submit' className={classes.Submit} onClick={this.handleSubmit}></input>
                     </form>
                     <button className={classes.Signup} onClick={this.handleSignup}>Signup</button>
-                    <Facebook />
-                    <Instagram />
+                    <Facebook redirectToIndex={this.redirectToIndex}/>
+                    <Instagram redirectToIndex={this.redirectToIndex}/>
                 </section>
             </div>
         )
