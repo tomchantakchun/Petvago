@@ -32,7 +32,7 @@ router.post('/facebook', async (req, res) => {
             var payload = {
                 id: user.id,
                 username: user.username,
-                userType: 'user'
+                isHotel: false
             };
             var token = jwt.encode(payload, process.env.JWTSECRET);
             res.json({
@@ -57,7 +57,7 @@ router.post('/facebook', async (req, res) => {
                     var payload = {
                         id: user.id,
                         username: user.username,
-                        userType: 'user'
+                        isHotel: false
                     };
                     var token = jwt.encode(payload, process.env.JWTSECRET);
                     res.json({
@@ -115,7 +115,7 @@ router.post('/instagram', async (req, res) => {
                 var payload = {
                     id: user.id,
                     username: user.username,
-                    userType: 'user'
+                    isHotel: false
                 };
                 var token = jwt.encode(payload, process.env.JWTSECRET);
                 res.json({
@@ -139,7 +139,7 @@ router.post('/instagram', async (req, res) => {
                         var payload = {
                             id: user.id,
                             username: user.username,
-                            userType: 'user'
+                            isHotel: false
                         };
                         var token = jwt.encode(payload, process.env.JWTSECRET);
                         res.json({
@@ -160,24 +160,25 @@ router.post("/jwt", async (req, res) => {
         let name = req.body.name;
         let password = req.body.password;
         let hashedPassword;
-        await knex.select("password").from('users').where('username', name).then((rows) => {
+        let table = req.body.isHotel ? 'hotel' : 'users';
+        console.log(`Login user type: ${table}`);
+
+        await knex.select("password").from(table).where('username', name).then((rows) => {
             hashedPassword = rows[0].password
         })
 
         let result = await bcrypt.checkPassword(password, hashedPassword);
         let user;
-        console.log(`Bcrypt match result: ${result}`);
         if (result) {
-            knex.select("id", "username").from("users")
+            knex.select("id", "username").from(table)
                 .where("username", name)
                 .then((rows) => {
                     user = rows[0];
-
                     if (user) {
                         var payload = {
                             id: user.id,
                             username: user.username,
-                            userType: 'user'
+                            isHotel: req.body.isHotel
                         };
                         var token = jwt.encode(payload, process.env.JWTSECRET);
                         res.json({
@@ -197,12 +198,12 @@ router.get('/verifyjwt', passport.authenticate("jwt", { session: false }), (req,
         username: req.user.id
     }
 
-    console.log(`User ID: ${responsedInfo.id}, User username: ${responsedInfo.username}`);
     res.json(responsedInfo);
 })
 
 
 router.post("/signupjwt", async (req, res) => {
+    // Will not let hotel user to signup directly from frontend
     console.log(`/auth/signupjwt called`);
     if (req.body.name && req.body.password) {
         let name = req.body.name;
@@ -234,7 +235,7 @@ router.post("/signupjwt", async (req, res) => {
                     var payload = {
                         id: user.id,
                         username: user.username,
-                        userType: 'user'
+                        isHotel: false
                     };
                     var token = jwt.encode(payload, process.env.JWTSECRET);
                     res.json({
