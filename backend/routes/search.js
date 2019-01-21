@@ -5,7 +5,7 @@ router.post('/', function(req, res, next) {
   console.log('a')
   console.log(req.body)
   var db=req.db;
-  let query=db.select('*').from("hotel").where("district",req.body.district).innerJoin('roomtype', 'hotel.id', 'roomtype.hotelID')
+  let query=db.select('*').from("hotel").where("district",req.body.district).innerJoin("roomType", 'hotel.id', "roomType.hotelID")
   query.then((rows)=>{
     res.send(rows);
   }).catch((error)=>{
