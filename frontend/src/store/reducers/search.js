@@ -1,19 +1,24 @@
+import * as actionTypes from '../actions';
+
 const initialState = {
     startDate: '',
     endDate: '',
     district: '',
-    petType:''
+    petType:'',
 };
 
 const reducer = ( state = initialState, action ) => {
     // eslint-disable-next-line default-case
     switch ( action.type ) {
-        case SEARCH:
+        case actionTypes.SEARCHHOTEL:
+        console.log(action.state.district)
             return {
                 ...state,
-                results: state.results.concat({id: new Date(), value: action.result})
+                startDate: action.state.startDate,
+                endDate: action.state.endDate,
+                district: action.state.district,
+                petType: action.state.petType
             }
-
     }
     return state;
 };
