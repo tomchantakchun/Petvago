@@ -2,13 +2,17 @@ import React from 'react';
 import classes from './Login.module.css'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom';
+import Facebook from './Facebook';
+import Instagram from './Instagram';
 
 class Login extends React.Component {
     state = {
         name: '',
         password: '',
+        isHotel: false,
         loginFailed: false,
         signupFailed: false,
+        signupHotelFailed: false,
         errorMessage: ''
     }
 
@@ -19,7 +23,8 @@ class Login extends React.Component {
         axios.post(`http://localhost:8080/auth/jwt`,
             {
                 name: this.state.name,
-                password: this.state.password
+                password: this.state.password,
+                isHotel: this.state.isHotel
             })
             .then(response => {
                 if (response.data === null) {
@@ -34,7 +39,7 @@ class Login extends React.Component {
                     this.props.history.push('/')
                 }
             })
-            .catch((err)=>{
+            .catch((err) => {
                 if (err.response.status === undefined) {
                     this.loginFailed()
                 } else if (err.response.status === 401) {
@@ -44,7 +49,10 @@ class Login extends React.Component {
     }
 
     handleSignup = () => {
-        axios.post('http://localhost:8080/auth/signupjwt',
+        if (this.state.isHotel) {
+            this.setState({ name: '', password: '', signupHotelFailed: true })
+        } else {
+            axios.post('http://localhost:8080/auth/signupjwt',
             {
                 name: this.state.name,
                 password: this.state.password
@@ -53,7 +61,7 @@ class Login extends React.Component {
                 if (response.data === null) {
                     this.signupFailed();
                 } else if (response.data.token === undefined) {
-                    this.setState({errorMessage:response.body})
+                    this.setState({ errorMessage: response.body })
                 } else {
                     console.log('Signup succeeded, setting token');
                     console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
@@ -62,10 +70,11 @@ class Login extends React.Component {
                     this.props.history.push('/')
                 }
             })
-            .catch((err)=>{
+            .catch((err) => {
                 console.log(err);
                 this.signupFailed();
             })
+        }
     }
 
     loginFailed() {
@@ -75,14 +84,25 @@ class Login extends React.Component {
 
     signupFailed() {
         console.log('Signup failed')
-        this.setState({ name: '', password: '', signupFailed: true })        
+        this.setState({ name: '', password: '', signupFailed: true })
     }
 
-    handleChangeName = (e) => {
-        this.setState({ name: e.currentTarget.value })
+    // handleChangeName = (e) => {
+    //     this.setState({ name: e.currentTarget.value })
+    // }
+    // handleChangePassword = (e) => {
+    //     this.setState({ password: e.currentTarget.value })
+    // }
+
+    handleInputChange = (e) => {
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        this.setState({
+            [e.target.name]: value
+        });
     }
-    handleChangePassword = (e) => {
-        this.setState({ password: e.currentTarget.value })
+
+    redirectToIndex = () => {
+        this.props.history.push('/')
     }
 
     render() {
@@ -92,17 +112,19 @@ class Login extends React.Component {
                     <h1>Please login</h1>
                     <form>
                         <h6>Name: </h6>
-                        <input type='text' name='name' className={classes.TextBox} onChange={this.handleChangeName} value={this.state.name}></input>
+                        <input type='text' name='name' className={classes.TextBox} onChange={this.handleInputChange} value={this.state.name}></input>
                         <h6>Password: </h6>
-                        <input type='password' name='password' className={classes.TextBox} onChange={this.handleChangePassword} value={this.state.password}></input>
+                        <input type='password' name='password' className={classes.TextBox} onChange={this.handleInputChange} value={this.state.password}></input>
                         {this.state.loginFailed ? <h6 className={classes.loginFailed}>Incorrect username or password</h6> : null}
                         {this.state.signupFailed ? <h6 className={classes.loginFailed}>Signup failed</h6> : null}
+                        {this.state.signupHotelFailed ? <h6 className={classes.loginFailed}>You cannot signup as hotel</h6> : null}
                         <h6>{this.state.errorMessage}</h6>
+                        <label><input type="checkbox" name="isHotel" checked={this.state.isHotel} onChange={this.handleInputChange} />hotel</label>
                         <input type='submit' value='Submit' className={classes.Submit} onClick={this.handleSubmit}></input>
                     </form>
                     <button className={classes.Signup} onClick={this.handleSignup}>Signup</button>
-                    <button className={classes.Facebook}>Facebook</button>
-                    <button className={classes.Wechat}>WeChat</button>
+                    <Facebook redirectToIndex={this.redirectToIndex} />
+                    <Instagram redirectToIndex={this.redirectToIndex} />
                 </section>
             </div>
         )
