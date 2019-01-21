@@ -7,7 +7,7 @@ import React from 'react';
     // 2. height: 300
     // 3. width: 400
     
-{/* <GoogleMap 
+/* <GoogleMap 
     markerArray={[
         {
         coords:{lat:22.320188,lng:114.175812},
@@ -15,7 +15,7 @@ import React from 'react';
         }
     ]} 
     zoom={13} height={300} width={400}
-/> */}
+/> */
 
 class GoogleMap extends React.Component {
     constructor (props) {

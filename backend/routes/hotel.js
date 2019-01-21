@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const fileUpload = require('express-fileupload');
 
 /* All APIs
 1. Get all hotel information with only one icon photo for display in home page/ search result
@@ -8,6 +9,10 @@ var router = express.Router();
 4. Get hotel information for edit
 5. Get roomType and photo based on roomTypeID for edit
 6. Put request to edit information of hotel **
+
+unaudited addition by Matt
+7. Post request to upload photo :: /uploadPhoto
+8. Put request to delete photo
 */
 
 
@@ -338,6 +343,26 @@ router.put('/edit/:hotelID', function(req,res){
   });
 
 
+})
+
+
+// 7. Post request to upload photo
+router.use(fileUpload())
+router.post('/uploadPhoto', (req,res) => {
+  let uploadFile = req.files.file
+  const fileName = req.files.file.name
+  uploadFile.mv(
+    `${__dirname}/../uploadTest/${fileName}`,
+    (err) => {
+      if (err) {
+        return res.status(500).send(err)
+      }
+
+      res.json({
+        file: `uploadTest/${fileName}`,
+      })
+    },
+  )
 })
 
 
