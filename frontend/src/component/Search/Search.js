@@ -97,4 +97,21 @@ class Search extends React.Component {
     }
 }
 
+
+const mapStateToProps = state => {
+    return {
+        startDate: state.startDate,
+        endDate: state.endDate,
+        district: state.district,
+        petType: state.petType
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSearch: () => dispatch({type: SEARCH})
+    }
+};
+
+
 export default Search
