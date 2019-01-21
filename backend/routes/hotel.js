@@ -119,8 +119,6 @@ router.get('/:hotelID', function(req,res){
           }
           if (current.photo && typeof current.photo =='object' ){
             array[index+1].photo=[...current.photo,photo]
-
-
           }else{
             array[index+1].photo=[photo]
           }
@@ -133,19 +131,14 @@ router.get('/:hotelID', function(req,res){
             path: current.path,
             icon: current.icon
           }
-
           if (index==0 || typeof current.photo !='object'){
             current.photo=photo
           }else{
             current.photo=[...current.photo,photo]
           }
-
           delete current.password;
-
           return current
         }
-
-   
       }).filter((each)=>{
         if(each!=null){
           return true
@@ -199,6 +192,8 @@ router.get('/:hotelID', function(req,res){
     res.status(500).send({error:'cannot get hotel'})
   });
 })
+
+// 4. Put request to edit information of hotel 
 
 
 
