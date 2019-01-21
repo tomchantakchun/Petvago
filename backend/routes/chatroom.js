@@ -110,6 +110,56 @@ router.get('/message/:conversationID', function(req,res){
 
 });
 
+//5. User get hotel information with active booking
+router.get('/activebooking/user', passport.authenticate("jwt", { session: false }), (req, res) => {
+
+  /*Information you get from each row:
+        { id,
+          username,
+          telephone,
+          email,
+          loginMethod.
+          created_at,
+          updated_at,
+          }
+      */
+     
+
+  var db=req.db;
+  
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; 
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd;
+  } 
+  if (mm < 10) {
+    mm = '0' + mm;
+  } 
+  var today = yyyy + '-' + mm + '-' + dd;
+
+  console.log(today)
+
+  let query=db.select('h.name','h.address','h.id as hotelID','b.id as bookingID','b.hotelID','b.roomTypeID','b.startDate','b.endDate','b.duration','b.status').from("users as u").leftJoin('booking as b', 'b.userID','u.id').leftJoin('hotel as h', 'h.id', 'b.hotelID').where("u.id",req.user.id).andWhere('b.startDate','<=',today).andWhere('b.endDate','>=',today)
+  
+  query.then((rows)=>{
+
+   console.log('rows',rows)
+    if(rows.length>0){
+      delete rows[0].password;
+    }
+      res.send(rows);
+    
+
+    //select u."username", b."startDate", b."endDate", b.id as bookingID from users as u inner join booking as b on b."userID"=u.id where b."startDate"<=getdate() and b."endDate">='2018-02-06';
+
+
+  }).catch((error)=>{
+    console.log(error);
+    res.status(500).send({error:'cannot get user'})
+  });
+});
 
 
 

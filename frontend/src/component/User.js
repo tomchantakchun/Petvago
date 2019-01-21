@@ -19,11 +19,12 @@ class User extends React.Component {
 
         axios.get('http://localhost:8080/api/userprofile',{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             this.setState({response:res.data[0]})
-            console.log(this.state.response)
+            console.log('userprofile',this.state.response)
         }).catch(err => {
             console.log(err)
         })
 
+       
     }
 
   

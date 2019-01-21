@@ -24,6 +24,13 @@ class MessageBox extends React.Component {
             console.log(err)
         })
 
+        axios.get('http://localhost:8080/api/chatroom/activebooking/user',{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+            console.log('active booking',res.data)
+        }).catch(err => {
+            console.log(err)
+        })
+
+
     }
 
   
