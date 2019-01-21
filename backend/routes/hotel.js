@@ -5,7 +5,9 @@ var router = express.Router();
 1. Get all hotel information with only one icon photo for display in home page/ search result
 2. Get information and photo of one hotel based on params.hotelid (redirected from homepage)
 3. Post request to get information, photo and availability of one hotel (redirected from search) **
-4. Put request to edit information of hotel **
+4. Get hotel information for edit
+5. Get roomType and photo based on roomTypeID for edit
+6. Put request to edit information of hotel **
 */
 
 
@@ -195,8 +197,148 @@ router.get('/:hotelID', function(req,res){
 
 // 3. Post request to get information, photo and availability of one hotel (redirected from search) **
 
-// 4. Put request to edit information of hotel 
 
+
+// 4. Get hotel information for edit
+router.get('/edit/hotel/:hotelID', function(req,res){
+  /* Information you get:
+  {
+      name,
+      telephone,
+      address,
+      description,  
+      vaccineRequirement (type:object),
+      rooms: [
+        {roomTypeID, roomType, price}
+      ]
+    }
+  */
+
+  var db=req.db;
+  let query=db.select('h.name','h.telephone','h.address', 'h.description','t.id as roomTypeID','t.roomType','t.price').from("roomType as t").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.params.hotelID)
+  query.then((rows)=>{
+
+    let newRow=rows.map((current,index,array)=>{
+      let room={
+       roomTypeID: current.roomTypeID, 
+       roomType: current.roomType, 
+       price: current.price
+      }
+     
+      if(index==0){
+        if(array[index+1]){
+          array[index+1].rooms=[room]
+        }
+      }else if(index<array.length-1 && index>0){
+         array[index+1].rooms=[...current.rooms,room]
+      }else if (index==array.length-1){
+         current.rooms=[...current.rooms,room];
+         delete current.roomTypeID;
+         delete current.roomType;
+         delete current.price;
+         return current
+      }
+    }).filter((each)=>{
+     if(each!=null){
+       return true
+     }
+   })
+    res.send(newRow)
+  }).catch((error)=>{
+    console.log(error);
+    res.status(500).send({error:'cannot get hotel'})
+  });
+
+})
+
+// 5. Get roomType and photo based on roomTypeID for edit
+router.get('/edit/roomtype/:roomTypeID', function(req,res){
+
+  /* Information you get:
+  {
+      roomTypeID,
+      roomType,
+      description,
+      photos:[
+        {photoID, path, icon(t/f)}
+      ]
+    }
+  */
+
+ var db=req.db;
+ let query=db.select('r.id as roomTypeID','r.roomType','r.description', 'p.id as photoID','p.path','p.icon').from("roomType as r").leftJoin('photo as p', 'r.id','p.roomTypeID').where('r.id',req.params.roomTypeID)
+ query.then((rows)=>{
+
+  let newRow=rows.map((current,index,array)=>{
+    let photo={
+     photoID: current.photoID, 
+     path: current.path, 
+     icon: current.icon
+    }
+    if(index==0){
+      if(array[index+1]){
+        array[index+1].photos=[photo]
+      }
+    }else if(index<array.length-1 && index>0){
+       array[index+1].photos=[...current.photos,photo]
+    }else if (index==array.length-1){
+       current.photos=[...current.photos,photo];
+       delete current.photoID;
+       delete current.path;
+       delete current.icon;
+       return current
+    }
+  }).filter((each)=>{
+   if(each!=null){
+     return true
+   }
+ })
+
+ console.log(newRow)
+  res.send(newRow)
+}).catch((error)=>{
+  console.log(error);
+  res.status(500).send({error:'cannot get roomtype photo'})
+});
+
+})
+
+
+// 6. Put request to edit information of hotel 
+router.put('/edit/:hotelID', function(req,res){
+
+    /* data this function needs:
+    {
+      name,
+      telephone,
+      address,
+      description,  
+      vaccineRequirement (type:object)
+    }
+
+    on success, sends back {status:'success', conversationID: id}
+  */
+
+  var db=req.db;
+  let query=db.update({
+    name: req.body.name,
+    telephone: req.body.telephone,
+    address: req.body.address,
+    description: req.body.description,
+    vaccineRequirement:JSON.stringify(req.body.vaccineRequirement),
+  }).where('id',req.params.hotelID)
+  query.then((rows)=>{
+    
+      res.send({status:'success'});
+      
+      
+  }).catch((error)=>{
+    console.log(error);
+    res.status(500).send({error:'cannot edit hotel info'})
+  });
+
+
+})
 
 
 
