@@ -6,11 +6,23 @@ import Search from './component/Search/Search'
 import User from './component/User';
 import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
+import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
 
 const Logged = (props) => {
   return (
-    <h1>You are logged in as {props.username}</h1>
+    <div>
+      <h1>You are logged in as {props.username}</h1>
+      <GoogleMap 
+        markerArray={[
+          {
+            coords:{lat:22.320188,lng:114.175812},
+            content:'<h1>Dogotel & Spa</h1>'
+          }
+        ]} 
+        zoom={13} height={300} width={400}
+      />
+    </div>
   )
 }
 
