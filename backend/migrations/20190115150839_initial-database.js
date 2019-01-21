@@ -32,11 +32,11 @@ exports.up = function(knex, Promise) {
         table.timestamps(false,true);
       })
 
-      .createTable('roomType',(table)=>{
+      .createTable('roomtype',(table)=>{
         table.increments();
         table.integer('hotelID');
         table.foreign('hotelID').references('hotel.id');
-        table.string('roomType');
+        table.string('roomtype');
         table.decimal('price');
         table.string('description');
         table.json('requirement');
@@ -45,21 +45,21 @@ exports.up = function(knex, Promise) {
         table.timestamps(false,true);
       })
 
-      .createTable('roomAvailability',(table)=>{
-        table.increments();
-        table.integer('roomTypeID');
-        table.foreign('roomTypeID').references('roomType.id');
-        table.date('bookedDate');
-        table.enu('status',['taken','available','hold']);
-        table.timestamps(false,true);
-      })
+      // .createTable('roomAvailability',(table)=>{
+      //   table.increments();
+      //   table.integer('roomtypeID');
+      //   table.foreign('roomtypeID').references('roomtype.id');
+      //   table.date('bookedDate');
+      //   table.enu('status',['taken','available','hold']);
+      //   table.timestamps(false,true);
+      // })
 
       .createTable('photo',(table)=>{
         table.increments();
         table.integer('hotelID');
         table.foreign('hotelID').references('hotel.id');
-        table.integer('roomTypeID');
-        table.foreign('roomTypeID').references('roomType.id');
+        table.integer('roomtypeID');
+        table.foreign('roomtypeID').references('roomtype.id');
         table.boolean('icon');
         table.string('path');
         table.timestamps(false,true);
@@ -82,8 +82,8 @@ exports.up = function(knex, Promise) {
         table.foreign('userID').references('users.id');
         table.integer('hotelID');
         table.foreign('hotelID').references('hotel.id');
-        table.integer('roomTypeID');
-        table.foreign('roomTypeID').references('roomType.id');
+        table.integer('roomtypeID');
+        table.foreign('roomtypeID').references('roomtype.id');
         table.date('expiryTime');
         table.date('startDate');
         table.date('endDate');
@@ -129,5 +129,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('photo').dropTable('service').dropTable('booking').dropTable('roomAvailability').dropTable('roomType').dropTable('hotel').dropTable('users');
+    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('photo').dropTable('service').dropTable('booking').dropTable('roomtype').dropTable('hotel').dropTable('users');
 };

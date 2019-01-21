@@ -28,8 +28,8 @@ exports.seed = function(knex, Promise) {
     knex('roomAvailability').del()
   })
     .then(function(){
-      console.log('delete roomType')
-      return knex('roomType').del()
+      console.log('delete roomtype')
+      return knex('roomtype').del()
     })
     .then(function(){
       console.log('delete hotel')
@@ -57,35 +57,37 @@ exports.seed = function(knex, Promise) {
         {name:'Posh Paws Resort',address:'No.169B Tai Tong Road, Hung Cho Tin Tsuen, Yuen Long',description:'Safe clean and fun boarding, grooming, and daycare is our mission.', telephone:29474001,  email:'partner3@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}, facilities:{swimmingPool:true, airConditioner:true, blanket:true, playTime:true}, partnershipType:'nonpaid', app:'no', averageRating:3.3, availablePeriod:6, latitude:22.423431, longitude:114.031928, district:'Yuen Long'}
       ]);
     }).then(function () {
-      console.log('create roomType')
-      return knex('roomType').insert([
-        {hotelID:1, roomType:'Duluxe Room', price:480, description: 'This room provides our boarding pet guests with the highest quality of comfort and care.', requirement: {minWeight:5, maxWeight:15, numberOfPet:1,pet:'dog'}, additionalPrice:{Christmas:100}},
-        {hotelID:1, roomType:'Superior Room', price:680, description: 'This room provides our boarding pet guests with the highest quality of comfort and care.', requirement: {minWeight:15, maxWeight:40, numberOfPet:1,pet:'dog'}, additionalPrice:{Christmas:100}},
-        {hotelID:1, roomType:'Family Room', price:880, description: 'This room fits 3 dogs in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:45, numberOfPet:3,pet:'dog'}, additionalPrice:{Christmas:300}},
-        {hotelID:2, roomType:'Small cat Room', price:220, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:10, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:50}},
-        {hotelID:2, roomType:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}}
+      console.log('create roomtype')
+      return knex('roomtype').insert([
+        {hotelID:1, roomtype:'Duluxe Room', price:480, description: 'This room provides our boarding pet guests with the highest quality of comfort and care.', requirement: {minWeight:5, maxWeight:15, numberOfPet:1,pet:'dog'}, additionalPrice:{Christmas:100}, quantity: 1},
+        {hotelID:1, roomtype:'Superior Room', price:680, description: 'This room provides our boarding pet guests with the highest quality of comfort and care.', requirement: {minWeight:15, maxWeight:40, numberOfPet:1,pet:'dog'}, additionalPrice:{Christmas:100}, quantity: 1},
+        {hotelID:1, roomtype:'Family Room', price:880, description: 'This room fits 3 dogs in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:45, numberOfPet:3,pet:'dog'}, additionalPrice:{Christmas:300}, quantity: 1},
+        {hotelID:3, roomtype:'Small cat Room', price:220, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:10, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:50}, quantity: 1},
+        {hotelID:4, roomtype:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}, quantity: 1}
       ]);
-    }) .then(function () {
-      console.log('create roomAvailability')
-      return knex('roomAvailability').insert([
-        {roomTypeID:1, bookedDate:'2018-12-16',status:'taken'},
-        {roomTypeID:1, bookedDate:'2018-12-17',status:'taken'},
-        {roomTypeID:1, bookedDate:'2018-12-18',status:'taken'},
-        {roomTypeID:1, bookedDate:'2018-2-3',status:'taken'},
-        {roomTypeID:1, bookedDate:'2018-2-3',status:'taken'},
-        {roomTypeID:2, bookedDate:'2018-11-5',status:'taken'},
-        {roomTypeID:2, bookedDate:'2018-11-6',status:'taken'},
-        {roomTypeID:4, bookedDate:'2018-2-10',status:'taken'},
-        {roomTypeID:4, bookedDate:'2018-2-11',status:'taken'},
-        {roomTypeID:4, bookedDate:'2018-2-12',status:'taken'},
-      ]);
-    }).then(function () {
+    }) 
+    // .then(function () {
+    //   console.log('create roomAvailability')
+    //   return knex('roomAvailability').insert([
+    //     {roomtypeID:1, bookedDate:'2018-12-16',status:'taken'},
+    //     {roomtypeID:1, bookedDate:'2018-12-17',status:'taken'},
+    //     {roomtypeID:1, bookedDate:'2018-12-18',status:'taken'},
+    //     {roomtypeID:1, bookedDate:'2018-2-3',status:'taken'},
+    //     {roomtypeID:1, bookedDate:'2018-2-3',status:'taken'},
+    //     {roomtypeID:2, bookedDate:'2018-11-5',status:'taken'},
+    //     {roomtypeID:2, bookedDate:'2018-11-6',status:'taken'},
+    //     {roomtypeID:4, bookedDate:'2018-2-10',status:'taken'},
+    //     {roomtypeID:4, bookedDate:'2018-2-11',status:'taken'},
+    //     {roomtypeID:4, bookedDate:'2018-2-12',status:'taken'},
+    //   ]);
+    // })
+    .then(function () {
       console.log('create photo')
       return knex('photo').insert([
         {hotelID:1, icon:true, path:'./image/hotel1photo4.jpg'},
-        {hotelID:1, roomTypeID:'1',icon:true, path:'./image/hotel1photo2.jpg'},
-        {hotelID:1, roomTypeID:'1',icon:false, path:'./image/hotel1photo3.jpg'},
-        {hotelID:1, roomTypeID:'1',icon:false, path:'./image/hotel1photo4.jpg'},
+        {hotelID:1, roomtypeID:'1',icon:true, path:'./image/hotel1photo2.jpg'},
+        {hotelID:1, roomtypeID:'1',icon:false, path:'./image/hotel1photo3.jpg'},
+        {hotelID:1, roomtypeID:'1',icon:false, path:'./image/hotel1photo4.jpg'},
         {hotelID:2, icon:true, path:'./image/hotel2photo1.jpg'},
         {hotelID:3, icon:true, path:'./image/hotel3photo1.jpg'},
       ]);
@@ -99,9 +101,9 @@ exports.seed = function(knex, Promise) {
     }).then(function () {
       console.log('create booking')
       return knex('booking').insert([
-        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
-        {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
-        {userID:2, hotelID:3, roomTypeID:1, expiryTime:'2018-01-19T08:36:00',startDate:'2019-1-17', endDate:'2019-1-19',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'}
+        {userID:1, hotelID:1, roomtypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
+        {userID:2, hotelID:2, roomtypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
+        {userID:2, hotelID:3, roomtypeID:1, expiryTime:'2018-01-25T08:36:00',startDate:'2019-1-17', endDate:'2019-1-25',duration:9,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'}
       ]);
     }).then(function () {
       console.log('create review')
