@@ -4,9 +4,11 @@ const passport = require('passport');
 
 /* All APIs
 1. Get chatlist of a user
-2. Create new conversation by the user
+2. Post request to create new conversation by the user
 3. Get chatlist of a hotel
-4.
+4. Get all message of a conversation
+5. User get hotel information with active booking (message page)
+6. Post request to send new message **
 */
 
 //1. Get chatlist of a user
@@ -23,7 +25,6 @@ router.get('/chatlist/user', passport.authenticate("jwt", { session: false }), (
   var db=req.db;
   let query=db.select("*").from("conversation").where("userID",req.user.id)
   query.then((rows)=>{
-    console.log(rows)
 
       res.send(rows);
 
@@ -33,6 +34,7 @@ router.get('/chatlist/user', passport.authenticate("jwt", { session: false }), (
     res.status(500).send({error:'cannot get chatlist'})
 });
 });
+
 
 //2. Create new conversation by the user
 router.post('/addchat', passport.authenticate("jwt", { session: false }), (req, res) => {
@@ -66,6 +68,7 @@ router.post('/addchat', passport.authenticate("jwt", { session: false }), (req, 
   });
 });
 
+
 //3. Get chatlist of a hotel
 router.get('/chatlist/hotel', passport.authenticate("jwt", { session: false }), (req, res) => {
    /*Information you get from each row - Array:
@@ -80,7 +83,6 @@ router.get('/chatlist/hotel', passport.authenticate("jwt", { session: false }), 
   var db=req.db;
   let query=db.select("*").from("conversation").where("hotelID",req.user.id)
   query.then((rows)=>{
-    console.log(rows)
 
       res.send(rows);
 
@@ -91,16 +93,14 @@ router.get('/chatlist/hotel', passport.authenticate("jwt", { session: false }), 
 });
 });
 
+
 //4. Get all message of a conversation
 router.get('/message/:conversationID', function(req,res){
-  console.log('11111111');
   var db=req.db;
   let query=db.select().from("message").where("conversationID",req.params.conversationID)
   query.then((rows)=>{
-    console.log(rows)
 
       res.send(rows);
-
 
   }).catch((error)=>{
     console.log(error);
@@ -110,54 +110,70 @@ router.get('/message/:conversationID', function(req,res){
 
 });
 
-//5. User get hotel information with active booking
-router.get('/activebooking/user', passport.authenticate("jwt", { session: false }), (req, res) => {
+
+//5. User get hotel information with active booking (message page)
+router.get('/activebooking/:hotelid', passport.authenticate("jwt", { session: false }), (req, res) => {
 
   /*Information you get from each row:
-        { id,
-          username,
-          telephone,
-          email,
-          loginMethod.
-          created_at,
-          updated_at,
+        { hotelID,
+          hotelName,
+          address,
+          activeBooking:[
+            {bookingID, roomTypeID, roomType, startDate, endDate, duration, status}
+          ]
           }
       */
      
-
   var db=req.db;
   
   var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth() + 1; 
-  var yyyy = today.getFullYear();
-  if (dd < 10) {
-    dd = '0' + dd;
-  } 
-  if (mm < 10) {
-    mm = '0' + mm;
-  } 
-  var today = yyyy + '-' + mm + '-' + dd;
 
-  console.log(today)
-
-  let query=db.select('h.name','h.address','h.id as hotelID','b.id as bookingID','b.hotelID','b.roomTypeID','b.startDate','b.endDate','b.duration','b.status').from("users as u").leftJoin('booking as b', 'b.userID','u.id').leftJoin('hotel as h', 'h.id', 'b.hotelID').where("u.id",req.user.id).andWhere('b.startDate','<=',today).andWhere('b.endDate','>=',today)
+  let query=db.select('h.name as hotelName','h.address','h.id as hotelID','b.id as bookingID','b.hotelID','b.roomTypeID','b.startDate','b.endDate','b.duration','b.status','r.roomType').from("users as u").leftJoin('booking as b', 'b.userID','u.id').leftJoin('hotel as h', 'h.id', 'b.hotelID').leftJoin('roomType as r', 'r.id', 'b.roomTypeID').where("u.id",req.user.id).andWhere("h.id",req.params.hotelID)
   
   query.then((rows)=>{
 
-   console.log('rows',rows)
-    if(rows.length>0){
-      delete rows[0].password;
-    }
-      res.send(rows);
+   let newRow=rows.map((current,index,array)=>{
+     let booking={
+      bookingID:current.bookingID, 
+      roomTypeID: current.roomTypeID, 
+      roomType: current.roomType, 
+      startDate: current.startDate, 
+      endDate: current.endDate, 
+      duration: current.duration, 
+      status: current.status
+     }
     
+     if(index==0){
+        array[index+1].activeBooking=[]
+        if(current.endDate>=today){
+          array[index+1].activeBooking=[booking]
+        }
+     
+     }else if(index<array.length-1 && index>0){
+      array[index+1].activeBooking=[]
+      if(current.endDate>=today){
+        array[index+1].activeBooking=[...current.activeBooking,booking]
+      }else{
+      }
+     }else if (index==array.length-1){
+      if(current.endDate>=today){
+        current.activeBooking=[...current.activeBooking,booking]
+        return current
+      }else{
+        return current
+      }
+     }
+   }).filter((each)=>{
+    if(each!=null){
+      return true
+    }
+  })
 
-    //select u."username", b."startDate", b."endDate", b.id as bookingID from users as u inner join booking as b on b."userID"=u.id where b."startDate"<=getdate() and b."endDate">='2018-02-06';
-
+      res.send(newRow);
 
   }).catch((error)=>{
     console.log(error);
-    res.status(500).send({error:'cannot get user'})
+    res.status(500).send({error:'cannot get hotel info'})
   });
 });
 
