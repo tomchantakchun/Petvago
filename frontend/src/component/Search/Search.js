@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-// import searchResult from './SearchResult'
+import { connect } from 'react-redux';
+import * as actionTypes from '../../store/actions';
 
 //fontawesome
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -10,13 +11,6 @@ import { faHotel } from '@fortawesome/free-solid-svg-icons'
 library.add(faHotel)
 
 class Search extends React.Component {
-    state = {
-        startDate: '',
-        endDate: '',
-        district: '',
-        petType:''
-    }
-
     districts = ['Central and Western', 'Eastern', 'Islands', 'Kowloon City', 'Kwai Tsing', 'Kwun Tong', 'North', 'Sai Kung', 'Sha Tin', 'Sham Shui Po', 'Southern', 'Tai Po', 'Tsuen Wan', 'Tuen Mun', 'Wan Chai', 'Wong Tai Sin', 'Yau Tsim Mong', 'Yuen Long']
 
     handleSearch = (e) => {
@@ -36,8 +30,9 @@ class Search extends React.Component {
                     console.log(response.data)
                     for (let i=0; i < response.data.length; i++){
                     console.log(response.data[i].id)
-                    } 
+                    };
                 }
+            this.props.onSearch(this.state);
             })
             .catch(error => {
                 console.log(error)
@@ -80,6 +75,7 @@ class Search extends React.Component {
 
         return (
             <div>
+             <h1>{this.props.SearchHistory.district}</h1>
                 <form>
                 <FontAwesomeIcon icon="hotel" />
                     <input type='date' id='start' name='startDate' min={today} onChange={this.startDateChange}></input>
@@ -97,4 +93,17 @@ class Search extends React.Component {
     }
 }
 
-export default Search
+
+const mapStateToProps = state => {
+    return {
+        SearchHistory: state.searchHistory
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSearch: (state) => dispatch({type: actionTypes.SEARCHHOTEL, state:state})
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
