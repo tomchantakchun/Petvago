@@ -25,6 +25,7 @@ class AuthenticatedComponent extends React.Component {
             .catch(err => {
                 // experimental error handling mechanism
                 // error may be caused by server but not wrong user input, need to handle specifically
+                console.log(`Cannot verify JWT: ${err}`);
                 localStorage.removeItem('petvago-token')
                 this.props.history.push('/login')
             })
