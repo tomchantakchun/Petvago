@@ -63,7 +63,7 @@ exports.seed = function(knex, Promise) {
         {hotelID:1, roomtype:'Superior Room', price:680, description: 'This room provides our boarding pet guests with the highest quality of comfort and care.', requirement: {minWeight:15, maxWeight:40, numberOfPet:1,pet:'dog'}, additionalPrice:{Christmas:100}, quantity: 1},
         {hotelID:1, roomtype:'Family Room', price:880, description: 'This room fits 3 dogs in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:45, numberOfPet:3,pet:'dog'}, additionalPrice:{Christmas:300}, quantity: 1},
         {hotelID:3, roomtype:'Small cat Room', price:220, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:10, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:50}, quantity: 1},
-        {hotelID:4, roomtype:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}, quantity: 1}
+        {hotelID:3, roomtype:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}, quantity: 1}
       ]);
     }) 
     // .then(function () {
