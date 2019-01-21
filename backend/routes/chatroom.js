@@ -8,7 +8,7 @@ const passport = require('passport');
 3. Get chatlist of a hotel
 4. Get all message of a conversation
 5. User get hotel information with active booking (message page)
-6. Post request to send new message **
+6. Post request to send new message
 */
 
 //1. Get chatlist of a user
@@ -103,6 +103,17 @@ router.get('/chatlist/hotel', passport.authenticate("jwt", { session: false }), 
 
 //4. Get all message of a conversation
 router.get('/message/:conversationID', function(req,res){
+  /*Information you get from each row - Array:
+        [  { id,
+            conversationID,
+            body,
+            type
+            created_at,
+            updated_at,
+            authorID{user:1}
+            } ]
+        */
+
   var db=req.db;
   let query=db.select().from("message").where("conversationID",req.params.conversationID)
   query.then((rows)=>{
@@ -114,13 +125,11 @@ router.get('/message/:conversationID', function(req,res){
     res.status(500).send({error:'cannot get chatlist'})
   });
 
-
 });
 
 
 //5. User get hotel information with active booking (message page)
 router.get('/activebooking/:hotelID', passport.authenticate("jwt", { session: false }), (req, res) => {
-
   /*Information you get from each row:
         { hotelID,
           hotelName,
@@ -184,6 +193,35 @@ router.get('/activebooking/:hotelID', passport.authenticate("jwt", { session: fa
   });
 });
 
+// 6. Post request to send new message **
+router.post('/sendmessage/:conversationID', function(req, res, next) {
+ /* data this function needs:
+    {
+      body,
+      type,
+      authorID{user/hotel:id}
+    }
+
+    on success, sends back {status:'success', conversationID: id}
+  */
+
+  var db=req.db;
+  let authorType=req.user.ishotel=true?'hotel':'users';
+  let id=req.user.id;
+  let authorID=JSON.stringify({[authorType]:id})
+  console.log('authorID',authorID);
+  let query=db.insert([{body:req.body.body, type:req.body.type, authorID:authorID,conversationID:req.params.conversationID}],['id']).into('message')
+
+  query.then((result)=>{
+
+      res.send({status:'success',messageID:result[0].id})
+      
+  }).catch((error)=>{
+    console.log(error);
+    res.status(500).send({error:'cannot send message'})
+  });
+
+})
 
 
 module.exports = router;

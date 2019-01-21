@@ -193,6 +193,8 @@ router.get('/:hotelID', function(req,res){
   });
 })
 
+// 3. Post request to get information, photo and availability of one hotel (redirected from search) **
+
 // 4. Put request to edit information of hotel 
 
 
