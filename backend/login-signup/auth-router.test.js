@@ -12,7 +12,7 @@ const knex = require('knex')({
 });
 
 describe('Auth-router module: ', () => {
-   it('JWT login', async () => {
+    it('JWT login', async () => {
         let resUsername;
 
         await axios.post(`http://localhost:8080/auth/jwt`,
@@ -28,7 +28,7 @@ describe('Auth-router module: ', () => {
             })
 
         expect(resUsername).toEqual('admin1');
-   }); 
+    });
 
     it('JWT signup', async () => {
         let resUsername;
@@ -46,7 +46,7 @@ describe('Auth-router module: ', () => {
 
         expect(resUsername).toEqual('adminJest');
 
-        await knex('users').where('username','adminJest').delete().then(() => {})
+        await knex('users').where('username', 'adminJest').delete().then(() => { })
     });
 
     it('JWT signup with existing username', async () => {
@@ -64,5 +64,22 @@ describe('Auth-router module: ', () => {
             })
 
         expect(res).toEqual('User already existed');
+    });
+
+    it('Verify JWT token user /auth/verifyjwt', async () => {
+        const jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJhZG1pbjEiLCJpc0hvdGVsIjpmYWxzZX0.b3cf5R9EtRNwuXryoTRaScNcCGmbf0uJf9WUqoNWA8w'
+
+        let res;
+
+        await axios.get(`http://localhost:8080/auth/verifyjwt`, { headers: { Authorization: `Bearer ${jwt}` } })
+            .then(response => {
+                // console.log('response: ',response.data);
+                res = response.data
+            })
+
+        expect(res).toEqual({
+            id: 6,
+            username: 'admin1'
+        });
     });
 });
