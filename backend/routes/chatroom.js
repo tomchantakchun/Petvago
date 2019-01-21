@@ -14,20 +14,27 @@ const passport = require('passport');
 //1. Get chatlist of a user
 router.get('/chatlist/user', passport.authenticate("jwt", { session: false }), (req, res) => {
   /*Information you get from each row - Array:
-        [  { id,
+        [  { conversationID,
             userID,
-            hotelID
-            created_at,
-            updated_at,
+            hotelID,
+            lastMessageID,
+            lastMessage,
+            lastMessageType,
+            lastMessageTime
             } ]
         */
 
   var db=req.db;
-  let query=db.select("*").from("conversation").where("userID",req.user.id)
+  let query=db.select('c.userID','c.hotelID','c.id as conversationID','m.id as lastMessageID','m.body as lastMessage','m.type as lastMessageType','m.created_at as lastMessageTime')
+  .from(db.raw('(select "conversationID", max(id) as maxid from message group by "conversationID") as x ')).innerJoin('message as m', function() {
+    this.on('m.conversationID', '=', 'x.conversationID').andOn('m.id', '=', 'x.maxid')
+  })
+  .fullOuterJoin('conversation as c','m.conversationID','c.id')
+  .where("userID",req.user.id)
+
   query.then((rows)=>{
 
       res.send(rows);
-
 
   }).catch((error)=>{
     console.log(error);
@@ -112,7 +119,7 @@ router.get('/message/:conversationID', function(req,res){
 
 
 //5. User get hotel information with active booking (message page)
-router.get('/activebooking/:hotelid', passport.authenticate("jwt", { session: false }), (req, res) => {
+router.get('/activebooking/:hotelID', passport.authenticate("jwt", { session: false }), (req, res) => {
 
   /*Information you get from each row:
         { hotelID,
