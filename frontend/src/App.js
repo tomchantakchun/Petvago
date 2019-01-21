@@ -7,6 +7,7 @@ import User from './component/User';
 import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 import GoogleMap from './component/GoogleMap/GoogleMap'
+import Navigationbar from './component/Navbar/Navbar'
 
 const Logged = (props) => {
   return (
@@ -28,6 +29,8 @@ const Logged = (props) => {
 class App extends Component {
   render() {
     return (
+      
+      <div><Navigationbar/>
       <Router>
         <div className="App">
           <Switch>
@@ -35,13 +38,15 @@ class App extends Component {
           {/* <Route exact path='/result' component={Result} /> */}
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
+            <Route exact path='/' component={Logged} />
             <Route exact path='/messagebox' component={MessageBox} />
             <AuthenticatedComponent>
-              <Route exact path='/' component={Logged} />
+              
             </AuthenticatedComponent>
           </Switch>
         </div>
       </Router>
+      </div>
     );
   }
 }

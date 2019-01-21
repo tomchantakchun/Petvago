@@ -1,7 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
-// 1. Get all hotel information with only one icon photo for display in front page/ search result
+/* All APIs
+1. Get all hotel information with only one icon photo for display in home page/ search result
+2. Get information and photo of one hotel based on params.hotelid (redirected from homepage)
+3. Post request to get information, photo and availability of one hotel (redirected from search) **
+4. Put request to edit information of hotel **
+*/
+
+
+// 1. Get all hotel information with only one icon photo for display in home page/ search result
 router.get('/', function(req, res, next) {
   /*Information you get from each row:
         { id,
@@ -40,8 +48,8 @@ router.get('/', function(req, res, next) {
 });
 
 
-// 2. Get information and photo of one hotel based on params.hotelid
-router.get('/:hotelid', function(req,res){
+// 2. Get information and photo of one hotel based on params.hotelid (redirected from homepage)
+router.get('/:hotelID', function(req,res){
   /*Information you get from each row:
         { id,
           name,
@@ -77,7 +85,7 @@ router.get('/:hotelid', function(req,res){
           }
       */
   var db=req.db;
-  let query=db.select('h.*','t.id as roomTypeID','t.roomType','t.price','t.requirement','t.description','t.additionalPrice','p.id as photoID','p.path','p.icon').from("roomType as t").leftJoin("photo as p","t.id","p.roomTypeID").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.params.hotelid).orderBy('p.id','asc')
+  let query=db.select('h.*','t.id as roomTypeID','t.roomType','t.price','t.requirement','t.description','t.additionalPrice','p.id as photoID','p.path','p.icon').from("roomType as t").leftJoin("photo as p","t.id","p.roomTypeID").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.params.hotelID).orderBy('p.id','asc')
   query.then((rows)=>{
 
     
@@ -111,8 +119,6 @@ router.get('/:hotelid', function(req,res){
           }
           if (current.photo && typeof current.photo =='object' ){
             array[index+1].photo=[...current.photo,photo]
-
-
           }else{
             array[index+1].photo=[photo]
           }
@@ -125,19 +131,14 @@ router.get('/:hotelid', function(req,res){
             path: current.path,
             icon: current.icon
           }
-
           if (index==0 || typeof current.photo !='object'){
             current.photo=photo
           }else{
             current.photo=[...current.photo,photo]
           }
-
           delete current.password;
-
           return current
         }
-
-   
       }).filter((each)=>{
         if(each!=null){
           return true
@@ -159,12 +160,10 @@ router.get('/:hotelid', function(req,res){
         }]
 
         if(index>0){
-          console.log('111111',...array[index-1].roomType)
           current.roomType=[...array[index-1].roomType,...current.roomType]
         }
 
         if(index==array.length-1){
-          console.log('22222',current.roomType)
           return current
         }
         
@@ -193,6 +192,10 @@ router.get('/:hotelid', function(req,res){
     res.status(500).send({error:'cannot get hotel'})
   });
 })
+
+// 3. Post request to get information, photo and availability of one hotel (redirected from search) **
+
+// 4. Put request to edit information of hotel 
 
 
 
