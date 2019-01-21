@@ -101,9 +101,11 @@ exports.seed = function(knex, Promise) {
     }).then(function () {
       console.log('create booking')
       return knex('booking').insert([
-        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
-        {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'},
-        {userID:2, hotelID:3, roomTypeID:1, expiryTime:'2018-01-25T08:36:00',startDate:'2019-1-17', endDate:'2019-1-25',duration:9,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past'}
+        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-3-5', endDate:'2019-3-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:2, hotelID:3, roomTypeID:1, expiryTime:'2018-01-25T08:36:00',startDate:'2019-1-17', endDate:'2019-1-25',duration:9,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2017-2-5', endDate:'2017-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
       ]);
     }).then(function () {
       console.log('create review')

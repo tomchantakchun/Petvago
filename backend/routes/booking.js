@@ -15,8 +15,15 @@ var router = express.Router();
 router.get('/:bookingID', function(req, res, next) {
   /*Information you get from each row:
     { id,
+      ownerName,
+      ownerPhone,
+      petName,
+      petType,
+      petWeight,
+      vaccineRequirement,
       userID,
       hotelID,
+      hotelName,
       roomTypeID,
       roomType,
       startDate,
@@ -32,7 +39,7 @@ router.get('/:bookingID', function(req, res, next) {
     }
   */
   var db=req.db;
-  let query=db.select().from("booking").where("id",req.params.bookingID)
+  let query=db.select('b.*','r.roomType','h.name as hotelName').from("booking as b").innerJoin("roomType as r","r.id","b.roomTypeID").innerJoin("hotel as h","h.id","b.hotelID").where("b.id",req.params.bookingID)
   query.then((rows)=>{
       
       res.send(rows);
@@ -47,25 +54,11 @@ router.get('/:bookingID', function(req, res, next) {
 router.get('/user/:userID', function(req, res, next) {
   /*Information you get from each row:
     { upcomingBooking:[
-        {}
+        {bookingID, userID, hotelID, hotelName, startDate, endDate, hotelIconPath}
       ],
       pastBooking:[
         {}
-      ]
-      id,
-      userID,
-      hotelID,
-      roomTypeID,
-      startDate,
-      endDate,
-      duration,
-      service,
-      totalPrice,
-      status,
-      created_at,
-      updated_at,
-      order_date,
-      expiryTime   
+      ] 
     }
   */
   var db=req.db;

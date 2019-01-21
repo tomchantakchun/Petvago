@@ -129,5 +129,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('photo').dropTable('service').dropTable('booking').dropTable('roomType').dropTable('hotel').dropTable('users');
+    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('booking').dropTable('service').dropTable('photo').dropTable('roomType').dropTable('hotel').dropTable('users');
 };
