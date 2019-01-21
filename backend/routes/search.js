@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/', function(req, res, next) {
+  console.log('a')
   console.log(req.body)
   var db=req.db;
-  let query=db.select("*").from("hotel").where("district",req.body.district)
+  let query=db.select('*').from("hotel").where("district",req.body.district).innerJoin("roomType", 'hotel.id', "roomType.hotelID")
   query.then((rows)=>{
-    console.log(rows)
     res.send(rows);
   }).catch((error)=>{
     console.log(error);
