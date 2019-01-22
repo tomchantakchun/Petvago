@@ -8,7 +8,7 @@ import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
-import PhotoUpload from './component/PhotoUpload\/PhotoUpload'
+import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 
 const TestHome = (props) => {
   return (
@@ -23,7 +23,7 @@ const TestHome = (props) => {
         ]} 
         zoom={13} height={300} width={400}
       />
-      <img src='https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/lich.png?alt=media&token=cec2bd70-bbf9-4d9b-8ade-0404d537973f'></img>
+      <img src='https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/lich.png?alt=media&token=cec2bd70-bbf9-4d9b-8ade-0404d537973f' alt='testing lich'></img>
       <PhotoUpload />
       
     </div>

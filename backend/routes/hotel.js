@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const fileUpload = require('express-fileupload');
+const firebase = require('firebase');
 
 /* All APIs
 1. Get all hotel information with only one icon photo for display in home page/ search result
@@ -347,6 +348,30 @@ router.put('/edit/:hotelID', function(req,res){
 
 
 // 7. Post request to upload photo
+
+var config = {
+  apiKey: "AIzaSyDLp869ppBsfXM7ZMT0lG7j6R28OTgYX8I",
+  authDomain: "petvago-6b2c9.firebaseapp.com",
+  databaseURL: "https://petvago-6b2c9.firebaseio.com",
+  projectId: "petvago-6b2c9",
+  storageBucket: "petvago-6b2c9.appspot.com",
+  messagingSenderId: "778919346097"
+};
+firebase.initializeApp(config);
+
+// Create a root reference
+// var storageRef = firebase.storage().ref();
+
+// Create a reference to 'mountains.jpg'
+// var mountainsRef = storageRef.child('mountains.jpg');
+
+// Create a reference to 'images/mountains.jpg'
+// var mountainImagesRef = storageRef.child('images/mountains.jpg');
+
+// While the file names are the same, the references point to different files
+// mountainsRef.name === mountainImagesRef.name            // true
+// mountainsRef.fullPath === mountainImagesRef.fullPath    // false
+
 router.use(fileUpload())
 router.post('/uploadPhoto', (req,res) => {
   let uploadFile = req.files.file
