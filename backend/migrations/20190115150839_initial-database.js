@@ -45,14 +45,14 @@ exports.up = function(knex, Promise) {
         table.timestamps(false,true);
       })
 
-      .createTable('roomAvailability',(table)=>{
-        table.increments();
-        table.integer('roomTypeID');
-        table.foreign('roomTypeID').references('roomType.id');
-        table.date('bookedDate');
-        table.enu('status',['taken','available','hold']);
-        table.timestamps(false,true);
-      })
+      // .createTable('roomAvailability',(table)=>{
+      //   table.increments();
+      //   table.integer('roomTypeID');
+      //   table.foreign('roomTypeID').references('roomType.id');
+      //   table.date('bookedDate');
+      //   table.enu('status',['taken','available','hold']);
+      //   table.timestamps(false,true);
+      // })
 
       .createTable('photo',(table)=>{
         table.increments();
@@ -129,5 +129,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('photo').dropTable('service').dropTable('booking').dropTable('roomAvailability').dropTable('roomType').dropTable('hotel').dropTable('users');
+    return knex.schema.dropTable('message').dropTable('conversation').dropTable('review').dropTable('booking').dropTable('service').dropTable('photo').dropTable('roomType').dropTable('hotel').dropTable('users');
 };

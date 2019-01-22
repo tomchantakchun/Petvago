@@ -195,9 +195,11 @@ router.get('/verifyjwt', passport.authenticate("jwt", { session: false }), (req,
 
     const responsedInfo = {
         id: req.user.id,
-        username: req.user.id
+        username: req.user.username,
+        isHotel: req.user.isHotel
     }
 
+    console.log(`responsedInfo: `, responsedInfo);
     res.json(responsedInfo);
 })
 

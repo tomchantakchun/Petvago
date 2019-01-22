@@ -37,13 +37,30 @@ const strategy = new passportJWT.Strategy({
     secretOrKey: process.env.JWTSECRET,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 },(payload,done)=>{
-    knex.select('id','username').from('users').where('id',payload.id).then((rows) => {
-        if (rows) {
-            console.log(`rows[0]: ${JSON.stringify(rows[0])}`);
-            return done(null, rows[0]);
-        } else {
-            return done(new Error("User not found"), null);
-        }
-    })
+    if (payload.isHotel) {
+        knex.select('id','username').from('hotel').where('id',payload.id).then((rows) => {
+            if (rows) {
+                return done(null, {
+                    id: rows[0].id,
+                    username: rows[0].username,
+                    isHotel: payload.isHotel
+                });
+            } else {
+                return done(new Error("Hotel user not found"), null);
+            }
+        })
+    } else {
+        knex.select('id','username').from('users').where('id',payload.id).then((rows) => {
+            if (rows) {
+                return done(null, {
+                    id: rows[0].id,
+                    username: rows[0].username,
+                    isHotel: payload.isHotel
+                });
+            } else {
+                return done(new Error("User not found"), null);
+            }
+        })
+    }
 });
 passport.use(strategy);

@@ -7,14 +7,30 @@ import Search from './component/Search/Search'
 import User from './component/User';
 import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
+import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
 import Footer from './component/Footer/Footer'
 
 
+import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 
-const Logged = (props) => {
+const TestHome = (props) => {
   return (
-    <h1>You are logged in as {props.username}</h1>
+    <div>
+      <h1>You are logged in as {props.username}</h1>
+      <GoogleMap 
+        markerArray={[
+          {
+            coords:{lat:22.320188,lng:114.175812},
+            content:'<h1>Dogotel & Spa</h1>'
+          }
+        ]} 
+        zoom={13} height={300} width={400}
+      />
+      <img src='https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/lich.png?alt=media&token=cec2bd70-bbf9-4d9b-8ade-0404d537973f' alt='testing lich'></img>
+      <PhotoUpload />
+      
+    </div>
   )
 }
 
@@ -32,7 +48,7 @@ class App extends Component {
           {/* <Route exact path='/result' component={Result} /> */}
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
-            <Route exact path='/' component={Logged} />
+            <Route exact path='/' component={TestHome} />
             <Route exact path='/messagebox' component={MessageBox} />
             <AuthenticatedComponent>
               
