@@ -25,10 +25,9 @@ const styles = {
         justifyContent: "space-around",
         height: "30px",
         width: "100%",
-        color: "white",
         fontSize: "16px",
         fontFamily: "Sarabun",
-        textDecoration: "none"
+        
     }
           
 };
