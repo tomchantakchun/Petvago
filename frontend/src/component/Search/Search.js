@@ -29,7 +29,7 @@ class Search extends React.Component {
                 } else {
                     console.log(response.data)
                     for (let i=0; i < response.data.length; i++){
-                    console.log(response.data[i].id)
+                    console.log(response.data[i].startDate)
                     };
                 }
             this.props.onSearch(this.state);
@@ -71,15 +71,19 @@ class Search extends React.Component {
         )
 
         let today = new Date().toISOString().split('T')[0];
-
-
+        
+        //find 12 weeks later
+        let threeMonthLater = new Date();
+        threeMonthLater.setDate(threeMonthLater.getDate()+84);
+        threeMonthLater = threeMonthLater.toISOString().split('T')[0];
+               
         return (
             <div className="search" >
              <h1>{this.props.SearchHistory.district}</h1>
                 <form>
                 <FontAwesomeIcon icon="hotel" />
-                    <input type='date' id='start' name='startDate' min={today} onChange={this.startDateChange}></input>
-                    <input type='date' id='end' name='endDate' min={today} onChange={this.endDateChange}></input>
+                    <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange}></input>
+                    <input type='date' id='end' name='endDate' min={today} max={threeMonthLater} onChange={this.endDateChange}></input>
                     {serachDistricts}
                     <select name="petType" onChange={this.petTypeChange} >
                         <option value="NA" disabled selected hidden>--Type of Pet--</option>
