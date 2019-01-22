@@ -30,14 +30,37 @@ describe('Chatroom backend test', () => {
       //send new message
 
       let data={
-         body:'Test1',
+         body:'Test2',
          type:'text'
       }
+
        await axios.post(`http://localhost:8080/api/chatroom/sendmessage/1`,data, {headers: { Authorization: `Bearer ${jwt}` }})
            .then(response => {
-              console.log(response.data)
-              //expects to have more that one chat
-              expect(response.data).not.toBe(null);
+              expect(response.data.status).toBe('success');
+           }).catch(err=>{
+              console.log(err)
+           })
+   });
+
+   it('Chatlist last message is the latest one sent', async () => {
+      //jwt of customer1
+        const jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJjdXN0b21lcjEiLCJpc0hvdGVsIjpmYWxzZX0.PUao0czNdfA7ymFcaIEcCnIFoGqhOrH3pm5MsqT_y4M'
+      
+      //send new message
+
+      let data={
+         body:'Test5',
+         type:'text'
+      }
+
+       await axios.post(`http://localhost:8080/api/chatroom/sendmessage/1`,data, {headers: { Authorization: `Bearer ${jwt}` }})
+           .then(async (response) => {
+              //get chatlist
+            await axios.get(`http://localhost:8080/api/chatroom/chatlist/user`, { headers: { Authorization: `Bearer ${jwt}` } })
+            .then(response => {
+               expect(response.data[0].lastMessage).toBe('Test5');
+            })  
+
            }).catch(err=>{
               console.log(err)
            })
