@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
-
+import "./Search.css";
 //fontawesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -74,7 +74,7 @@ class Search extends React.Component {
 
 
         return (
-            <div>
+            <div className="search" >
              <h1>{this.props.SearchHistory.district}</h1>
                 <form>
                 <FontAwesomeIcon icon="hotel" />
