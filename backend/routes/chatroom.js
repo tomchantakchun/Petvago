@@ -199,7 +199,6 @@ router.post('/sendmessage/:conversationID', function(req, res, next) {
     {
       body,
       type,
-      authorID{user/hotel:id}
     }
 
     on success, sends back {status:'success', conversationID: id}
