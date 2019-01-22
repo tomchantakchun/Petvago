@@ -78,8 +78,7 @@ class Search extends React.Component {
         threeMonthLater = threeMonthLater.toISOString().split('T')[0];
                
         return (
-            <div>
-             <h1>{this.props.SearchHistory.district}</h1>
+            <div style={{paddingTop: 150}}>
                 <form>
                 <FontAwesomeIcon icon="hotel" />
                     <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange}></input>
