@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'reset-css';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login';
@@ -8,6 +9,9 @@ import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
+import Footer from './component/Footer/Footer'
+
+
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 
 const TestHome = (props) => {
@@ -34,9 +38,11 @@ class App extends Component {
   render() {
     return (
       
-      <div><Navigationbar/>
+      <div>
       <Router>
+        
         <div className="App">
+          <Navigationbar/>
           <Switch>
           <Route exact path='/search' component={Search} />
           {/* <Route exact path='/result' component={Result} /> */}
@@ -48,8 +54,11 @@ class App extends Component {
               
             </AuthenticatedComponent>
           </Switch>
+          <Footer/>
         </div>
       </Router>
+      
+      
       </div>
     );
   }
