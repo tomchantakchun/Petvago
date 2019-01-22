@@ -111,10 +111,8 @@ router.get('/:hotelID', function(req,res){
         }
         if (index==0){
           current.hotelPhoto=[hotelPhoto]
-          console.log('aaaa',current.hotelPhoto)
         }else{
           current.hotelPhoto=[...array[index-1].hotelPhoto,hotelPhoto]
-          console.log('aaaa',current.hotelPhoto)
         }
 
 
