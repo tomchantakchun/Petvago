@@ -7,7 +7,7 @@ const passport = require('passport');
 2. Get all booking of a user
 3. Post request to create booking by user
 4. Put request to update booking on submit
-5. Post request to create offline booking by hotel **
+5. Post request to create offline booking by hotel
 6. Get all booking of a hotel **
 */
 
@@ -158,7 +158,7 @@ router.post('/create-booking', passport.authenticate("jwt", { session: false }),
 })
 
 // 4. Put request to update booking on submit **
-router.put('/update-booking', (req, res) => {
+router.put('/update-booking', passport.authenticate("jwt", { session: false }), (req, res) => {
   /* data this function needs:
     {
       id,
@@ -174,7 +174,6 @@ router.put('/update-booking', (req, res) => {
 
     on success, sends back {status:'success'}
   */
-  console.log(req.body);
   var db=req.db;
   
   today=new Date();
@@ -187,8 +186,48 @@ router.put('/update-booking', (req, res) => {
     console.log(error);
     res.status(500).send({error:'cannot update booking'})
   });
-
- 
 })
+
+// 5. Post request to create offline booking by hotel
+router.post('/offline-booking', passport.authenticate("jwt", { session: false }), (req, res) => {
+
+  /* data this function needs:
+    {
+        startDate,
+        endDate,
+        roomTypeID
+    }
+  */
+
+  var db=req.db;
+  let query=db.insert([{hotelID:req.user.id, roomTypeID:req.body.roomTypeID, startDate:req.body.startDate, endDate:req.body.endDate}],['id']).into('booking')
+
+  query.then((result)=>{
+      res.send({status:'success',bookingID:result[0].id});        
+  }).catch((error)=>{
+    console.log(error);
+    res.status(500).send({error:'cannot update booking'})
+  });
+})
+
+// 6. Get all booking of a hotel **
+router.get('/hotel', passport.authenticate("jwt", { session: false }), (req, res) => {
+  if (req.user.isHotel!=true){
+    res.status(500).send({error:'user is not hotel'})
+  } else{
+
+    var db=req.db;
+    let query=db.select().from('booking').where('hotelID',req.user.id)
+  
+    query.then((rows)=>{
+        res.send(rows);        
+    }).catch((error)=>{
+      console.log(error);
+      res.status(500).send({error:'cannot get booking'})
+    });
+  }
+
+})
+
 
 module.exports = router;
