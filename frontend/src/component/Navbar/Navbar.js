@@ -19,6 +19,10 @@ class Navigationbar extends React.Component {
         }
     }
 
+    handleLogout = () => {
+        localStorage.removeItem('petvago-token');
+    }
+
     guestNavbar() {
         return (
             <div style={styles.fontStyle}>
@@ -83,7 +87,7 @@ class Navigationbar extends React.Component {
                             <li className="nav-item">
                                 <a href="/user" className="nav-link m-2 menu-item">{this.props.userName}'s booking</a>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item" onClick={this.handleLogout}>
                                 <a href="/logout" className="nav-link m-2 menu-item">Logout</a>
                             </li>
                         </ul>
