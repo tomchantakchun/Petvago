@@ -26,7 +26,7 @@ class Navigationbar extends React.Component {
     guestNavbar() {
         return (
             <div style={styles.fontStyle}>
-                <nav className="navbar navbar-expand-lg navbar-dark bg-info">
+                <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
                     <div className="d-flex flex-grow-1">
                         <span className="w-100 d-lg-none d-block"></span>
                         <a className="navbar-brand d-none d-lg-inline-block" href="/">
@@ -64,7 +64,7 @@ class Navigationbar extends React.Component {
     userNavbar() {
         return (
             <div style={styles.fontStyle}>
-                <nav className="navbar navbar-expand-lg navbar-dark bg-info">
+                <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
                     <div className="d-flex flex-grow-1">
                         <span className="w-100 d-lg-none d-block"></span>
                         <a className="navbar-brand d-none d-lg-inline-block" href="/">
