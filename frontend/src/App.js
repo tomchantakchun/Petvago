@@ -48,7 +48,7 @@ class App extends Component {
             <Route exact path='/user' component={User} />
             <Route exact path='/' component={TestHome} />
             <Route exact path='/home' component={Homepage} />
-            <Route exact path='/messagebox' component={MessageBox} />
+            <Route exact path='/message' component={MessageBox} />
             <AuthenticatedComponent>
 
             </AuthenticatedComponent>
