@@ -17,7 +17,7 @@ exports.down = function(knex, Promise) {
         table.dropColumn('ownerName');
         table.dropColumn('ownerPhone');
         table.dropColumn('petName');
-        table.dropColumn('owpetWeightnerPhone');
+        table.dropColumn('petWeight');
         table.dropColumn('petType');
         table.dropColumn('vaccineRequirement');
       })
