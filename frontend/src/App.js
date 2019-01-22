@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import 'reset-css';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login';
@@ -7,6 +8,9 @@ import User from './component/User';
 import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 import Navigationbar from './component/Navbar/Navbar'
+import Footer from './component/Footer/Footer'
+
+
 
 const Logged = (props) => {
   return (
@@ -18,9 +22,11 @@ class App extends Component {
   render() {
     return (
       
-      <div><Navigationbar/>
+      <div>
       <Router>
+        
         <div className="App">
+          <Navigationbar/>
           <Switch>
           <Route exact path='/search' component={Search} />
           {/* <Route exact path='/result' component={Result} /> */}
@@ -32,8 +38,11 @@ class App extends Component {
               
             </AuthenticatedComponent>
           </Switch>
+          <Footer/>
         </div>
       </Router>
+      
+      
       </div>
     );
   }
