@@ -4,7 +4,6 @@ const passport = require('passport');
 
 /* All APIs
 1. Get user profile information
-2. Get user profile information with active booking
 */
 
 //1. Get user profile information
