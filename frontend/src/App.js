@@ -10,7 +10,7 @@ import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
 import Footer from './component/Footer/Footer'
-
+import Homepage from './component/Homepage/Homepage'
 
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 
@@ -49,6 +49,7 @@ class App extends Component {
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
             <Route exact path='/' component={TestHome} />
+            <Route exact path='/home' component={Homepage} />
             <Route exact path='/messagebox' component={MessageBox} />
             <AuthenticatedComponent>
               
