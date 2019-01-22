@@ -79,6 +79,7 @@ describe('Auth-router module: ', () => {
 
         expect(res).toEqual({
             id: 6,
+            isHotel: false,
             username: 'admin1'
         });
     });
