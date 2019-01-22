@@ -30,7 +30,10 @@ class PhotoUpload extends React.Component {
                 },
             })
             .then(res => {
+                this.setState({selectedFile: null, loaded: 0})
+                document.getElementById("PhotoUploadInput").value = "";
                 console.log(res.statusText)
+                console.log(`Photo uploaded`);
             })
 
     }
@@ -38,7 +41,7 @@ class PhotoUpload extends React.Component {
     render() {
         return (
             <div id='PhotoUpload'>
-                <input type="file" name="" id="" onChange={this.handleselectedFile} />
+                <input type="file" name="" id="PhotoUploadInput" onChange={this.handleselectedFile} />
                 <button onClick={this.handleUpload}>Upload</button>
                 <div> {Math.round(this.state.loaded, 0)} %</div>
             </div>

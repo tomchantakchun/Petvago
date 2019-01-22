@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const fileUpload = require('express-fileupload');
 const firebase = require('firebase');
+const { Storage } = require('@google-cloud/storage');
+const fs = require('fs');
 
 /* All APIs
 1. Get all hotel information with only one icon photo for display in home page/ search result
@@ -347,45 +349,66 @@ router.put('/edit/:hotelID', function(req,res){
 
 // 7. Post request to upload photo
 
-var config = {
-  apiKey: "AIzaSyDLp869ppBsfXM7ZMT0lG7j6R28OTgYX8I",
-  authDomain: "petvago-6b2c9.firebaseapp.com",
-  databaseURL: "https://petvago-6b2c9.firebaseio.com",
-  projectId: "petvago-6b2c9",
-  storageBucket: "petvago-6b2c9.appspot.com",
-  messagingSenderId: "778919346097"
-};
-firebase.initializeApp(config);
+// Firebase setup
+const keyFilename=`./routes/${process.env.FIREBASE_PROJECT_ID}-firebase-adminsdk-sv26r-58c3eb3fa2.json`;
+const projectId = process.env.FIREBASE_PROJECT_ID
+const bucketName = `${projectId}.appspot.com`;
 
-// Create a root reference
-// var storageRef = firebase.storage().ref();
-
-// Create a reference to 'mountains.jpg'
-// var mountainsRef = storageRef.child('mountains.jpg');
-
-// Create a reference to 'images/mountains.jpg'
-// var mountainImagesRef = storageRef.child('images/mountains.jpg');
-
-// While the file names are the same, the references point to different files
-// mountainsRef.name === mountainImagesRef.name            // true
-// mountainsRef.fullPath === mountainImagesRef.fullPath    // false
+const storage = new Storage({
+  projectId: projectId,
+  keyFilename: keyFilename
+});
 
 router.use(fileUpload())
-router.post('/uploadPhoto', (req,res) => {
+
+// handle post request
+router.post('/uploadPhoto', async (req, res) => {
   let uploadFile = req.files.file
   const fileName = req.files.file.name
+
   uploadFile.mv(
-    `${__dirname}/../uploadTest/${fileName}`,
+    `${__dirname}/../uploadTem/${fileName}`,
     (err) => {
       if (err) {
         return res.status(500).send(err)
       }
-
       res.json({
-        file: `uploadTest/${fileName}`,
+        file: `uploadTem/${fileName}`,
       })
     },
   )
+
+  await storage.bucket(bucketName).upload(`${__dirname}/../uploadTem/${fileName}`, {
+      gzip: true,
+      metadata: {
+      // Enable long-lived HTTP caching headers
+      // Use only if the contents of the file will never change
+      // (If the contents will change, use cacheControl: 'no-cache')
+      cacheControl: 'public, max-age=31536000',
+      },
+    })
+    .then((data) => {
+      console.log(`fileName: `,fileName);
+      console.log(`media link: https://firebasestorage.googleapis.com/v0/b/${projectId}.appspot.com/o/${fileName}?alt=media`);
+    })
+
+  fs.unlinkSync(`${__dirname}/../uploadTem/${fileName}`)
+  
+  console.log(`${fileName} uploaded to ${bucketName}.`);
+})
+
+
+// 8. Post request to upload photo
+
+router.put('/deletePhoto', async (req, res) => {
+  const file = storage.bucket(bucketName).file(req.body.fileName);
+  file.delete((err, response) => {
+    if (err) { 
+      console.log(`Error: `,err); 
+      res.sendStatus(500);
+    }
+    res.sendStatus(200)
+  })
 })
 
 

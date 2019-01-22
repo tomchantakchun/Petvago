@@ -1,49 +1,41 @@
 import React from 'react';
 import styles from './HomepageStyles';
 import Axios from 'axios';
+import "./test.css";
 
 class Homepage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             hotelInfo: null,
-            hotelListItems: 'Loading...'
+            hotelListItems: null,
         }
-     
     }
     async componentDidMount() {
-        //    call hotel info api from backend
-        //    then set state
+        //    call hotel info api from backend,then set state
         try {
             const _hotelInfo = await Axios.get('http://localhost:8080/api/hotel');
             this.setState({ hotelInfo: _hotelInfo.data });
-            console.log(_hotelInfo.data);
-
-             const listItems = this.state.hotelInfo.map(
-                (e) => <div key={e.id.toString()} className="hotel-info"> 
+            const listItems = this.state.hotelInfo.map(
+                (e) => <div key={e.id.toString()} className="hotel-info" style={styles.hotalInfo}> 
                          <img src={e.path} style={styles.image}></img>
-                         {e.name}
+                         <div style={styles.text}>{e.name}</div>
                         </div>
             );
-
             this.setState({hotelListItems:listItems});
         } catch (err) {
             console.log(err);
         }
     }
 
-    // hotelInfoList = () => {
-        
-    // }
-
-
+    
     render() {
         return (
             <div className="body" style={styles.body}>
-                <div className="background">
-                    <div className="searchBar"></div>
+                <div className="background" style={styles.background}>
+                    <div className="search-bar" style={styles.searchBar}>I'm Search Bar</div>
                 </div>
-                <div className="hotel-container">
+                <div className="hotel-container" style={styles.container}>
                     {this.state.hotelListItems}
                 </div>
             </div>

@@ -1,16 +1,38 @@
 const styles = {
     body:{
-        height: "30%",
+        height: "100%",
+        width:"100%",
         display: "flex",
-        justifyContent: "center",
+        flexDirection:"column",
+        justifyContent: "flex-start",
         alignItems: "center",
-        backgroundImage:"../../../public/image/background.jpg"
+    },
+    container:{
+        display: "flex",
+        flexWrap:"wrap",
+        justifyContent: "space-around",
+        width:"100%",
+        paddingTop:"10vh" 
+    },
+    hotalInfo:{
+        display:"flex",
+        flexDirection:"column",
+    },
+    searchBar:{
+        height:"20vh",
+        
     },
     image:{
         height: "150px",
         width:"150px",
-        objectFit: "cover"
+        objectFit: "cover",
+        
+    },
+    text:{
+        fontSize: "14px",
+        fontFamily: "Sarabun",
     }
+
 }
 
 export default styles;

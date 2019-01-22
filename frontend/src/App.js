@@ -37,29 +37,25 @@ const TestHome = (props) => {
 class App extends Component {
   render() {
     return (
-      
-      <div>
-      <Router>
-        
-        <div className="App">
-          <Navigationbar/>
+      <div className="App">
+  
+        <Navigationbar />
+        <Router>
           <Switch>
-          <Route exact path='/search' component={Search} />
-          {/* <Route exact path='/result' component={Result} /> */}
+            <Route exact path='/search' component={Search} />
+            {/* <Route exact path='/result' component={Result} /> */}
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
             <Route exact path='/' component={TestHome} />
             <Route exact path='/home' component={Homepage} />
-            <Route exact path='/messagebox' component={MessageBox} />
+            <Route exact path='/message' component={MessageBox} />
             <AuthenticatedComponent>
-              
+
             </AuthenticatedComponent>
           </Switch>
-          <Footer/>
-        </div>
-      </Router>
-      
-      
+        </Router>
+        <Footer />
+          
       </div>
     );
   }
