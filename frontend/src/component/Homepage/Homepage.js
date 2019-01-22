@@ -7,19 +7,26 @@ class Homepage extends React.Component {
         super(props);
         this.state = {
             hotelInfo: null,
+            hotelListItems: 'Loading...'
         }
-        this.hotelListItems = 'Loading...';
+     
     }
     async componentDidMount() {
         //    call hotel info api from backend
         //    then set state
         try {
             const _hotelInfo = await Axios.get('http://localhost:8080/api/hotel');
-            this.setState({ hotelInfo: _hotelInfo.data })
+            this.setState({ hotelInfo: _hotelInfo.data });
             console.log(_hotelInfo.data);
-            this.hotelListItems = this.state.hotelInfo.map(
-                (e) => <div key={e.id.toString()} className="hotel-info"> hi</div>
-            )
+
+             const listItems = this.state.hotelInfo.map(
+                (e) => <div key={e.id.toString()} className="hotel-info"> 
+                         <img src={e.path} style={styles.image}></img>
+                         {e.name}
+                        </div>
+            );
+
+            this.setState({hotelListItems:listItems});
         } catch (err) {
             console.log(err);
         }
@@ -37,7 +44,7 @@ class Homepage extends React.Component {
                     <div className="searchBar"></div>
                 </div>
                 <div className="hotel-container">
-                    {this.hotelListItems}
+                    {this.state.hotelListItems}
                 </div>
             </div>
         )
