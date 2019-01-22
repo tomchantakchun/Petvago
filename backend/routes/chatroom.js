@@ -193,23 +193,20 @@ router.get('/activebooking/:hotelID', passport.authenticate("jwt", { session: fa
   });
 });
 
-// 6. Post request to send new message **
-router.post('/sendmessage/:conversationID', function(req, res, next) {
+// 6. Post request to send new message
+router.post('/sendmessage/:conversationID', passport.authenticate("jwt", { session: false }), (req, res) => {
  /* data this function needs:
     {
       body,
       type,
-      authorID{user/hotel:id}
     }
 
     on success, sends back {status:'success', conversationID: id}
   */
-
   var db=req.db;
-  let authorType=req.user.ishotel=true?'hotel':'users';
+  let authorType=req.user.isHotel==true?'hotel':'users';
   let id=req.user.id;
   let authorID=JSON.stringify({[authorType]:id})
-  console.log('authorID',authorID);
   let query=db.insert([{body:req.body.body, type:req.body.type, authorID:authorID,conversationID:req.params.conversationID}],['id']).into('message')
 
   query.then((result)=>{
