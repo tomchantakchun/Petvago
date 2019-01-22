@@ -2,13 +2,28 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/', function(req, res, next) {
-  console.log('a')
-  console.log(req.body)
-  var db=req.db;
-  let query=db.select('*').from("hotel").where("district",req.body.district).innerJoin("roomType", 'hotel.id', "roomType.hotelID")
+
+ var db=req.db;
+
+  let query=db.select('booking.hotelID', "booking.roomTypeID").from("hotel")
+  .where("district",req.body.district) //search by district
+  .innerJoin("roomType", 'hotel.id', "roomType.hotelID") //match roomtype with hotel
+  .where("roomType.requirement.pet", req.body.petType)
+  .innerJoin('booking', function () {
+    this
+      .on("hotel.id", "booking.hotelID")
+      .on("roomType.id", 'booking.roomTypeID');
+  }) //find booking related
+  .where(function() {
+    this.where("booking.endDate", '<=', req.body.startDate).orWhere("booking.startDate", '>=', req.body.endDate)
+  })
+
   query.then((rows)=>{
+
     res.send(rows);
-  }).catch((error)=>{
+  })
+  
+  .catch((error)=>{
     console.log(error);
     res.status(500).send({error:'cannot get hotel'})
 });
