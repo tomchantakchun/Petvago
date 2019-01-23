@@ -12,6 +12,7 @@ class Booking extends Component {
             hotel:this.props.hotel,
             startDate:'2019-02-05',
             endDate:'2019-02-09',
+            roomPrice:200,
             duration:4,
             hotelPrice:1200,
             servicePrice:350,
@@ -20,12 +21,23 @@ class Booking extends Component {
             petName:null,
             petWeight:null,
             petType:null,
-            vaccineRequirement:null,
+            vaccineRequirement:{vaccine:['DHPPiL','Rabies']},
             service:null,
-            totalPrice:1550,
+            totalPrice:null,
             loading:false,
-            checked:false
+            vaccineCheck:null,
+            vaccineError:null,
+            vaccineClass:null
+            
         }
+    }
+
+    componentDidMount(){
+        //calculate total price
+        let totalPrice= this.state.duration * this.state.roomPrice + this.state.servicePrice;
+        this.setState({
+            totalPrice:totalPrice
+        })
     }
 
     handleChange=(e)=>{
@@ -37,8 +49,53 @@ class Booking extends Component {
     }
 
     handleVaccineChange=(e)=>{
-        console.log(e.target.value)
+        if(e.target.checked==true){
+            this.setState({
+                vaccineCheck: this.state.vaccineCheck+1
+            })
+        }else if(e.target.checked==false && this.state.vaccineCheck>0){
+            this.setState({
+                vaccineCheck: this.state.vaccineCheck-1
+            })
+        }
+        console.log(e.target.checked)
+        console.log('length',this.state.vaccineRequirement.vaccine.length)
+        
     }
+
+    handleSubmit=(e)=>{
+        //check vaccine.length
+        if(this.state.vaccineRequirement.vaccine.length!=this.state.vaccineCheck){
+            console.log('not ok')
+            this.setState({
+                vaccineError:<div style={{color:'#da3846'}}>Make sure you pet has received all the vaccine.</div>,
+                vaccineClass:'vaccine-not-ok'
+            })
+        }else{
+            this.setState({
+                vaccineError:null,
+                vaccineClass:null
+            })
+        }
+        
+
+    }
+
+    renderVaccine=()=>{
+        return this.state.vaccineRequirement.vaccine.map((each)=>{
+            return(
+                <div key={each} className="form-check" style={{paddingTop:'5px',paddingBottom:'5px', marginLeft:'20px'}}>
+                <input className="form-check-input" type="checkbox" name="vaccine" value={each} style={{display:'inline'}}
+                        onChange={this.handleVaccineChange}/>
+                <label style={{paddingTop:'3px'}} className="form-check-label">
+                    {each}
+                </label>
+                </div>
+            )
+
+        })
+    }
+    
 
     render(){
 
@@ -61,7 +118,7 @@ class Booking extends Component {
                 <input name="ownerPhone" type="text" className="form-control"  onChange={this.handleChange}/>
                 </div>
             </div>
-            <div class="form-group row">
+            <div className="form-group row">
                 <label className="col-sm-3 col-form-label">Pet's name</label>
                 <div className="col-sm-9">
                 <input name="petName" type="text" className="form-control"  onChange={this.handleChange}/>
@@ -86,38 +143,21 @@ class Booking extends Component {
                 </div>
             </div>
 
-            <p>Has your pet received these vaccines?</p>
-
-
-            <div className="form-check" style={{paddingTop:'10px'}}>
-            <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine1' style={{display:'inline'}}
-                    onChange={this.handleVaccineChange}/>
-            <label className="form-check-label">
-                Vaccine1
-            </label>
+            <p style={{marginBottom:"10px"}}>Has your pet received these vaccines?</p>
+            <div className={this.state.vaccineClass}>
+                {this.renderVaccine()}
             </div>
-
-            <div className="form-check" style={{paddingTop:'10px'}}>
-            <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine2' style={{display:'inline'}}
-                    onChange={this.handleVaccineChange}/>
-            <label className="form-check-label" for="defaultCheck1">
-                Vaccines2
-            </label>
-            </div>
-
-  
-        
-
+                {this.state.vaccineError}
 
             <div className="booking-line" style={{marginTop:'30px'}} ></div> 
 
             <h1 style={{marginBottom:"10px"}}>Service</h1>
-
+            
             <div className="form-check" style={{paddingTop:'10px'}}>
             <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine1' style={{display:'inline'}}
                     onChange={this.handleVaccineChange}/>
             <label className="form-check-label">
-                Vaccine1
+                Bath  +$350
             </label>
             </div>
 
@@ -125,11 +165,19 @@ class Booking extends Component {
             <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine2' style={{display:'inline'}}
                     onChange={this.handleVaccineChange}/>
             <label className="form-check-label" for="defaultCheck1">
-                Vaccines2
+                Obedience Training  +$350
             </label>
             </div>
 
-            <button className="btn">Submit</button>
+            <div className="form-check" style={{paddingTop:'10px'}}>
+            <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine2' style={{display:'inline'}}
+                    onChange={this.handleVaccineChange}/>
+            <label className="form-check-label" for="defaultCheck1">
+                Swimming class  +$350
+            </label>
+            </div>
+
+            <button className="btn booking-button" onClick={this.handleSubmit}>Submit</button>
 
 
 
