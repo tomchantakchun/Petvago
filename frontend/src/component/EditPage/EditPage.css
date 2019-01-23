@@ -1,5 +1,5 @@
 #EditPage {
-    height: 86vh;
+    height: 100%;
     width: 100%;
     background-color: #aaaaaa;
     display: flex;
@@ -8,10 +8,10 @@
 }
 
 #EditPage .bg-image {
-    background-image: url("https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Edit-page-background.jpg?alt=media&token=97734f7e-acd8-4efc-bccc-86b86812a165");
-    filter: blur(4px);
-    -webkit-filter: blur(4px);
-    height: 86vh; 
+    background-image: url("https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Edit-page-background(blur).jpg?alt=media&token=511c2b54-0ab9-456b-a137-e04136ab5b29");
+    /* filter: blur(4px);
+    -webkit-filter: blur(4px); */
+    height: 100%; 
     width: 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -35,16 +35,15 @@
 #EditPage section h1 {
     font-size: 36px;
     margin-bottom: 20px;
-    /* background-color: #50b5a9; */
     border-radius: 5px;
     border-bottom: 2px solid #111111;
     padding: 5px;
 }
 
-#EditPage input, #EditPage textarea {
+#EditPage input.inputField, #EditPage textarea.inputField {
     font-size: 22px;
     display: inline-block;
-    width: 50%;
+    width: 90%;
     /* height: 100%; */
     padding: 5px 10px;
     margin: 5px;
@@ -83,4 +82,44 @@
     background-size: cover;
     border-radius: 5px;
     margin: 10px;
+}
+
+#EditPage #FormHeader #HotelIcon svg {
+    margin: 5px;
+    cursor: pointer;
+}
+
+#EditPage #FormFooter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#EditPage #EditHotelRoomType {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #ddcf9d;
+}
+
+#EditPage #EditHotelRoomType table {
+    width: 100%;
+}
+
+#EditPage h4 {
+    font-size: 28px;
+    margin: 10px 0;
+}
+
+/* #EditPage #EditHotelRoomType .plusRow {
+    background-color: #aaaaaa;
+} */
+
+#EditPage #EditHotelRoomType .plusSquare {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    cursor: pointer;
 }
