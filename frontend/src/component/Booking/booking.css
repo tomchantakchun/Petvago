@@ -1,0 +1,59 @@
+.booking{
+    padding:30px 50px 30px 50px;
+    display:flex;
+    font-family: "Sarabun"
+}
+
+.booking p{
+    font-size:16px
+}
+
+.booking-form{
+    width:60%;
+    padding-right:40px;
+}
+.booking-form>h1{
+    font-size:22px;
+}
+
+
+.booking-box{
+    padding:20px 30px 20px 30px;
+    width:40%;
+    border: 2px solid #50b5a9;
+    border-radius: 15px;
+    box-shadow: 1px 2px 5px  #ccc;
+    height:400px;
+}
+
+.booking-icon{
+    height:20vh;
+    object-fit: cover;
+}
+
+.booking-line{
+    border-bottom:1px solid #ccc;
+    margin: 15px 0 15px 0;
+}
+
+.booking-button{
+    border:2px solid #50b5a9;
+    background-color:#50b5a9;
+    color:white;
+    margin-top:30px;
+    width:150px
+}
+
+.vaccine-not-ok{
+    border:1px solid #da3846;
+    border-radius:5px
+
+}
+
+
+.booking-button:hover{
+    border:2px solid #50b5a9;
+    color:#50b5a9;
+    background-color:white
+
+}
