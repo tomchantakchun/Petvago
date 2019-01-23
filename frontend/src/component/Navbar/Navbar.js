@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from "./NavbarStyles";
+import "./Navbar.css"
 
 class Navigationbar extends React.Component {
     constructor(props) {

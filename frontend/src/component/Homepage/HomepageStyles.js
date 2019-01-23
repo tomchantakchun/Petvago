@@ -6,6 +6,7 @@ const styles = {
         flexDirection:"column",
         justifyContent: "flex-start",
         alignItems: "center",
+        paddingTop: "7vh",
     },
     container:{
         display: "flex",
@@ -17,6 +18,7 @@ const styles = {
     hotalInfo:{
         display:"flex",
         flexDirection:"column",
+        alignItems: "center",
     },
     searchBar:{
         height:"20vh",

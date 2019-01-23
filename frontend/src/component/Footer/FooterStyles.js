@@ -9,15 +9,10 @@ const styles = {
         padding: "20px",
         left: "0",
         bottom: "0",
-        height: "60px",
+        height: "7vh",
         width: "100%"
     },
-    phantomStyle: {
-        display: "block",
-        padding: "20px",
-        height: "60px",
-        width: "100%"
-    },
+   
     childrenStyle:{
         display: "flex",
         flexWrap:"wrap",

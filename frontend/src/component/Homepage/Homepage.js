@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './HomepageStyles';
 import Axios from 'axios';
-import "./test.css";
+import "./Homepage.css";
 
 class Homepage extends React.Component {
     constructor(props) {

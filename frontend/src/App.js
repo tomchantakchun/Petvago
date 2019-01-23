@@ -40,6 +40,7 @@ class App extends Component {
       <div className="App">
   
         <Navigationbar />
+        <div className="main-body">
         <Router>
           <Switch>
             <Route exact path='/search' component={Search} />
@@ -55,7 +56,7 @@ class App extends Component {
           </Switch>
         </Router>
         <Footer />
-          
+        </div>
       </div>
     );
   }

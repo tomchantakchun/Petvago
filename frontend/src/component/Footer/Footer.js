@@ -5,7 +5,7 @@ import "./FooterStyles.css"
 function Footer() {
     return (
         <div className="footer">
-            <div style={styles.phantomStyle}/>
+            
                 <div style={styles.footerStyle}>
                     <div style={styles.childrenStyle}>
                         <a href="/about">About us</a>
