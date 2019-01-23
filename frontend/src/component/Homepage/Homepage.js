@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './HomepageStyles';
 import Axios from 'axios';
 import "./Homepage.css";
-import Slideshow from "../Slideshow/Slideshow";
+import TextSlideshow from "../TextSlideshow/TextSlideshow";
 
 class Homepage extends React.Component {
     constructor(props) {
@@ -39,7 +39,7 @@ class Homepage extends React.Component {
                 <div className="hotel-container" style={styles.container}>
                     {this.state.hotelListItems}
                 </div>
-                
+                <TextSlideshow/>
             </div>
         )
     }

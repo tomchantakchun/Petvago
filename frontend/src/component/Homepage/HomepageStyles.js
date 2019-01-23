@@ -1,13 +1,12 @@
 const styles = {
     homeBody:{
-        height: "100%",
+        
         width:"100%",
         display: "flex",
         flexDirection:"column",
         justifyContent: "flex-start",
         alignItems: "center",
-        fontSize: "14px",
-        fontFamily: "Sarabun",
+        
     },
     container:{
         display: "flex",
@@ -26,13 +25,13 @@ const styles = {
         
     },
     image:{
-        height: "150px",
-        width:"150px",
+        height: "200px",
+        width:"200px",
         objectFit: "cover",
         
     },
     text:{
-        fontSize: "14px",
+        fontSize: "18px",
         fontFamily: "Sarabun",
     }
 
