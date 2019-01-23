@@ -4,6 +4,7 @@ const fileUpload = require('express-fileupload');
 const firebase = require('firebase');
 const { Storage } = require('@google-cloud/storage');
 const fs = require('fs');
+const passport = require('passport');
 
 /* All APIs
 1. Get all hotel information with only one icon photo for display in home page/ search result
@@ -206,7 +207,7 @@ router.get('/:hotelID', function(req,res){
 
 
 // 4. Get hotel information for edit
-router.get('/edit/hotel/:hotelID', function(req,res){
+router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req, res) => {
   /* Information you get:
   {
       name,
@@ -220,40 +221,45 @@ router.get('/edit/hotel/:hotelID', function(req,res){
     }
   */
 
-  var db=req.db;
-  let query=db.select('h.name','h.telephone','h.address', 'h.description','t.id as roomTypeID','t.roomType','t.price').from("roomType as t").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.params.hotelID)
-  query.then((rows)=>{
+ if (req.user.isHotel!=true){
+  res.status(500).send({error:'user is not hotel'})
+  } else{
 
-    let newRow=rows.map((current,index,array)=>{
-      let room={
-       roomTypeID: current.roomTypeID, 
-       roomType: current.roomType, 
-       price: current.price
-      }
-     
-      if(index==0){
-        if(array[index+1]){
-          array[index+1].rooms=[room]
+    var db=req.db;
+    let query=db.select('h.name','h.telephone','h.address','h.vaccineRequirement', 'h.description','t.id as roomTypeID','t.roomType','t.price').from("roomType as t").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.user.id)
+    query.then((rows)=>{
+
+      let newRow=rows.map((current,index,array)=>{
+        let room={
+        roomTypeID: current.roomTypeID, 
+        roomType: current.roomType, 
+        price: current.price
         }
-      }else if(index<array.length-1 && index>0){
-         array[index+1].rooms=[...current.rooms,room]
-      }else if (index==array.length-1){
-         current.rooms=[...current.rooms,room];
-         delete current.roomTypeID;
-         delete current.roomType;
-         delete current.price;
-         return current
+      
+        if(index==0){
+          if(array[index+1]){
+            array[index+1].rooms=[room]
+          }
+        }else if(index<array.length-1 && index>0){
+          array[index+1].rooms=[...current.rooms,room]
+        }else if (index==array.length-1){
+          current.rooms=[...current.rooms,room];
+          delete current.roomTypeID;
+          delete current.roomType;
+          delete current.price;
+          return current
+        }
+      }).filter((each)=>{
+      if(each!=null){
+        return true
       }
-    }).filter((each)=>{
-     if(each!=null){
-       return true
-     }
-   })
-    res.send(newRow)
-  }).catch((error)=>{
-    console.log(error);
-    res.status(500).send({error:'cannot get hotel'})
-  });
+    })
+      res.send(newRow)
+    }).catch((error)=>{
+      console.log(error);
+      res.status(500).send({error:'cannot get hotel'})
+    });
+  }
 
 })
 
@@ -311,7 +317,7 @@ router.get('/edit/roomtype/:roomTypeID', function(req,res){
 
 
 // 6. Put request to edit information of hotel 
-router.put('/edit/:hotelID', function(req,res){
+router.put('/edit/submit', passport.authenticate("jwt", { session: false }), (req, res) => {
 
     /* data this function needs:
     {
@@ -319,28 +325,101 @@ router.put('/edit/:hotelID', function(req,res){
       telephone,
       address,
       description,  
-      vaccineRequirement (type:object)
+      vaccineRequirement (type:object),
+      deletePhotos:[id],
+      addPhotos:[{roomTypeID,path,icon(t/f)}]
     }
 
     on success, sends back {status:'success', conversationID: id}
   */
 
   var db=req.db;
-  let query=db.update({
+
+  //update hotel table
+  let query=db('hotel').update({ 
     name: req.body.name,
-    telephone: req.body.telephone,
-    address: req.body.address,
+    telephone: req.body.telephone, 
+    address: req.body.address, 
     description: req.body.description,
-    vaccineRequirement:JSON.stringify(req.body.vaccineRequirement),
-  }).where('id',req.params.hotelID)
+    vaccineRequirement:JSON.stringify(req.body.vaccineRequirement)
+  }).where('id',req.user.id)
+
+  
+  //update hotel table
   query.then((rows)=>{
-    
-      res.send({status:'success'});
+
+    if((!req.body.addPhotos || req.body.addPhotos.length==0) && (!req.body.deletePhotos || req.body.deletePhotos.length==0)){
+
+      res.send({status:'success, updated hotel table'});
+
+    }else{
+
+      //only add photos to table  
+      if (req.body.addPhotos && req.body.addPhotos.length>0 && (!req.body.deletePhotos || req.body.deletePhotos.length==0)){
+        let photoArray=req.body.addPhotos.map((current,index,array)=>{
+          current.hotelID=req.user.id;
+          return current
+          })
+        let query2=db.insert(photoArray).into('photo')
+        query2.then(()=>{
+  
+          res.send({status:'success, updated hotel table, added photos'});
+  
+        //catch add photo error
+        }).catch((error)=>{
+          console.log(error);
+          res.status(500).send({error:'cannot add hotel photo'})
+        });
+      }
+
+      //only delete photo
+      if (req.body.deletePhotos && req.body.deletePhotos.length>0 && (!req.body.addPhotos || req.body.addPhotos.length==0)){
+        let query3=db('photo').whereIn('id', req.body.deletePhotos).delete() ;      
+        query3.then(()=>{
+  
+        res.send({status:'success, updated hotel table, deleted photos'});
+  
+        //catch add photo error
+        }).catch((error)=>{
+          console.log(error);
+          res.status(500).send({error:'cannot delete hotel photo'})
+        });
+      }
+
+      //both delete and add
+      if(req.body.addPhotos && req.body.addPhotos.length>0 && req.body.deletePhotos && req.body.deletePhotos.length>0){
+        let photoArray=req.body.addPhotos.map((current,index,array)=>{
+          current.hotelID=req.user.id;
+          return current
+          })
+        let query2=db.insert(photoArray).into('photo')
+        query2.then(()=>{
+          let query3=db('photo').whereIn('id', req.body.deletePhotos).delete() ;      
+          query3.then(()=>{
+  
+            res.send({status:'success, updated hotel table, added photos and deleted photos'});
       
-      
+            //catch add photo error
+            }).catch((error)=>{
+              console.log(error);
+              res.status(500).send({error:'cannot delete hotel photo'})
+            });
+  
+  
+        //catch add photo error
+        }).catch((error)=>{
+          console.log(error);
+          res.status(500).send({error:'cannot add hotel photo'})
+        });
+
+      }
+
+  }
+            
+  //catch hotel table error
   }).catch((error)=>{
     console.log(error);
-    res.status(500).send({error:'cannot edit hotel info'})
+    res.status(500).send({error:'cannot update hotel table'})
   });
 
 
