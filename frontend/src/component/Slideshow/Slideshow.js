@@ -1,69 +1,66 @@
 import React from 'react';
-import "./Slideshow.css"
-
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"
 function Slideshow() {
     return (
-        <div className="wrapper">
-            <input checked type="radio" name="slider" id="slide1" />
-            <input type="radio" name="slider" id="slide2" />
-            <input type="radio" name="slider" id="slide3" />
-            <input type="radio" name="slider" id="slide4" />
-            <input type="radio" name="slider" id="slide5" />
-
-            <div className="slider-wrapper">
-                <div className="inner">
-                    <article>
-                        <div className="info top-left">
-                            <h3>Malacca</h3></div>
-                        <img src="https://farm9.staticflickr.com/8059/28286750501_dcc27b1332_h_d.jpg" />
-                    </article>
-
-                    <article>
-                        <div className="info bottom-right">
-                            <h3>Cameron Highland</h3></div>
-                        <img src="https://farm6.staticflickr.com/5812/23394215774_b76cd33a87_h_d.jpg" />
-                    </article>
-
-                    <article>
-                        <div className="info bottom-left">
-                            <h3>New Delhi</h3></div>
-                        <img src="https://farm8.staticflickr.com/7455/27879053992_ef3f41c4a0_h_d.jpg" />
-                    </article>
-
-                    <article>
-                        <div className="info top-right">
-                            <h3>Ladakh</h3></div>
-                        <img src="https://farm8.staticflickr.com/7367/27980898905_72d106e501_h_d.jpg" />
-                    </article>
-
-                    <article>
-                        <div className="info bottom-left">
-                            <h3>Nubra Valley</h3></div>
-                        <img src="https://farm8.staticflickr.com/7356/27980899895_9b6c394fec_h_d.jpg" />
-                    </article>
-                </div>
-
+        <Carousel autoPlay>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
+                <p className="legend">Legend 1</p>
             </div>
-
-
-            <div className="slider-prev-next-control">
-                <label for="slide1"></label>
-                <label for="slide2"></label>
-                <label for="slide3"></label>
-                <label for="slide4"></label>
-                <label for="slide5"></label>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-2.jpg" />
+                <p className="legend">Legend 2</p>
             </div>
-
-
-            <div className="slider-dot-control">
-                <label for="slide1"></label>
-                <label for="slide2"></label>
-                <label for="slide3"></label>
-                <label for="slide4"></label>
-                <label for="slide5"></label>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-3.jpg" />
+                <p className="legend">Legend 3</p>
             </div>
-
-        </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-4.jpg" />
+                <p className="legend">Legend 4</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-5.jpg" />
+                <p className="legend">Legend 5</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-6.jpg" />
+                <p className="legend">Legend 6</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-7.jpg" />
+                <p className="legend">Legend 7</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-8.jpg" />
+                <p className="legend">Legend 8</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-9.jpg" />
+                <p className="legend">Legend 9</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-10.jpg" />
+                <p className="legend">Legend 10</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-11.jpg" />
+                <p className="legend">Legend 11</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-12.jpg" />
+                <p className="legend">Legend 12</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-13.jpg" />
+                <p className="legend">Legend 13</p>
+            </div>
+            <div>
+                <img src="http://lorempixel.com/output/cats-q-c-640-480-14.jpg" />
+                <p className="legend">Legend 14</p>
+            </div>
+        </Carousel>
     )
 }
 
