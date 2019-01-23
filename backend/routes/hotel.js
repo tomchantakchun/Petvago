@@ -330,7 +330,7 @@ router.put('/edit/submit', passport.authenticate("jwt", { session: false }), (re
       addPhotos:[{roomTypeID,path,icon(t/f)}]
     }
 
-    on success, sends back {status:'success', conversationID: id}
+    on success, sends back {status:'success', message}
   */
 
   var db=req.db;
