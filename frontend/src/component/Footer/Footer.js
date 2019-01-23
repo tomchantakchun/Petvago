@@ -4,9 +4,9 @@ import "./FooterStyles.css"
 
 function Footer() {
     return (
-        <div className="footer">
+        <footer className="footer">
             
-                <div style={styles.footerStyle}>
+                {/* <div style={styles.footerStyle}> */}
                     <div style={styles.childrenStyle}>
                         <a href="/about">About us</a>
                         <a href="/helpcenter">Help center</a>
@@ -15,8 +15,8 @@ function Footer() {
                         <a href="/becomehost">Become a host</a>
                         <a href="/term">Hosting</a>
                     </div>
-                </div>
-        </div>
+                {/* </div> */}
+        </footer>
     );
 }
 

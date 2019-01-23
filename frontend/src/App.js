@@ -58,8 +58,9 @@ class App extends Component {
             </AuthenticatedComponent>
           </Switch>
         </Router>
-        <Footer />
+        <div className="push"></div>
         </div>
+        <Footer />
       </div>
     );
   }
