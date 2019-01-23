@@ -11,6 +11,7 @@ import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
 import Footer from './component/Footer/Footer'
 import Homepage from './component/Homepage/Homepage'
+import EditPage from './component/EditPage/EditPage'
 
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 
@@ -49,8 +50,8 @@ class App extends Component {
             <Route exact path='/' component={TestHome} />
             <Route exact path='/home' component={Homepage} />
             <Route exact path='/message' component={MessageBox} />
+            <Route exact path='/edit-hotel-info' component={EditPage} />
             <AuthenticatedComponent>
-
             </AuthenticatedComponent>
           </Switch>
         </Router>
