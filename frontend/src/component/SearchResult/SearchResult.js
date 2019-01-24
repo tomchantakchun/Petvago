@@ -1,10 +1,9 @@
 import React from 'react';
 import Axios from 'axios';
-import "./TextSlide.css";
-import "./Homepage.css";
-import TextSlideshow from "../TextSlideshow/TextSlideshow";
+import "./SearchResult.css";
+import Filter  from "../Filter/Filter";
 
-class Homepage extends React.Component {
+class SearchResult extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -29,27 +28,19 @@ class Homepage extends React.Component {
         }
     }
 
-    onClickHotelInfo(e){
-        console.log(e);
-        // put corresponding index in to redux for redirection
-    }
-
-
-    render() {
-        return (
-            <div className="home-body" >
-                <div className="background" >
-                    <div className="search-bar">I'm Search Bar</div>
+    render(){
+        return(
+            <div className="result-body">
+                <div className="filter-container">
+               
+                <Filter/>
                 </div>
-                <div className="hotel-container">
+                <div className="hotel-container" >
                     {this.state.hotelListItems}
                 </div>
-                <TextSlideshow/>
-               
             </div>
         )
     }
 }
 
-
-export default Homepage;
+export default SearchResult;

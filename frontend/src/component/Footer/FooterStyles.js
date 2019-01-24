@@ -4,12 +4,9 @@ const styles = {
         backgroundColor: "#4c6189",
         fontSize: "20px",
         color: "white",
-        
         textAlign: "center",
-        
         left: "0",
         bottom: "0",
-        
         clear: "both",
         position: "absolute" 
     },

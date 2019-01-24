@@ -1,9 +1,9 @@
 import React from 'react';
 import "./TextSlideshow.css";
 
-function TextSlideshow() {
+function TextSlideshow () {
     return (
-        <div className="container">
+        <div className="carouselContainer">
             <div id="carouselContent" className="carousel slide" data-ride="carousel">
                 <div className="carousel-inner" role="listbox">
                     <div className="carousel-item active text-center p-4">

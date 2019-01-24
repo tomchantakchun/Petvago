@@ -14,6 +14,7 @@ import Homepage from './component/Homepage/Homepage'
 import Booking from './component/Booking/Booking'
 
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
+import SearchResult from './component/SearchResult/SearchResult';
 
 const TestHome = (props) => {
   return (
@@ -52,6 +53,7 @@ class App extends Component {
             <Route exact path='/home' component={Homepage} />
             <Route exact path='/message' component={MessageBox} />
             <Route exact path='/booking' component={Booking} />
+            <Route exact path='/search_result' component={SearchResult}/> 
 
             <AuthenticatedComponent>
 

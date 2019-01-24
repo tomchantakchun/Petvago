@@ -1,3 +1,26 @@
 .navbar{
     height: 7vh;
+    background-color:#50b5a9 !important;
+    font-size: 16px;
+    font-family: Sarabun;
+}
+
+.navbar-toggler{
+    height: 5vh;
+    margin-left:auto; 
+    margin-right:0;
+}
+
+.navbar-brand{
+    background-image: url("./logo-big.png");
+    background-size: 100% 100%;
+    height: 5vh;
+    width: 40vh;
+}
+
+.navbar-brand-two{
+    background-image: url("./logo-small.png");
+    background-size: 100% 100%;
+    height: 5vh;
+    width: 15vh;
 }

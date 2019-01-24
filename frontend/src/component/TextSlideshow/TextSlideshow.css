@@ -8,3 +8,10 @@ p{
 .carousel-item-prev{
     display:block;
 }
+
+.carouselContainer{
+    margin-top: 5vh;
+    background-color: grey;
+    height:10vh;
+    width: 100%
+}
