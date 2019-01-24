@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+
+
 router.post('/', async (req, res, next) => {
 
   let db = req.db;
@@ -12,19 +14,51 @@ router.post('/', async (req, res, next) => {
   let startDay = new Date(req.body.startDate);
   let endDay = new Date(req.body.endDate);
 
-
-
   //get all room
-  await db.select("*")
+  await db.select("	additionalPrice	"	,
+  "	address	"	,
+  "	app	"	,
+  "	availablePeriod	"	,
+  "	averageRating	"	,
+  "	hotel.description	"	,
+  "	district	"	,
+  "	email	"	,
+  "	facilities	"	,
+  "	hotel.id	"	,
+  "	roomType.id	"	,
+  "	latitude	"	,
+  "	longitude	"	,
+  "	name	"	,
+  "	partnershipType	"	,
+  "	password	"	,
+  "	price	"	,
+  "	quantity	"	,
+  "	requirement	"	,
+  "	roomType	"	,
+  "	telephone	"	,
+  "	vaccineRequirement	"	,
+  "photo.path AS photo"
+  )
   .from("roomType")
-  .leftJoin("hotel", "roomType.hotelID","hotel.id")
-  .where("district", req.body.district)
-  .whereRaw("requirement ->> 'pet' = ?", [req.body.petType]) 
+  .innerJoin("hotel", "roomType.hotelID","hotel.id")
+  .innerJoin("photo","photo.hotelID", "hotel.id").whereNull("photo.roomTypeID")
+  .where((queryBuilder)=>{
+    if (req.body.district != "all"){
+      queryBuilder.where("district", req.body.district)
+    }
+  })
+  .where((queryBuilder2)=>{
+    if (req.body.petType != "all"){
+      queryBuilder2.whereRaw("requirement ->> 'pet' = ?", [req.body.petType]) 
+    }
+  })
+  // .where("district", req.body.district)
+  // .whereRaw("requirement ->> 'pet' = ?", [req.body.petType]) 
   .then((rows) => {
     allRoom = [...rows]
+    console.log('First allRoom: ',allRoom.length)
   })
 
-  // console.log('First allRoom: ',allRoom)
 
   //get days between searched start day and end day, pushed in an array 
   while (startDay.getDate() <= endDay.getDate()) {
@@ -53,7 +87,7 @@ let promise = new Promise((resolve,reject)=>{
       })
 
       if (allRoom.length > 0){
-      allRoom.map((room, index) => {
+      allRoom.some((room, index) => {
         let count = 0;
         for (let i = 0; i < eachDayBookingArray.length; i++) {
           if (room.id == eachDayBookingArray[i].roomTypeID) {
@@ -70,6 +104,7 @@ let promise = new Promise((resolve,reject)=>{
           )
         {
           resolve('success');
+          return true
          }   
       })//end of all Room
       console.log('allRoomfilter',allRoom, day)
