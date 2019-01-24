@@ -14,8 +14,9 @@ class SearchResult extends React.Component{
     async componentDidMount() {
         //    call hotel info api from backend,then set state
         try {
-            const _hotelInfo = await Axios.get('http://localhost:8080/api/hotel');
+            const _hotelInfo = await Axios.get('http://localhost:8080/api/hotel/');
             this.setState({ hotelInfo: _hotelInfo.data });
+            console.log(this.state.hotelInfo)
             const listItems = this.state.hotelInfo.map(
                 (e) => <div key={e.id.toString()} className="hotel-info"  >
                     <img className="hotel-icon" src={e.path}  onClick={(e)=>{this.onClickHotelInfo(e)}}></img>
