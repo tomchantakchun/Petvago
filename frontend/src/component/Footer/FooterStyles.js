@@ -4,29 +4,30 @@ const styles = {
         backgroundColor: "#4c6189",
         fontSize: "20px",
         color: "white",
-        borderTop: "1px solid #E7E7E7",
+        
         textAlign: "center",
-        padding: "20px",
+        
         left: "0",
         bottom: "0",
-        height: "60px",
-        width: "100%"
+        
+        clear: "both",
+        position: "absolute" 
     },
-    phantomStyle: {
-        display: "block",
-        padding: "20px",
-        height: "60px",
-        width: "100%"
-    },
+   
     childrenStyle:{
+        backgroundColor: "#4c6189",
+        color: "white",
         display: "flex",
         flexWrap:"wrap",
         justifyContent: "space-around",
         height: "30px",
         width: "100%",
-        fontSize: "16px",
+        fontSize: "20px",
         fontFamily: "Sarabun",
-        
+        height: "7vh",
+        width: "100%",
+        padding: "20px",
+        borderTop: "1px solid #E7E7E7",
     }
           
 };
