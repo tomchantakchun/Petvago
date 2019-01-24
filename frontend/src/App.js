@@ -13,6 +13,7 @@ import Footer from './component/Footer/Footer'
 import Homepage from './component/Homepage/Homepage'
 import EditPage from './component/EditPage/EditPage'
 import Booking from './component/Booking/Booking'
+import Confirmation from './component/Booking/Confirmation'
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 import SearchResult from './component/SearchResult/SearchResult';
 import Hotel from './component/Hotel/Hotel'
@@ -58,6 +59,7 @@ class App extends Component {
             <Route exact path='/booking' component={Booking} />
             <Route exact path='/search_result' component={SearchResult}/> 
             <Route exact path='/hotel' component={Hotel} />
+            <Route exact path='/confirmation' component={Confirmation} />
 
 
             <AuthenticatedComponent>
