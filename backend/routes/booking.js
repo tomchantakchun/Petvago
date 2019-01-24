@@ -135,7 +135,8 @@ router.post('/create-booking', passport.authenticate("jwt", { session: false }),
       hotelID,
       roomTypeID,
       startDate,
-      endDate
+      endDate,
+      duration
     }
 
     on success, sends back {status:'success', bookingID, expiryTime}
@@ -170,6 +171,7 @@ router.put('/update-booking', passport.authenticate("jwt", { session: false }), 
       vaccineRequirement,
       service,
       totalPrice,
+      orderDate
     }
 
     on success, sends back {status:'success'}
@@ -178,7 +180,7 @@ router.put('/update-booking', passport.authenticate("jwt", { session: false }), 
   
   today=new Date();
   
-  let query=db.update({id:req.body.id, ownerName:req.body.ownerName, ownerPhone:req.body.ownerPhone, petName:req.body.petName, petType:req.body.petType, vaccineRequirement:req.body.vaccineRequirement, service:req.body.service, totalPrice:req.body.totalPrice, status:'confirmed'}).into('booking').where('id',req.body.id)
+  let query=db.update({id:req.body.id, orderDate:req.body.orderDate, ownerName:req.body.ownerName, ownerPhone:req.body.ownerPhone, petName:req.body.petName, petWeight:req.body.petWeight, petType:req.body.petType, vaccineRequirement:req.body.vaccineRequirement, service:req.body.service, totalPrice:req.body.totalPrice, status:'confirmed'}).into('booking').where('id',req.body.id)
 
   query.then(()=>{
       res.send({status:'success'});        
