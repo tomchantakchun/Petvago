@@ -3,12 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
 import "./Search.css";
-//fontawesome
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHotel } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faHotel)
 
 class Search extends React.Component {
     districts = ['Central and Western', 'Eastern', 'Islands', 'Kowloon City', 'Kwai Tsing', 'Kwun Tong', 'North', 'Sai Kung', 'Sha Tin', 'Sham Shui Po', 'Southern', 'Tai Po', 'Tsuen Wan', 'Tuen Mun', 'Wan Chai', 'Wong Tai Sin', 'Yau Tsim Mong', 'Yuen Long']
@@ -29,7 +24,7 @@ class Search extends React.Component {
                 } else {
                     console.log(response.data)
                     this.props.afterSearch(response.data)
-                    // this.props.history.push('http://localhost:8080/search_result')
+                    this.props.history.push('../search_result')
                 }
             this.props.onSearch(this.state);
             })
@@ -79,7 +74,6 @@ class Search extends React.Component {
         return (
             <div className="search">
                 <form onSubmit={this.handleSearch}>
-                <FontAwesomeIcon icon="hotel" />
                     <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange} required />
                     <input type='date' id='end' name='endDate' min={today} max={threeMonthLater} onChange={this.endDateChange} required />
                     {serachDistricts}
