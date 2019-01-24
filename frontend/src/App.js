@@ -11,7 +11,8 @@ import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
 import Footer from './component/Footer/Footer'
 import Homepage from './component/Homepage/Homepage'
-
+import EditPage from './component/EditPage/EditPage'
+import Booking from './component/Booking/Booking'
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 
 const TestHome = (props) => {
@@ -40,6 +41,7 @@ class App extends Component {
       <div className="App">
   
         <Navigationbar />
+        <div className="main-body">
         <Router>
           <Switch>
             <Route exact path='/search' component={Search} />
@@ -49,13 +51,16 @@ class App extends Component {
             <Route exact path='/' component={TestHome} />
             <Route exact path='/home' component={Homepage} />
             <Route exact path='/message' component={MessageBox} />
-            <AuthenticatedComponent>
+            <Route exact path='/edit-hotel-info' component={EditPage} />
+            <Route exact path='/booking' component={Booking} />
 
+            <AuthenticatedComponent>
             </AuthenticatedComponent>
           </Switch>
         </Router>
+        <div className="push"></div>
+        </div>
         <Footer />
-          
       </div>
     );
   }

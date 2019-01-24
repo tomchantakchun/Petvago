@@ -21,21 +21,27 @@ class PhotoUpload extends React.Component {
         const data = new FormData()
         data.append('file', this.state.selectedFile, this.state.selectedFile.name)
 
-        console.log(`http://localhost:8080/api/hotel/uploadPhoto`);
-        axios.post(`http://localhost:8080/api/hotel/uploadPhoto`, data, {
-                onUploadProgress: ProgressEvent => {
-                    this.setState({
-                        loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
-                    })
-                },
-            })
-            .then(res => {
-                this.setState({selectedFile: null, loaded: 0})
-                document.getElementById("PhotoUploadInput").value = "";
-                console.log(res.statusText)
-                console.log(`Photo uploaded`);
-            })
-
+        const jwt = localStorage.getItem('petvago-token');
+        if (jwt) {
+            console.log(`http://localhost:8080/api/hotel/uploadPhoto`);
+            axios.post(`http://localhost:8080/api/hotel/uploadPhoto`, data, 
+                {
+                    onUploadProgress: ProgressEvent => {
+                        this.setState({
+                            loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
+                        })
+                    },
+                    headers: { Authorization: `Bearer ${jwt}` }
+                })
+                .then(res => {
+                    this.setState({selectedFile: null, loaded: 0})
+                    document.getElementById("PhotoUploadInput").value = "";
+                    console.log(res.statusText)
+                    console.log(`Photo uploaded`);
+                })
+        } else {
+            console.log(`Not yet logged in`)
+        }
     }
 
     render() {

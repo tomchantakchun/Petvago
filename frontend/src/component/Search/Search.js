@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
-
+import "./Search.css";
 //fontawesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -78,7 +78,8 @@ class Search extends React.Component {
         threeMonthLater = threeMonthLater.toISOString().split('T')[0];
                
         return (
-            <div style={{paddingTop: 150}}>
+            <div className="search" >
+             <h1>{this.props.SearchHistory.district}</h1>
                 <form>
                 <FontAwesomeIcon icon="hotel" />
                     <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange}></input>
