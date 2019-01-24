@@ -14,12 +14,12 @@ class Hotel extends Component {
                 roomTypeID:1,
                 roomType:'Deluxe Room',
                 roomPrice: 400,
+                vaccineRequirement: {vaccine:['DHPPiL','Rabies']}
 
             }
     }
 
     componentDidMount(){
-        //calculate total price
        
     }
 
@@ -30,11 +30,12 @@ class Hotel extends Component {
             startDate:'2019-02-01',
             endDate:'2019-02-03',
         }
-
+        let hotelID=this.state.hotelID;
         let hotelName=this.state.hotelName;
         let roomTypeID=this.state.roomTypeID;
         let roomType= this.state.roomType;
         let roomPrice=this.state.roomPrice;
+        let vaccineRequirement=this.state.vaccineRequirement;
         let history=this.props.history
 
         const jwt = localStorage.getItem('petvago-token');
@@ -43,19 +44,18 @@ class Hotel extends Component {
         }
     
         axios.post(`http://localhost:8080/api/booking/create-booking`,data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
-            console.log('11111',result.data)
             let payload={
                 bookingStartDate:data.startDate,
                 bookingEndDate:data.endDate,
-                hotelID: this.state.hotel,
+                hotelID,
                 expiryTime: result.data.expiryTime,
                 bookingID: result.data.bookingID,
-                hotelName: hotelName,
+                hotelName,
                 roomTypeID,
                 roomType,
-                roomPrice
+                roomPrice,
+                vaccineRequirement
             }
-            console.log('payload',payload)
             this.props.chooseHotel(payload)
 
         }).then(()=>{
