@@ -20,8 +20,8 @@ class Search extends React.Component {
             {
                 startDate: this.state.startDate,
                 endDate: this.state.endDate,
-                district: this.state.district,
-                petType: this.state.petType
+                district: this.state.district || "all",
+                petType: this.state.petType || "all",
             })
             .then(response => {
                 if (response === null) {
@@ -29,6 +29,7 @@ class Search extends React.Component {
                 } else {
                     console.log(response.data)
                     this.props.afterSearch(response.data)
+                    // this.props.history.push('http://localhost:8080/search_result')
                 }
             this.props.onSearch(this.state);
             })
@@ -60,8 +61,8 @@ class Search extends React.Component {
 
     render() {
         const serachDistricts = (
-            <select name="district" onChange={this.districtChange}>
-                <option value="NA" disabled selected hidden>--District--</option>
+            <select name="district" onChange={this.districtChange} required>
+                <option value="all" disabled selected hidden>--District--</option>
                 {this.districts.map((district, index) => {
                     return <option value={district} key={index}>{district}</option>
                 })}
@@ -76,20 +77,19 @@ class Search extends React.Component {
         threeMonthLater = threeMonthLater.toISOString().split('T')[0];
                
         return (
-            <div className="search" >
-                <form>
+            <div className="search">
+                <form onSubmit={this.handleSearch}>
                 <FontAwesomeIcon icon="hotel" />
-                    <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange}></input>
-                    <input type='date' id='end' name='endDate' min={today} max={threeMonthLater} onChange={this.endDateChange}></input>
+                    <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange} required />
+                    <input type='date' id='end' name='endDate' min={today} max={threeMonthLater} onChange={this.endDateChange} required />
                     {serachDistricts}
-                    <select name="petType" onChange={this.petTypeChange} >
-                        <option value="NA" disabled selected hidden>--Type of Pet--</option>
+                    <select name="petType" onChange={this.petTypeChange} required>
+                        <option value="all" disabled selected hidden>--Type of Pet--</option>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                     </select>
-                    <button type="submit" value="Submit" onClick={this.handleSearch}>Search</button>
+                    <button type="submit" value="Submit">Search</button>
                 </form>
-                <h1>{this.props.SearchResult}</h1>
             </div>
         )
     }
