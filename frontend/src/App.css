@@ -11,6 +11,8 @@
   
   min-height:100%;
   clear: both;
+
+  position: relative;
 }
 /* .push{
   height: 5vh;

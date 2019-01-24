@@ -28,9 +28,7 @@ class Search extends React.Component {
                     console.log('you are living failure')
                 } else {
                     console.log(response.data)
-                    for (let i=0; i < response.data.length; i++){
-                    console.log(response.data[i].startDate)
-                    };
+                    this.props.afterSearch(response.data)
                 }
             this.props.onSearch(this.state);
             })
@@ -79,7 +77,6 @@ class Search extends React.Component {
                
         return (
             <div className="search" >
-             <h1>{this.props.SearchHistory.district}</h1>
                 <form>
                 <FontAwesomeIcon icon="hotel" />
                     <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange}></input>
@@ -92,6 +89,7 @@ class Search extends React.Component {
                     </select>
                     <button type="submit" value="Submit" onClick={this.handleSearch}>Search</button>
                 </form>
+                <h1>{this.props.SearchResult}</h1>
             </div>
         )
     }
@@ -100,13 +98,14 @@ class Search extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        SearchHistory: state.searchHistory
+        searchResult: state,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSearch: (state) => dispatch({type: actionTypes.SEARCHHOTEL, state:state})
+        onSearch: (history) => dispatch({type: actionTypes.SEARCHHOTEL, history:history}),
+        afterSearch: (result) => dispatch({type: actionTypes.SEARCHRESULT, result:result})
     }
 };
 

@@ -11,10 +11,12 @@ import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
 import Footer from './component/Footer/Footer'
 import Homepage from './component/Homepage/Homepage'
+import EditPage from './component/EditPage/EditPage'
 import Booking from './component/Booking/Booking'
-
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 import SearchResult from './component/SearchResult/SearchResult';
+import Hotel from './component/Hotel/Hotel'
+
 
 const TestHome = (props) => {
   return (
@@ -52,11 +54,13 @@ class App extends Component {
             <Route exact path='/' component={TestHome} />
             <Route exact path='/home' component={Homepage} />
             <Route exact path='/message' component={MessageBox} />
+            <Route exact path='/edit-hotel-info' component={EditPage} />
             <Route exact path='/booking' component={Booking} />
             <Route exact path='/search_result' component={SearchResult}/> 
+            <Route exact path='/hotel' component={Hotel} />
+
 
             <AuthenticatedComponent>
-
             </AuthenticatedComponent>
           </Switch>
         </Router>

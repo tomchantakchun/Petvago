@@ -441,9 +441,11 @@ const storage = new Storage({
 router.use(fileUpload())
 
 // handle post request
-router.post('/uploadPhoto', async (req, res) => {
+router.post('/uploadPhoto', passport.authenticate("jwt", { session: false }), async (req, res) => {
+
+  let userType = req.user.isHotel ? 'hotel' : 'user'
   let uploadFile = req.files.file
-  const fileName = req.files.file.name
+  const fileName = `${userType}---${req.user.username}---${req.files.file.name}`
 
   uploadFile.mv(
     `${__dirname}/../uploadTem/${fileName}`,
@@ -460,10 +462,10 @@ router.post('/uploadPhoto', async (req, res) => {
   await storage.bucket(bucketName).upload(`${__dirname}/../uploadTem/${fileName}`, {
       gzip: true,
       metadata: {
-      // Enable long-lived HTTP caching headers
-      // Use only if the contents of the file will never change
-      // (If the contents will change, use cacheControl: 'no-cache')
-      cacheControl: 'public, max-age=31536000',
+        // Enable long-lived HTTP caching headers
+        // Use only if the contents of the file will never change
+        // (If the contents will change, use cacheControl: 'no-cache')
+        cacheControl: 'public, max-age=31536000',
       },
     })
     .then((data) => {
