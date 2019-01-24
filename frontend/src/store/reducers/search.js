@@ -5,7 +5,6 @@ const initialState = {
     endDate: '',
     district: '',
     petType:'',
-    hotelChosenForBooking:1,
 };
 
 const reducer = ( state = initialState, action ) => {
