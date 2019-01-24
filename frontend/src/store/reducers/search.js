@@ -5,7 +5,6 @@ const initialState = {
     endDate: '',
     district: '',
     petType: '',
-    hotelChosenForBooking: 1,
     searchResult: []
 };
 
@@ -23,11 +22,7 @@ const reducer = (state = initialState, action) => {
             }
 
         case actionTypes.SEARCHRESULT:
-        console.log(action.result)
-        console.log(typeof action.result)
-        let resultStore = Object.keys(action.result).map(i =>action.result[i])
-        console.log(resultStore)
-        console.log(typeof resultStore)
+        let resultStore = Object.keys(action.result).map(i =>action.result[i].hotelID)
             return {
                 ...state,
                 searchResult: resultStore

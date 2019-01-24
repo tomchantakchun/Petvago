@@ -98,8 +98,7 @@ class Search extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        SearchHistory: state.searchHistory,
-        SearchResult: state.searchResult
+        searchResult: state,
     }
 };
 
