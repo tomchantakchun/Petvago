@@ -1,1 +1,2 @@
 export const SEARCHHOTEL = 'SEARCHHOTEL';
+export const SEARCHRESULT = 'SEARCHRESULT';
