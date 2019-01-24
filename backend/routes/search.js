@@ -1,73 +1,71 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/', function(req, res, next) {
+router.post('/', function (req, res, next) {
 
-let db=req.db;
+  let db = req.db;
 
-let dayArray = [];
-let result=[];
-let startDay = new Date(req.body.startDate);
-let endDay = new Date(req.body.endDate);
+  let dayArray = [];
 
-//get days between searched start day and end day, pushed in an array 
-while (startDay.getDate() <= endDay.getDate()){
-  dayArray.push(new Date(startDay));
-  startDay.setDate(startDay.getDate()+1)
-}
+  let startDay = new Date(req.body.startDate);
+  let endDay = new Date(req.body.endDate);
 
-dayArray.map((day)=>{
-  let formattedDay = day.toISOString().split('T')[0];
-  let query = db.select("*").from("hotel")
-  .where("district", req.body.district)
-  .innerJoin("roomType", 'hotel.id', "roomType.hotelID") //match roomtype with hotel
-  .innerJoin('booking', function () {
-     this
-       .on("hotel.id", "booking.hotelID").on("roomType.id", 'booking.roomTypeID')})
-  .where(function() {
-     this.where("booking.endDate", '>=', formattedDay)
-    .andWhere("booking.startDate", '<=', formattedDay)
-    })
-
-  query.then((rows)=>{
-    result.push(rows)
+  //get all room
+  let query2 = db.select("id", "quantity", "hotelID").from("roomType")
+  query2.then((rows) => {
+    allRoom = [...rows]
   })
-})
 
-res.send(result)
+  //get days between searched start day and end day, pushed in an array 
+  while (startDay.getDate() <= endDay.getDate()) {
+    dayArray.push(new Date(startDay));
+    startDay.setDate(startDay.getDate() + 1)
+  }
 
-// res.send(dayArray)
+  //get occupied room for each day
+  var promise1 = dayArray.map((day) => {
+    let formattedDay = day.toISOString().split('T')[0];
+    let query = db.select("*").from("hotel")
+      .where("district", req.body.district)
+      .innerJoin("roomType", 'hotel.id', "roomType.hotelID") //match roomtype with hotel
+      .innerJoin('booking', function () {
+        this
+          .on("hotel.id", "booking.hotelID").on("roomType.id", 'booking.roomTypeID')
+      })
+      .where(function () {
+        this.where("booking.endDate", '>=', formattedDay)
+          .andWhere("booking.startDate", '<=', formattedDay)
+      })
 
-//  var db=req.db;
+    query.then((rows) => {
+      let eachDayBookingArray = []
 
-//   let query=db.select("*").from("hotel")
-//   .where("district",req.body.district) //search by district
-//   .innerJoin("roomType", 'hotel.id', "roomType.hotelID") //match roomtype with hotel
-//   .innerJoin('booking', function () {
-//     this
-//       .on("hotel.id", "booking.hotelID")
-//       .on("roomType.id", 'booking.roomTypeID');
-//   }) //find booking related
-//   // .where(function() {
-//   //   this.where("booking.endDate", '<=', req.body.startDate).orWhere("booking.startDate", '>=', req.body.endDate)
-//   // }) 
-//   .whereRaw("requirement ->> 'pet' = ?", [req.body.petType]) //search by petType
-  
-//    query.then((rows)=>{
-//      res.send(rows)
-//     // rows.map((row, index) => {
-//     //   let hotelID = row.hotelID;
-//     //   let roomTypeID = row.roomTypeID;
-//     //   let query2=db.select("quantity").from("roomType").where('hotelID', hotelID).andWhere('id', roomTypeID)
-//     //   query2.then((results)=>{res.send(results)})
-//     // })
-//   })
-  
-//   .catch((error)=>{
-//     console.log(error);
-//     res.status(500).send({error:'cannot get hotel'})
-// });
-});
+      rows.map((row) => {
+        eachDayBookingArray.push(row)
+      })
+
+      allRoom.map((room) => {
+        let count = 0;
+        for (let i = 0; i < eachDayBookingArray.length; i++) {
+          if (room.id == eachDayBookingArray[i].roomTypeID) {
+            console.log('add count' + room.id)
+            count++
+          }
+        } // end of count loop      
+        if (count >= room.quantity) {
+          allRoom = allRoom.filter(checkRoom => checkRoom.id !== room.id)
+        }
+
+      })//end of all Room
+      
+
+    }) //end of query.then
+   
+  }) //end of dayArray Map
+
+  Promise.all([promise1]).then(console.log(allRoom))
+
+}); //end of all req.post
 
 
 module.exports = router;

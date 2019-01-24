@@ -29,7 +29,7 @@ class Search extends React.Component {
                 } else {
                     console.log(response.data)
                     for (let i=0; i < response.data.length; i++){
-                    console.log(response.data[i].startDate)
+                    console.log(response.data[i].roomTypeID)
                     };
                 }
             this.props.onSearch(this.state);
