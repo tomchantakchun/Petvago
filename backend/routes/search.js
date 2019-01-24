@@ -15,10 +15,11 @@ router.post('/', async (req, res, next) => {
 
 
   //get all room
-  await db.select("roomType.id", "quantity", "hotelID")
+  await db.select("*")
   .from("roomType")
   .leftJoin("hotel", "roomType.hotelID","hotel.id")
   .where("district", req.body.district)
+  .whereRaw("requirement ->> 'pet' = ?", [req.body.petType]) 
   .then((rows) => {
     allRoom = [...rows]
   })
@@ -51,6 +52,7 @@ let promise = new Promise((resolve,reject)=>{
         eachDayBookingArray.push(row)
       })
 
+      if (allRoom.length > 0){
       allRoom.map((room, index) => {
         let count = 0;
         for (let i = 0; i < eachDayBookingArray.length; i++) {
@@ -62,10 +64,6 @@ let promise = new Promise((resolve,reject)=>{
         if (count >= room.quantity) {
           allRoom = allRoom.filter(checkRoom => checkRoom.id !== room.id) //filter all unavilable room
         }
-        console.log('index',index)
-        console.log('room',allRoom.length)
-        console.log('day', day)
-        console.log('dayArray',  dayArray[dayArray.length -1])
         if (
           (day == dayArray[dayArray.length -1] && index +1 == allRoom.length)
           || (allRoom.length == 0)
@@ -74,7 +72,9 @@ let promise = new Promise((resolve,reject)=>{
           resolve('success');
          }   
       })//end of all Room
-            console.log('allRoomfilter',allRoom, day)
+      console.log('allRoomfilter',allRoom, day)
+    } else {resolve('no room')}
+            
     }) //end of query.then 
   }) //end of dayArray Map filterJob
     

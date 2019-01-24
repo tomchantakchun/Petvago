@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
             }
 
         case actionTypes.SEARCHRESULT:
-        let resultStore = Object.keys(action.result).map(i =>action.result[i].hotelID)
+        let resultStore = Object.keys(action.result).map(i =>action.result[i])
             return {
                 ...state,
                 searchResult: resultStore
