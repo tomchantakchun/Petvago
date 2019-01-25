@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./NavbarStyles";
+
 import "./Navbar.css"
 
 class Navigationbar extends React.Component {
@@ -26,22 +26,22 @@ class Navigationbar extends React.Component {
 
     guestNavbar() {
         return (
-            <div style={styles.fontStyle}>
+            <div className="navbar-container">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
                     <div className="d-flex flex-grow-1">
-                        <span className="w-100 d-lg-none d-block"></span>
-                        <a className="navbar-brand d-none d-lg-inline-block" href="/">
-                            Petvago
-                </a>
-                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="#">
-                            <img src="//placehold.it/40?text=LOGO" alt="logo"></img>
-                        </a>
+                        {/* <span className="w-100 d-lg-none d-block"></span> */}
+                        <a className="navbar-brand d-none d-lg-inline-block" href="/"></a>
+                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"></a>
                         <div className="w-100 text-right">
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
-                                <span className="navbar-toggler-icon"></span>
+                                <span className="navbar-toggler-icon">
+                                
+                                </span>
                             </button>
+
                         </div>
                     </div>
+                        
                     <div className="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar">
                         <ul className="navbar-nav ml-auto flex-nowrap">
                             <li className="nav-item">
@@ -64,19 +64,17 @@ class Navigationbar extends React.Component {
 
     userNavbar() {
         return (
-            <div style={styles.fontStyle}>
+            <div className="navbar-container">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
                     <div className="d-flex flex-grow-1">
-                        <span className="w-100 d-lg-none d-block"></span>
-                        <a className="navbar-brand d-none d-lg-inline-block" href="/">
-                            Petvago
-                </a>
-                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="#">
-                            <img src="//placehold.it/40?text=LOGO" alt="logo"></img>
-                        </a>
+                        {/* <span className="w-100 d-lg-none d-block"></span> */}
+                        <a className="navbar-brand d-none d-lg-inline-block" href="/"></a>
+                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"></a>
                         <div className="w-100 text-right">
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
-                                <span className="navbar-toggler-icon"></span>
+                                <span className="navbar-toggler-icon">
+                                
+                                </span>
                             </button>
                         </div>
                     </div>

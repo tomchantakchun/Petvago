@@ -2,49 +2,130 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import './booking.css'
+import { redirect_to_confirmation } from '../../store/actions';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser,faPhone, faPaw, faWeight, faDog,faSyringe,faBath, faRegistered } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios';
+library.add(faUser)
+library.add(faPhone)
+library.add(faPaw)
+library.add(faWeight)
+library.add(faDog)
+library.add(faSyringe)
+library.add(faBath)
+
 
 
 class Booking extends Component {
     constructor(props){
         super(props);
         this.state={ 
-            bookingID:1,
-            hotel:this.props.hotel,
-            startDate:'2019-02-05',
-            endDate:'2019-02-09',
-            roomPrice:200,
-            duration:4,
-            hotelPrice:1200,
-            servicePrice:350,
+            expiryTime: this.props.expiryTime,
+            bookingID:this.props.bookingID,
+            hotelID:this.props.hotel,
+            hotelName:this.props.hotelName,
+            startDate:this.props.startDate,
+            endDate:this.props.endDate,
+            roomTypeID:this.props.roomTypeID,
+            roomType:this.props.roomType,
+            roomPrice:this.props.roomPrice,
+            duration:0,
+            hotelPrice:0,
+            servicePrice:0,
             ownerName:null,
             ownerPhone:null,
             petName:null,
             petWeight:null,
             petType:null,
-            vaccineRequirement:{vaccine:['DHPPiL','Rabies']},
-            service:null,
-            totalPrice:null,
+            vaccineRequirement:this.props.vaccineRequirement,
+            service:{},
+            totalPrice:0,
             loading:false,
             vaccineCheck:null,
             vaccineError:null,
-            vaccineClass:null
+            vaccineClass:null,
+            time:''
             
         }
     }
 
     componentDidMount(){
-        //calculate total price
-        let totalPrice= this.state.duration * this.state.roomPrice + this.state.servicePrice;
-        this.setState({
-            totalPrice:totalPrice
+
+        if (!this.state.bookingID) {
+            this.props.history.push('/home')
+        }
+        
+        //calculate duration
+        let promise=new Promise((resolve,reject)=>{
+            let duration=((new Date(this.state.endDate))-(new Date(this.state.startDate))) / (60*60*24*1000);
+            this.setState({
+                duration
+            });
+            resolve()
+
         })
+
+        promise.then(()=>{
+          //calculate total price
+          let totalPrice= this.state.duration * this.state.roomPrice;
+          this.setState({
+              hotelPrice:totalPrice,
+              totalPrice:totalPrice
+          })
+        })
+
+        //start timer
+        this.timeID=setInterval(
+            ()=>this.timer(),
+            1000
+        );
+
+        //format date
+        let startDate=new Date(this.state.startDate)
+        var dd = startDate.getDate();
+        var mm = startDate.getMonth() + 1; 
+        var yyyy = startDate.getFullYear();
+        startDate = dd + '/' + mm + '/' + yyyy;
+
+        let endDate=new Date(this.state.endDate)
+        var dd2 = endDate.getDate();
+        var mm2 = endDate.getMonth() + 1; 
+        var yyyy2 = endDate.getFullYear();
+        endDate = dd2 + '/' + mm2 + '/' + yyyy2;
+
+        this.setState(
+            {startDate, endDate}
+        )
+
+            
+       
+
+    }
+
+    timer=()=>{
+        var now = new Date().getTime();
+        var distance = new Date(this.state.expiryTime) - now;
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        let time= minutes+' : '+seconds
+        if (distance>=0){
+            this.setState({
+                time
+            })
+        }else{
+            this.setState({
+                time: 'Time is up, please try to book another room'
+            })
+        }
+      
     }
 
     handleChange=(e)=>{
         this.setState({
             [e.target.name]:e.target.value,
         })
-        console.log(e.target.name+':'+this.state[e.target.name])
+        // console.log(e.target.name+':'+this.state[e.target.name])
 
     }
 
@@ -58,14 +139,69 @@ class Booking extends Component {
                 vaccineCheck: this.state.vaccineCheck-1
             })
         }
-        console.log(e.target.checked)
-        console.log('length',this.state.vaccineRequirement.vaccine.length)
         
     }
 
+    handleServiceChange=(e)=>{
+        if(e.target.checked==true){
+            //add service
+            let newService=this.state.service;
+            newService[e.target.name]=1;
+            let price=Number(e.target.value)
+
+            let promise=new Promise((resolve,reject)=>{
+                this.setState({
+                    service:newService,
+                    servicePrice: this.state.servicePrice+price
+                })
+                resolve(price)
+    
+            })
+
+            let totalPrice=this.state.totalPrice;
+
+            promise.then((price)=>{
+                let newTotalPrice=totalPrice+price;
+                this.setState({
+                    totalPrice:newTotalPrice
+                })
+            })
+
+        }else{
+            //delete service
+            let newService=this.state.service;
+            delete newService[e.target.name];
+           
+            let price=Number(e.target.value)
+
+            let promise=new Promise((resolve,reject)=>{
+                this.setState({
+                    service:newService,
+                    servicePrice: this.state.servicePrice-price
+                })
+                resolve(price)
+    
+            })
+
+            let totalPrice=this.state.totalPrice;
+
+            promise.then((price)=>{
+                let newTotalPrice=totalPrice-price;
+                this.setState({
+                    totalPrice:newTotalPrice
+                })
+            })
+
+        }
+
+    }
+
     handleSubmit=(e)=>{
+        e.preventDefault();
+        clearInterval(this.timerID)
+
         //check vaccine.length
-        if(this.state.vaccineRequirement.vaccine.length!=this.state.vaccineCheck){
+        if(this.state.vaccineRequirement && this.state.vaccineRequirement.vaccine.length!=this.state.vaccineCheck){
             console.log('not ok')
             this.setState({
                 vaccineError:<div style={{color:'#da3846'}}>Make sure you pet has received all the vaccine.</div>,
@@ -77,23 +213,73 @@ class Booking extends Component {
                 vaccineClass:null
             })
         }
+
+        console.log('111',this.state.petWeight)
+
+        //check is number 
+        let checkPhone=Number(this.state.ownerPhone);
+        let checkWeight=Number(this.state.petWeight)
+        console.log('222',checkWeight)
+
+        //
+        if( this.state.ownerName && this.state.ownerPhone && isNaN(checkPhone)==false && this.state.petName && this.state.petType && this.state.petWeight && isNaN(checkWeight)== false && this.state.vaccineCheck==this.state.vaccineRequirement.vaccine.length){
+            const jwt = localStorage.getItem('petvago-token');
+            if (!jwt) {
+                this.props.history.push('/login')
+            }
+
+            let today=new Date()
+
+            let data={
+                id:this.state.bookingID,
+                ownerName:this.state.ownerName,
+                ownerPhone:checkPhone,
+                petName: this.state.petName,
+                petType: this.state.petType,
+                petWeight: checkWeight,
+                vaccineRequirement: this.state.vaccineRequirement,
+                service: this.state.service,
+                totalPrice: this.state.totalPrice,
+                orderDate:today
+            }
+
+            
+
+            let history=this.props.history
+
+            axios.put(`http://localhost:8080/api/booking/update-booking`,data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+                history.push({pathname:'/confirmation',state:{bookingID:data.id}})
+                
+    
+            }).catch(err=>console.log(err))
+           
+            }else{
+                alert('Make sure all fields are filled in and in correct format.')
+            }
+            
         
 
     }
 
     renderVaccine=()=>{
-        return this.state.vaccineRequirement.vaccine.map((each)=>{
-            return(
-                <div key={each} className="form-check" style={{paddingTop:'5px',paddingBottom:'5px', marginLeft:'20px'}}>
-                <input className="form-check-input" type="checkbox" name="vaccine" value={each} style={{display:'inline'}}
-                        onChange={this.handleVaccineChange}/>
-                <label style={{paddingTop:'3px'}} className="form-check-label">
-                    {each}
-                </label>
-                </div>
-            )
+        if(this.state.vaccineRequirement){
+            return this.state.vaccineRequirement.vaccine.map((each)=>{
+                return(
+                    <div key={each} className="form-check" style={{paddingTop:'5px',paddingBottom:'5px', marginLeft:'30px'}}>
+                    <input className="form-check-input" type="checkbox" name="vaccine" value={each} style={{display:'inline'}}
+                            onChange={this.handleVaccineChange}/>
+                    <label  className="form-check-label">
+                        {each}
+                    </label>
+                    </div>
+                )
+    
+            })
 
-        })
+        }else{
+            return (<div><label> No vaccine is required :)</label></div>)
+        }
+
     }
     
 
@@ -107,35 +293,35 @@ class Booking extends Component {
             <h1 style={{marginBottom:"20px"}}>Basic informtion</h1>
 
             <div className="form-group row">
-                <label className="col-sm-3 col-form-label">Onwer's name</label>
-                <div className="col-sm-9">
+                <label className="col-sm-4 col-form-label"> <FontAwesomeIcon icon="user" style={{marginRight:'10px'}}/>Onwer's name</label>
+                <div className="col-sm-8">
                 <input name="ownerName" type="text" className="form-control"  onChange={this.handleChange}/>
                 </div>
             </div>
             <div className="form-group row">
-                <label className="col-sm-3 col-form-label">Phone number</label>
-                <div className="col-sm-9">
+                <label className="col-sm-4 col-form-label"><FontAwesomeIcon icon="phone" style={{marginRight:'10px'}}/>Phone number</label>
+                <div className="col-sm-8">
                 <input name="ownerPhone" type="text" className="form-control"  onChange={this.handleChange}/>
                 </div>
             </div>
             <div className="form-group row">
-                <label className="col-sm-3 col-form-label">Pet's name</label>
-                <div className="col-sm-9">
+                <label className="col-sm-4 col-form-label"><FontAwesomeIcon icon="paw" style={{marginRight:'10px'}}/>Pet's name</label>
+                <div className="col-sm-8">
                 <input name="petName" type="text" className="form-control"  onChange={this.handleChange}/>
                 </div>
             </div>
             <div className="form-group row">
-                <label className="col-sm-3 col-form-label">Pet weight</label>
-                <div className="col-sm-3">
+                <label className="col-sm-4 col-form-label"><FontAwesomeIcon icon="weight" style={{marginRight:'10px'}}/>Pet weight</label>
+                <div className="col-sm-8">
                 <input name="petWeight" type="text" className="form-control"  onChange={this.handleChange}/>
                 </div>
                 
             </div>
 
             <div className="form-group row">
-            <label className="col-sm-3 col-form-label" >Pet type</label>
-                <div className="col-sm-4">
-                    <select onChange={this.handleChange} className="form-control">
+            <label className="col-sm-4 col-form-label"><FontAwesomeIcon icon="dog" style={{marginRight:'10px'}}/>Pet type</label>
+                <div className="col-sm-8">
+                    <select onChange={this.handleChange} name="petType" className="form-control">
                     <option default>Choose a pet type</option>
                     <option value="dog">Dog</option> 
                     <option value="cat">Cat</option>  
@@ -143,7 +329,7 @@ class Booking extends Component {
                 </div>
             </div>
 
-            <p style={{marginBottom:"10px"}}>Has your pet received these vaccines?</p>
+            <p style={{marginBottom:"10px"}}> <FontAwesomeIcon icon="syringe" style={{marginRight:'10px'}}/>Has your pet received these vaccines?</p>
             <div className={this.state.vaccineClass}>
                 {this.renderVaccine()}
             </div>
@@ -151,33 +337,38 @@ class Booking extends Component {
 
             <div className="booking-line" style={{marginTop:'30px'}} ></div> 
 
-            <h1 style={{marginBottom:"10px"}}>Service</h1>
+            <h1 style={{marginBottom:"10px"}}><FontAwesomeIcon icon="bath" style={{marginRight:'10px'}}/>Service </h1>
             
-            <div className="form-check" style={{paddingTop:'10px'}}>
-            <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine1' style={{display:'inline'}}
-                    onChange={this.handleVaccineChange}/>
+            <div className="form-check" style={{paddingTop:'20px'}}>
+            <input className="form-check-input" type="checkbox" name="Bath" value='350' style={{display:'inline'}}
+                    onChange={this.handleServiceChange}/>
             <label className="form-check-label">
                 Bath  +$350
             </label>
             </div>
 
-            <div className="form-check" style={{paddingTop:'10px'}}>
-            <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine2' style={{display:'inline'}}
-                    onChange={this.handleVaccineChange}/>
-            <label className="form-check-label" for="defaultCheck1">
-                Obedience Training  +$350
+            <div className="form-check" style={{paddingTop:'20px'}}>
+            <input className="form-check-input" type="checkbox" name="Obedience Training" value='500' style={{display:'inline'}}
+                    onChange={this.handleServiceChange}/>
+            <label className="form-check-label" >
+                Obedience Training  +$500
             </label>
             </div>
 
-            <div className="form-check" style={{paddingTop:'10px'}}>
-            <input className="form-check-input" type="checkbox" name="vaccine" value='vaccine2' style={{display:'inline'}}
-                    onChange={this.handleVaccineChange}/>
-            <label className="form-check-label" for="defaultCheck1">
-                Swimming class  +$350
+            <div className="form-check" style={{paddingTop:'20px'}}>
+            <input className="form-check-input" type="checkbox" name="Swimming class" value='200' style={{display:'inline'}}
+                    onChange={this.handleServiceChange}/>
+            <label className="form-check-label" >
+                Swimming class  +$200
             </label>
             </div>
 
             <button className="btn booking-button" onClick={this.handleSubmit}>Submit</button>
+
+           <div className='count-down'>
+            <div><p> We will hold this room for : </p></div>
+            <div><h5>{this.state.time}</h5></div>
+           </div>
 
 
 
@@ -186,7 +377,7 @@ class Booking extends Component {
 
             <div className='booking-box'>
                 <div style={{display:'flex'}}>
-                    <h1 style={{width:'50%', fontWeight: "bold"}}>Hotel Name</h1>
+                    <h1 style={{width:'50%', fontWeight: "bold"}}>{this.state.hotelName}</h1>
                     <img style={{width:'50%'}} src="./image/hotel1photo1.jpg" alt="hotel" className="booking-icon"/>
                 </div>
                 <div className="booking-line"></div>  
@@ -200,7 +391,7 @@ class Booking extends Component {
                 <p style={{marginBottom:"10px", fontWeight: "bold"}}>Price</p> 
 
                 <div style={{display:'flex', justifyContent:'space-between',marginBottom:"10px"}}>
-                    <p>Room x {this.state.duration} days : </p>
+                    <p>{this.state.roomType} x {this.state.duration} days : </p>
                     <p>${this.state.hotelPrice}</p>
                 </div>
                 <div style={{display:'flex', justifyContent:'space-between',marginBottom:"15px"}}>
@@ -211,6 +402,7 @@ class Booking extends Component {
                     <p style={{fontWeight: "bold"}}>Total price : </p>
                     <p>${this.state.totalPrice}</p>
                 </div>
+
 
 
 
@@ -235,8 +427,19 @@ class Booking extends Component {
 }
 
 const mapStateToProps = state => ({
-    hotel: state.searchHistory.hotelChosenForBooking
+    hotel:state.hotel.hotelChosenforBooking,
+    expiryTime:state.hotel.expiryTime,
+    startDate: state.hotel.bookingStartDate,
+    endDate: state.hotel.bookingEndDate,
+    bookingID: state.hotel.bookingID,
+    hotelName: state.hotel.hotelName,
+    roomType: state.hotel.roomType,
+    roomTypeID: state.hotel.roomTypeID,
+    roomPrice: state.hotel.roomPrice,
+    vaccineRequirement: state.hotel.vaccineRequirement
 });
+
+
 
 
 export default connect(mapStateToProps)(withRouter(Booking));

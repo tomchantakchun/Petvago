@@ -3,12 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
 import "./Search.css";
-//fontawesome
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHotel } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faHotel)
 
 class Search extends React.Component {
     districts = ['Central and Western', 'Eastern', 'Islands', 'Kowloon City', 'Kwai Tsing', 'Kwun Tong', 'North', 'Sai Kung', 'Sha Tin', 'Sham Shui Po', 'Southern', 'Tai Po', 'Tsuen Wan', 'Tuen Mun', 'Wan Chai', 'Wong Tai Sin', 'Yau Tsim Mong', 'Yuen Long']
@@ -20,17 +15,16 @@ class Search extends React.Component {
             {
                 startDate: this.state.startDate,
                 endDate: this.state.endDate,
-                district: this.state.district,
-                petType: this.state.petType
+                district: this.state.district || "all",
+                petType: this.state.petType || "all",
             })
             .then(response => {
                 if (response === null) {
                     console.log('you are living failure')
                 } else {
                     console.log(response.data)
-                    for (let i=0; i < response.data.length; i++){
-                    console.log(response.data[i].startDate)
-                    };
+                    this.props.afterSearch(response.data)
+                    this.props.history();
                 }
             this.props.onSearch(this.state);
             })
@@ -62,8 +56,8 @@ class Search extends React.Component {
 
     render() {
         const serachDistricts = (
-            <select name="district" onChange={this.districtChange}>
-                <option value="NA" disabled selected hidden>--District--</option>
+            <select name="district" onChange={this.districtChange} required>
+                <option value="all" disabled selected hidden>--District--</option>
                 {this.districts.map((district, index) => {
                     return <option value={district} key={index}>{district}</option>
                 })}
@@ -78,19 +72,17 @@ class Search extends React.Component {
         threeMonthLater = threeMonthLater.toISOString().split('T')[0];
                
         return (
-            <div className="search" >
-             <h1>{this.props.SearchHistory.district}</h1>
-                <form>
-                <FontAwesomeIcon icon="hotel" />
-                    <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange}></input>
-                    <input type='date' id='end' name='endDate' min={today} max={threeMonthLater} onChange={this.endDateChange}></input>
+            <div className="search">
+                <form onSubmit={this.handleSearch}>
+                    <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange} required />
+                    <input type='date' id='end' name='endDate' min={today} max={threeMonthLater} onChange={this.endDateChange} required />
                     {serachDistricts}
-                    <select name="petType" onChange={this.petTypeChange} >
-                        <option value="NA" disabled selected hidden>--Type of Pet--</option>
+                    <select name="petType" onChange={this.petTypeChange} required>
+                        <option value="all" disabled selected hidden>--Type of Pet--</option>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                     </select>
-                    <button type="submit" value="Submit" onClick={this.handleSearch}>Search</button>
+                    <button type="submit" value="Submit">Search</button>
                 </form>
             </div>
         )
@@ -100,13 +92,14 @@ class Search extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        SearchHistory: state.searchHistory
+        searchResult: state,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSearch: (state) => dispatch({type: actionTypes.SEARCHHOTEL, state:state})
+        onSearch: (history) => dispatch({type: actionTypes.SEARCHHOTEL, history:history}),
+        afterSearch: (result) => dispatch({type: actionTypes.SEARCHRESULT, result:result})
     }
 };
 

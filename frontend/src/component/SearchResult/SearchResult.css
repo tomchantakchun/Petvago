@@ -1,0 +1,39 @@
+.filter-container{
+    width: 100%;
+    height: 10vh;
+    padding-top:2vh ;
+    
+}
+
+.hotel-container-2 { 
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: space-around;
+    align-items: center;
+    width:100%;
+    padding-top:2vh ;
+    
+}
+
+.hotel-info-2 {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    margin: 20px 20px 10px 10px;
+}
+
+.hotel-info-2:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+.hotel-icon-2{
+    height: 30vh;
+    width:  30vh;
+    object-fit: cover;
+}
+
+.hotel-detail-2 {
+    padding: 2px 16px;
+    font-size: 2vh;
+    margin-bottom: 3px;
+
+  }
