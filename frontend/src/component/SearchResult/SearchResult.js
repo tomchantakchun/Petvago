@@ -1,66 +1,69 @@
 import React from 'react';
-import Axios from 'axios';
+import { connect } from 'react-redux';
 import "./SearchResult.css";
-import Filter  from "../Filter/Filter";
+import Filter from "../Filter/Filter";
+import convert from 'object-array-converter'
 
-class SearchResult extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            hotelInfo: null,
-            hotelListItems: null,
-        }
+const mapStateToProps = state => {
+    return {
+        SearchResult: state.search,
     }
-    async componentDidMount() {
-        //    call hotel info api from backend,then set state
-        try {
-            const _hotelInfo = await Axios.get('http://localhost:8080/api/hotel');
-            this.setState({ hotelInfo: _hotelInfo.data });
-            const listItems = this.state.hotelInfo.map(
-                (e) => <div key={e.id.toString()} className="hotel-info-2"  >
-                    <img className="hotel-icon-2" src={e.path}  onClick={(e)=>{this.onClickHotelInfo(e)}}></img>
+};
+
+class SearchResult extends React.Component {
+    render() {
+        //convert object to Array
+        let searchResultArray = []
+        let searchArray = convert.toArray(this.props.SearchResult)
+        for (let i = 0; i < searchArray.length; i++) {
+            if (searchArray[i].key === "searchResult") {
+                searchResultArray = convert.toArray(searchArray[i].value)
+            }
+        }
+        searchResultArray = searchResultArray.map(e => e.value);
+        console.log(searchResultArray)
+
+        //get only unique hotel
+        function getUnique(arr, comp) {
+
+            const unique = arr.map(e => e[comp])
+                // store the keys of the unique objects
+                .map((e, i, final) => final.indexOf(e) === i && i)
+                // eliminate the dead keys & store unique objects
+                .filter(e => arr[e]).map(e => arr[e]);
+            return unique;
+        }
+
+        //create list item with unique hotel list and map function
+        const listItems = (
+            getUnique(searchResultArray, 'hotelID').map((e) => {
+                return <div key={e.hotelID.toString()} className="hotel-info-2"  >
+                    <img className="hotel-icon-2" src={e.photo} alt="NA" />
                     <div className="hotel-detail-2">
                         <div className="hotel-name-2">{e.name}</div>
-                        <div className="hotel-rate-2"> </div>
-                        <div className="room-type"></div>
-                        <div className="price"></div>
-                        <div></div>
+                        <div className="hotel-rate-2"> {e.averageRating}</div>
+                        <div className="room-type"> {e.roomType}</div>
+                        <div className="hotel-address">{e.district}</div>
+                        <div className="price"> {e.price}</div>
                     </div>
-                    
                 </div>
-            );
-            this.setState({ hotelListItems: listItems });
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    render(){
-        return(
+            })
+        )
+            
+        return (
             <div className="result-body">
                 <div className="filter-container">
-               
-                <Filter/>
+                    <Filter />
                 </div>
-                <div className="hotel-container-2" >
-                    {this.state.hotelListItems}
-
-                    {/* const listItems = this.state.hotelInfo.map(
-                (e) => <div key={e.id.toString()} className="hotel-info-2"  >
-                    <img className="hotel-icon-2" src={e.path}  onClick={(e)=>{this.onClickHotelInfo(e)}}></img>
-                    <div className="hotel-detail-2">
-                        <div className="hotel-name-2">{e.name}</div>
-                        <div className="hotel-rate-2"> </div>
-                        <div className="room-type"></div>
-                        <div className="price"></div>
-                        <div></div>
-                    </div> */}
-                    
-                </div>
+                <div className="hotel-container" >
+                    {listItems}
                 </div>
             </div>
         )
     }
 }
 
-export default SearchResult;
+
+
+
+export default connect(mapStateToProps)(SearchResult);

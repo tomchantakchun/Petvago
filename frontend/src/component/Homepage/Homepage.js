@@ -42,13 +42,16 @@ class Homepage extends React.Component {
         // put corresponding index in to redux for redirection
     }
 
+    redirectToSearchResult = ()=>{
+        this.props.history.push('../search_result');
+    }
 
     render() {
         return (
             <div className="home-body" >
                 <div className="background" >
                     <div className="search-bar">
-                        <Search/>
+                        <Search history={this.redirectToSearchResult}/>
                     </div>
                 </div>
                 <div className="split text-left">Recommended Hotel:</div>
