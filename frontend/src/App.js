@@ -3,7 +3,7 @@ import 'reset-css';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login';
-import Search from './component/Search/Search'
+import Search from './component/Search/Search';
 import User from './component/User';
 import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
