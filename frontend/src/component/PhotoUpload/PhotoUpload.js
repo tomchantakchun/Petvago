@@ -1,19 +1,27 @@
 import React from 'react';
 import axios from 'axios';
+import './PhotoUpload.css'
+
+// Setting up Fontawesome
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+library.add(faPlus)
+
 
 class PhotoUpload extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             selectedFile: null,
-            loaded: 0
+            // loaded: 0
         }
     }
 
     handleselectedFile = e => {
         this.setState({
             selectedFile: e.target.files[0],
-            loaded: 0,
+            // loaded: 0,
         })
     }
 
@@ -26,15 +34,15 @@ class PhotoUpload extends React.Component {
             console.log(`http://localhost:8080/api/hotel/uploadPhoto`);
             axios.post(`http://localhost:8080/api/hotel/uploadPhoto`, data, 
                 {
-                    onUploadProgress: ProgressEvent => {
-                        this.setState({
-                            loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
-                        })
-                    },
+                    // onUploadProgress: ProgressEvent => {
+                    //     this.setState({
+                    //         loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
+                    //     })
+                    // },
                     headers: { Authorization: `Bearer ${jwt}` }
                 })
                 .then(res => {
-                    this.setState({selectedFile: null, loaded: 0})
+                    this.setState({selectedFile: null})
                     document.getElementById("PhotoUploadInput").value = "";
                     console.log(res.statusText)
                     console.log(`Photo uploaded`);
@@ -48,8 +56,9 @@ class PhotoUpload extends React.Component {
         return (
             <div id='PhotoUpload'>
                 <input type="file" name="" id="PhotoUploadInput" onChange={this.handleselectedFile} />
-                <button onClick={this.handleUpload}>Upload</button>
-                <div> {Math.round(this.state.loaded, 0)} %</div>
+                <FontAwesomeIcon icon="plus" />
+                {/* <button onClick={this.handleUpload}>Upload</button> */}
+                {/* <div> {Math.round(this.state.loaded, 0)} %</div> */}
             </div>
         )
     }

@@ -1,0 +1,20 @@
+#PhotoUpload{
+    border: 1px solid;
+    width:100px;
+    height:100px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+#PhotoUpload svg{
+    height: 40px;
+    width: 40px;
+    margin: 30px;
+}
+
+#PhotoUpload input[type=file]{
+    height:inherit;
+    width:100%;
+    position:absolute;
+    opacity:0;
+}
