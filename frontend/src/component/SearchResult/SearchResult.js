@@ -11,6 +11,7 @@ const mapStateToProps = state => {
 };
 
 class SearchResult extends React.Component {
+   
     render() {
         //convert object to Array
         let searchResultArray = []
@@ -25,7 +26,6 @@ class SearchResult extends React.Component {
 
         //get only unique hotel
         function getUnique(arr, comp) {
-
             const unique = arr.map(e => e[comp])
                 // store the keys of the unique objects
                 .map((e, i, final) => final.indexOf(e) === i && i)
@@ -62,8 +62,5 @@ class SearchResult extends React.Component {
         )
     }
 }
-
-
-
 
 export default connect(mapStateToProps)(SearchResult);
