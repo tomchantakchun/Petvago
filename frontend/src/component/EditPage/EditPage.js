@@ -3,7 +3,7 @@ import './EditPage.css'
 import axios from 'axios';
 import RoomModal from './RoomModal'
 import WarningModal from './WarningModal'
-import { withRouter } from 'react-router';
+import PhotoUpload from '../PhotoUpload/PhotoUpload'
 
 // Setting up Fontawesome
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -17,6 +17,7 @@ class EditPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userName: '',
             hotelName: '',
             hotelTel: '',
             hotelAddress: '',
@@ -29,6 +30,7 @@ class EditPage extends React.Component {
             isHost: false,
             editRoomTypeID: '',
             editRoomTypeContent: [],
+            newPhotoID: -1,
             isSaved: false,
         }
         this.result = '';
@@ -62,7 +64,7 @@ class EditPage extends React.Component {
 
     handleChangeCheckbox = (e) => {
         let storedVaccine = this.state.vaccineRequirement.find((element) => {
-            return element == e.target.value
+            return element === e.target.value
         })
 
         if (e.target.checked) {
@@ -74,7 +76,7 @@ class EditPage extends React.Component {
         } else {
             if (storedVaccine) {
                 let newVaccineRequirement = this.state.vaccineRequirement.filter((element) => {
-                    return element != e.target.value
+                    return element !== e.target.value
                 })
                 this.setState({ vaccineRequirement: newVaccineRequirement })
             }
@@ -159,8 +161,88 @@ class EditPage extends React.Component {
     }
 
     handleChangeDistrict = (e) => {
-        console.log(`e.target.value: `,e.target.value);
         this.setState({hotelDistrict: e.target.value})
+    }
+
+    handleAddRoomTypePhoto = async (e) => {
+        let newRoomType = this.state.roomType;
+        let arrayIndex;
+
+        for (let i in this.state.roomType) {
+            if (this.state.editRoomTypeID === this.state.roomType[i].roomTypeID.toString()) {
+                arrayIndex = i
+            }
+        }
+        newRoomType[arrayIndex].photos.push({
+            icon: false,
+            path: URL.createObjectURL(e.target.files[0]),
+            photoID: this.state.newPhotoID,
+            name:`hotel-${this.state.userName}-${newRoomType[arrayIndex].roomType.replace(' ','')}-other-no`,
+        });
+        await this.setState({roomType: newRoomType});
+        await this.setState({newPhotoID: this.state.newPhotoID - 1})
+    }
+
+    handleDeleteRoomTypePhoto = (e) => {
+
+        let targetID = e.currentTarget.parentElement.id.split('other-photo-')[1];
+        let newRoomType = this.state.roomType;
+        let arrayIndex;
+
+        for (let i in this.state.roomType) {
+            if (this.state.editRoomTypeID === this.state.roomType[i].roomTypeID.toString()) {
+                arrayIndex = i
+            }
+        }
+        newRoomType[arrayIndex].photos = newRoomType[arrayIndex].photos.map((e) => {
+            if (e.photoID.toString() === targetID) {
+                return {
+                    icon: false,
+                    path: e.path,
+                    photoID: e.photoID,
+                    isDelete: true,
+                }
+            } else {
+                return e
+            }
+        });
+        this.setState({roomType: newRoomType});
+    }
+
+    handleEditRoomTypeIconPhoto = async (e) => {
+        let newRoomType = this.state.roomType;
+        let arrayIndex;
+
+        for (let i in this.state.roomType) {
+            if (this.state.editRoomTypeID === this.state.roomType[i].roomTypeID.toString()) {
+                arrayIndex = i
+            }
+        }
+
+        for (let i in newRoomType[arrayIndex].photos) {
+            if (newRoomType[arrayIndex].photos[i].icon === true) {
+                newRoomType[arrayIndex].photos[i] = {
+                    icon: false,
+                    path: newRoomType[arrayIndex].photos[i].path,
+                    photoID: newRoomType[arrayIndex].photos[i].photoID,
+                    isDelete: true,
+                }
+            }
+        }
+
+        newRoomType[arrayIndex].photos.push({
+            icon: true,
+            path: URL.createObjectURL(e.target.files[0]),
+            photoID: this.state.newPhotoID,
+            name: `hotel-${this.state.userName}-${newRoomType[arrayIndex].roomType.replace(' ','')}-icon-no`,
+        });
+
+        await this.setState({roomType: newRoomType});
+        await this.setState({newPhotoID: this.state.newPhotoID - 1})
+    }
+
+    handleEditBigIconPhoto = (e) => {
+        this.setState({hotelIcon: URL.createObjectURL(e.target.files[0])});
     }
 
     handleSubmit = () => {
@@ -193,7 +275,7 @@ class EditPage extends React.Component {
                 .then(async (res) => {
                     let resVaccines = res.data[0].vaccineRequirement.vaccine
                     let newResVaccines = resVaccines.map((vaccine) => {
-                        if (vaccine == 'Kennel Cough') {
+                        if (vaccine === 'Kennel Cough') {
                             return 'KennelCough';
                         } else {
                             return vaccine;
@@ -220,15 +302,16 @@ class EditPage extends React.Component {
                             })
                     }
 
-                    console.log(`processedRoomType: `, processedRoomType);
-
                     this.setState({
+                        userName: res.data[0].userName,
                         hotelName: res.data[0].name,
                         hotelTel: res.data[0].telephone,
                         hotelAddress: res.data[0].address,
                         hotelDistrict: res.data[0].district,
                         hotelDescription: res.data[0].description,
                         roomType: processedRoomType,
+                        editRoomTypeID: processedRoomType[0].roomTypeID,
+                        editRoomTypeContent: processedRoomType[0],
                         vaccineRequirement: newResVaccines,
                         isHost: true
                     })
@@ -268,7 +351,7 @@ class EditPage extends React.Component {
 
             this.vaccines = this.allVaccine.map((vaccine) => {
                 let requiredVaccine = this.state.vaccineRequirement.find((element) => {
-                    return element == vaccine
+                    return element === vaccine
                 })
                 if (requiredVaccine) {
                     return (
@@ -331,7 +414,8 @@ class EditPage extends React.Component {
                                 </tbody>
                             </table>
                             <div id='HotelIcon'>
-                                <FontAwesomeIcon icon="edit" />
+                                <img src={this.state.hotelIcon === '' ? './image/empty-photo.png' : this.state.hotelIcon} alt={`Icon Photo for this hotel: ${this.state.hotelName}`}></img>
+                                <PhotoUpload isEdit={true} handleEditRoomTypeIconPhoto={this.handleEditBigIconPhoto}></PhotoUpload>
                             </div>
                         </div>
 
@@ -381,8 +465,18 @@ class EditPage extends React.Component {
                 <section>
                     {this.result}
                 </section>
-                <RoomModal editRoomTypeID={this.state.editRoomTypeID} editRoomTypeContent={this.state.editRoomTypeContent} handleRoomDescription={this.handleRoomDescription}></RoomModal>
-                <WarningModal editRoomTypeID={this.state.editRoomTypeID} editRoomTypeContent={this.state.editRoomTypeContent} handleConfirmDeleteRoomType={this.handleConfirmDeleteRoomType}></WarningModal>
+                <RoomModal 
+                    editRoomTypeID={this.state.editRoomTypeID} 
+                    editRoomTypeContent={this.state.editRoomTypeContent} 
+                    handleRoomDescription={this.handleRoomDescription}
+                    handleAddRoomTypePhoto={this.handleAddRoomTypePhoto}
+                    handleDeleteRoomTypePhoto={this.handleDeleteRoomTypePhoto}
+                    handleEditRoomTypeIconPhoto={this.handleEditRoomTypeIconPhoto}></RoomModal>
+
+                <WarningModal 
+                    editRoomTypeID={this.state.editRoomTypeID} 
+                    editRoomTypeContent={this.state.editRoomTypeContent} 
+                    handleConfirmDeleteRoomType={this.handleConfirmDeleteRoomType}></WarningModal>
             </div>
         )
     }
