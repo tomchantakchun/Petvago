@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from "react-router-dom";
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
@@ -24,7 +25,7 @@ class Search extends React.Component {
                 } else {
                     console.log(response.data)
                     this.props.afterSearch(response.data)
-                    this.props.history();
+                    this.props.history.push('./search_result');
                 }
             this.props.onSearch(this.state);
             })
@@ -103,4 +104,4 @@ const mapDispatchToProps = dispatch => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Search));
