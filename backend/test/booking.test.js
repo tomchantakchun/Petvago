@@ -55,6 +55,18 @@ describe('Booking backend test', () => {
                  console.log(err)
              })
      });
+
+     it('Get past and upcoming booking', async () => {
+        //jwt of customer1
+        const jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJjdXN0b21lcjEiLCJpc0hvdGVsIjpmYWxzZX0.PUao0czNdfA7ymFcaIEcCnIFoGqhOrH3pm5MsqT_y4M'
+         await axios.get(`http://localhost:8080/api/booking/user`,{ headers: { Authorization: `Bearer ${jwt}` } })
+             .then(response => {
+                 console.log(response.data)
+                expect(response.data).not.toBe(null);
+             }).catch((err)=>{
+                 console.log(err)
+             })
+     });
  
 
     

@@ -85,7 +85,7 @@ class Confirmation extends Component {
                 orderDate:orderDate,
                 ownerName:data.ownerName,
                 hotelName:data.hotelName,
-                ownerPhone:data.ownerName,
+                ownerPhone:data.ownerPhone,
                 petName:data.petName,
                 petWeight:data.petWeight,
                 petType:data.petType,

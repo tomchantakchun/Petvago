@@ -67,6 +67,7 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
   var db=req.db;
   let query=db.select('b.id as bookingID','b.userID','b.hotelID','h.name as hotelName','b.startDate','b.endDate','p.path').from("booking as b").innerJoin('hotel as h','h.id','b.hotelID').innerJoin('photo as p','h.id','p.hotelID').whereNull('p.roomTypeID').andWhere('b.userID',req.user.id)
   query.then((rows)=>{
+    console.log('8888',rows)
       let newRow=rows.map((current,index,array)=>{
         let booking={
           bookingID:current.bookingID, 
@@ -120,6 +121,7 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
           return true
         }
       })
+      
       res.send(newRow);
            
   }).catch((error)=>{

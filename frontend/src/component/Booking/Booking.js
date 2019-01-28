@@ -214,12 +214,12 @@ class Booking extends Component {
             })
         }
 
-        console.log('111',this.state.petWeight)
+        
 
         //check is number 
         let checkPhone=Number(this.state.ownerPhone);
         let checkWeight=Number(this.state.petWeight)
-        console.log('222',checkWeight)
+        console.log('222',checkPhone)
 
         //
         if( this.state.ownerName && this.state.ownerPhone && isNaN(checkPhone)==false && this.state.petName && this.state.petType && this.state.petWeight && isNaN(checkWeight)== false && this.state.vaccineCheck==this.state.vaccineRequirement.vaccine.length){
@@ -363,7 +363,7 @@ class Booking extends Component {
             </label>
             </div>
 
-            <button className="btn booking-button" onClick={this.handleSubmit}>Submit</button>
+            <button className=" booking-button" onClick={this.handleSubmit}>Submit</button>
 
            <div className='count-down'>
             <div><p> We will hold this room for : </p></div>
