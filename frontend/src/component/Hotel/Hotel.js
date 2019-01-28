@@ -92,17 +92,19 @@ class Hotel extends Component {
 
                     <div className="hotel-row-3-b">
                         <div className="hotel-photo-3" > 
-                        <img className="demo-photo" src={"https://i.imgur.com/img0gF3.jpg"} alt="NA" />
+                        <img className="demo-photo" src={"https://i.imgur.com/sFq0wAC.jpg"} alt="NA" />
                         </div>
                     </div>
 
 
                 </div>
 
-
-                <div className="hotel-date-3"> DATE INPUT</div>
-
                 <div className="hotel-description-3">DESRIPITION</div>
+
+                <div className="split hotel-date-3">DATE INPUT </div>
+                
+
+                
                 <div className="hotel-room-type-3">Room type:</div>
                 <div className="hotel-vaccine-requirement-3">vaccineRequirement (point form)</div>
                 <div className="hotel-review-3">Review</div>
