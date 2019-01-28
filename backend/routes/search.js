@@ -12,6 +12,8 @@ router.post('/', async (req, res, next) => {
   let startDay = new Date(req.body.startDate);
   let endDay = new Date(req.body.endDate);
 
+  console.log('searchReceived')
+
   //get all room
   await db.select("	additionalPrice	"	,
   "	address	"	,
