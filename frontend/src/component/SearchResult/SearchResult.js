@@ -22,7 +22,6 @@ class SearchResult extends React.Component {
             }
         }
         searchResultArray = searchResultArray.map(e => e.value);
-        console.log(searchResultArray)
 
         //get only unique hotel
         function getUnique(arr, comp) {
@@ -37,7 +36,7 @@ class SearchResult extends React.Component {
         //create list item with unique hotel list and map function
         const listItems = (
             getUnique(searchResultArray, 'hotelID').map((e) => {
-                return <div key={e.hotelID.toString()} className="hotel-info-2"  >
+                return <div id={e.hotelID.toString()} key={e.hotelID.toString()} className="hotel-info-2"  >
                     <img className="hotel-icon-2" src={e.photo} alt="NA" />
                     <div className="hotel-detail-2">
                         <div className="hotel-name-2">{e.name}</div>
