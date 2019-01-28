@@ -2,7 +2,7 @@
 const styles = {
     footerStyle: {
         backgroundColor: "#4c6189",
-        fontSize: "20px",
+        fontSize: "1rem",
         color: "white",
         textAlign: "center",
         left: "0",
@@ -17,13 +17,12 @@ const styles = {
         display: "flex",
         flexWrap:"wrap",
         justifyContent: "space-around",
-        height: "30px",
-        width: "100%",
-        fontSize: "20px",
-        fontFamily: "Sarabun",
         height: "7vh",
         width: "100%",
-        padding: "20px",
+        fontSize: "1rem",
+        fontFamily: "Sarabun",
+        width: "100%",
+        padding: "1rem",
         borderTop: "1px solid #E7E7E7",
     }
           
