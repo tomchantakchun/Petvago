@@ -252,10 +252,12 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
           return current
         }
       }).filter((each)=>{
-      if(each!=null){
-        return true
-      }
-    })
+        if(each!=null){
+          return true
+        }
+      })
+
+      newRow[0].userName = req.user.username
       res.send(newRow)
     }).catch((error)=>{
       console.log(error);

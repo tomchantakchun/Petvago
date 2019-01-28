@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios'
 import './WarningModal.css'
 
 class WarningModal extends React.Component {

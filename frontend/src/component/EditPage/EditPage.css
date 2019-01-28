@@ -90,20 +90,31 @@
 
 #EditPage #FormHeader #HotelIcon {
     grid-column: 3/4;
-    background-image: url("https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/hotel-icon.jpg?alt=media&token=b6e21cbc-a2ca-4aa3-bfd6-b975fd3bba73");
-    background-position: center;
+    /* background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    border-radius: 5px;
+    border-radius: 5px; */
     margin: 10px;
     max-height: 200px;
     max-width: 200px;
 }
 
-#EditPage #FormHeader #HotelIcon svg {
+#EditPage #FormHeader #HotelIcon img {
+    border-radius: 5px;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+#EditPage #FormHeader #HotelIcon #PhotoUpload {
+
+}
+
+/* #EditPage #FormHeader #HotelIcon svg {
     margin: 5px;
     cursor: pointer;
-}
+} */
 
 #EditPage #FormHeader .district {
     margin: 5px;
