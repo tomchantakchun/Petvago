@@ -71,7 +71,16 @@ router.post('/',passport.authenticate("jwt", { session: false }), (req, res) => 
   let query=db.insert({userID:req.user.id,hotelID:req.body.hotelID,bookingID:req.body.bookingID,rating:req.body.rating,comment:req.body.comment}).into('review')
 
   query.then(()=>{
-      res.send({status:'success'});
+    db.select('peopleRated','averageRating').from('hotel').where('id',req.body.hotelID).then((result)=>{
+      let newRating=((result[0].averageRating*result[0].peopleRated)+req.body.rating)/(result[0].peopleRated+1)
+      let newPeople=(result[0].peopleRated+1)
+
+      db('hotel').update({averageRating:newRating, peopleRated:newPeople}).where('id',req.body.hotelID).then(()=>{
+        res.send({status:'success'});
+      })
+    })
+
+      
   }).catch((error)=>{
     console.log(error);
     res.status(500).send({error:'cannot get review'})
