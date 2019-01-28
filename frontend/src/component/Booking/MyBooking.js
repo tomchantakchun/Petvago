@@ -32,6 +32,7 @@ class Confirmation extends Component {
             petName:null,
             petWeight:null,
             petType:null,
+            hotelID:null,
             vaccineRequirement:null,
             service:null,
             totalPrice:null,
@@ -40,7 +41,7 @@ class Confirmation extends Component {
             roomType:null,  
             modalBody:null,    
             review:null,
-            rating:1,
+            rating:0,
             reviewArray:null,     
           
         }
@@ -67,6 +68,13 @@ class Confirmation extends Component {
                 upcomingBooking:result.data[0].upcomingBooking,
             })
         }).catch((err)=>console.log(err))
+
+       this.getReview()
+
+    }
+
+    getReview=()=>{
+        const jwt = localStorage.getItem('petvago-token');
 
         axios.get(`http://localhost:8080/api/review/user`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
             this.setState({
@@ -143,6 +151,7 @@ class Confirmation extends Component {
     
                 this.setState({
                     orderDate:orderDate,
+                    hotelID:data.hotelID,
                     ownerName:data.ownerName,
                     hotelName:data.hotelName,
                     ownerPhone:data.ownerPhone,
@@ -192,8 +201,6 @@ class Confirmation extends Component {
                             }else{return false}
                         })
 
-                        console.log('isReviewed',isReviewed)
-
                         const changeRating=( newRating ) =>{
                             return new Promise((resolve,reject)=>{
                                 this.setState({
@@ -230,18 +237,18 @@ class Confirmation extends Component {
                                         <p style={{marginTop:'20px',marginBottom:'10px',fontSize:'20px'}}><FontAwesomeIcon icon="thumbs-up" style={{marginRight:'10px', color:'#50b5a9'}}/>Write a review</p>
                                         <Ratings
                                             rating={this.state.rating}
-                                            widgetRatedColors="yellow"
+                                            widgetRatedColors="rgb(252, 184, 40)"
                                             widgetDimensions="25px"
                                             changeRating={changeRating}
                                         >
-                                            <Ratings.Widget widgetHoverColor="yellow"/>
-                                            <Ratings.Widget widgetHoverColor="yellow"/>
-                                            <Ratings.Widget widgetHoverColor="yellow"/>
-                                            <Ratings.Widget widgetHoverColor="yellow" />
-                                            <Ratings.Widget widgetHoverColor="yellow"/>
+                                            <Ratings.Widget widgetHoverColor="rgb(252, 184, 40)"/>
+                                            <Ratings.Widget widgetHoverColor="rgb(252, 184, 40)"/>
+                                            <Ratings.Widget widgetHoverColor="rgb(252, 184, 40)"/>
+                                            <Ratings.Widget widgetHoverColor="rgb(252, 184, 40)" />
+                                            <Ratings.Widget widgetHoverColor="rgb(252, 184, 40)"/>
                                         </Ratings>
                                         <div className="form-group" style={{marginTop:'10px'}}>
-                                        <textarea className="form-control" rows="3" onChange={this.writeReview}></textarea>
+                                        <textarea className="form-control" rows="3" value={this.state.review} onChange={this.writeReview}></textarea>
                                         </div>
                                       
         
@@ -276,7 +283,7 @@ class Confirmation extends Component {
                                         <p style={{marginTop:'20px',marginBottom:'10px',fontSize:'20px'}}><FontAwesomeIcon icon="thumbs-up" style={{marginRight:'10px', color:'#50b5a9'}}/>Your review</p>
                                         <Ratings
                                             rating={isReviewed[0].rating}
-                                            widgetRatedColors="yellow"
+                                            widgetRatedColors="rgb(252, 184, 40)"
                                             widgetDimensions="25px"
                                         >
                                             <Ratings.Widget/>
@@ -286,7 +293,7 @@ class Confirmation extends Component {
                                             <Ratings.Widget/>
 
                                         </Ratings>
-                                        <p>{isReviewed[0].comment}</p>
+                                        <p style={{marginTop:'10px',marginBottom:'20px'}}>{isReviewed[0].comment}</p>
                                    
                                     </div>
                                     </div>)
@@ -313,7 +320,22 @@ class Confirmation extends Component {
     }
 
     submitReview=(e)=>{
-        console.log(this.state.review)
+        this.setState({
+            rating:0,
+            review:''
+        })
+        let data={
+            hotelID:this.state.hotelID,
+            bookingID:this.state.bookingID,
+            rating:this.state.rating,
+            comment:this.state.review
+        }
+        const jwt = localStorage.getItem('petvago-token');
+        const getReview=this.getReview
+
+        axios.post('http://localhost:8080/api/review',data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+            getReview()
+        }).catch(err=>console.log(err))
     }
 
     renderPast=()=>{

@@ -34,7 +34,7 @@ class Confirmation extends Component {
 
     componentDidMount(){
 
-        if (!this.state.bookingID && !this.props.location.state.bookingID) {
+        if (!this.state.bookingID || !this.props.location.state.bookingID) {
             this.props.history.push('/home')
         }else{
             let promise=new Promise((resolve,reject)=>{
