@@ -3,6 +3,7 @@ import './EditPage.css'
 import axios from 'axios';
 import RoomModal from './RoomModal'
 import WarningModal from './WarningModal'
+import ConfirmationModal from './ConfirmationModal'
 import PhotoUpload from '../PhotoUpload/PhotoUpload'
 
 // Setting up Fontawesome
@@ -24,6 +25,7 @@ class EditPage extends React.Component {
             hotelDistrict: '',
             hotelDescription: '',
             hotelIcon: '',
+            hotelIconFile: '',
             roomType: [],
             addedButNotUpdatedRoomType: [],
             vaccineRequirement: [],
@@ -32,6 +34,7 @@ class EditPage extends React.Component {
             editRoomTypeContent: [],
             newPhotoID: -1,
             isSaved: false,
+            countDownSecond: 5,
         }
         this.result = '';
         this.rooms = '';
@@ -59,7 +62,7 @@ class EditPage extends React.Component {
             }
         }
         newRoomType[arrayIndex].description = e.target.value;
-        this.setState({roomType: newRoomType});
+        this.setState({ roomType: newRoomType });
     }
 
     handleChangeCheckbox = (e) => {
@@ -161,7 +164,7 @@ class EditPage extends React.Component {
     }
 
     handleChangeDistrict = (e) => {
-        this.setState({hotelDistrict: e.target.value})
+        this.setState({ hotelDistrict: e.target.value })
     }
 
     handleAddRoomTypePhoto = async (e) => {
@@ -173,14 +176,16 @@ class EditPage extends React.Component {
                 arrayIndex = i
             }
         }
+
         newRoomType[arrayIndex].photos.push({
             icon: false,
             path: URL.createObjectURL(e.target.files[0]),
+            files: e.target.files[0],
             photoID: this.state.newPhotoID,
-            name:`hotel-${this.state.userName}-${newRoomType[arrayIndex].roomType.replace(' ','')}-other-no`,
+            name: `hotel-${this.state.userName}-${newRoomType[arrayIndex].roomType.replace(' ', '')}-other-no=-=`,
         });
-        await this.setState({roomType: newRoomType});
-        await this.setState({newPhotoID: this.state.newPhotoID - 1})
+        await this.setState({ roomType: newRoomType });
+        await this.setState({ newPhotoID: this.state.newPhotoID - 1 })
     }
 
     handleDeleteRoomTypePhoto = (e) => {
@@ -206,7 +211,7 @@ class EditPage extends React.Component {
                 return e
             }
         });
-        this.setState({roomType: newRoomType});
+        this.setState({ roomType: newRoomType });
     }
 
     handleEditRoomTypeIconPhoto = async (e) => {
@@ -233,20 +238,145 @@ class EditPage extends React.Component {
         newRoomType[arrayIndex].photos.push({
             icon: true,
             path: URL.createObjectURL(e.target.files[0]),
+            files: e.target.files[0],
             photoID: this.state.newPhotoID,
-            name: `hotel-${this.state.userName}-${newRoomType[arrayIndex].roomType.replace(' ','')}-icon-no`,
+            name: `hotel-${this.state.userName}-${newRoomType[arrayIndex].roomType.replace(' ', '')}-icon-no=-=`,
         });
 
-        await this.setState({roomType: newRoomType});
-        await this.setState({newPhotoID: this.state.newPhotoID - 1})
+        await this.setState({ roomType: newRoomType });
+        await this.setState({ newPhotoID: this.state.newPhotoID - 1 })
     }
 
     handleEditBigIconPhoto = (e) => {
-        this.setState({hotelIcon: URL.createObjectURL(e.target.files[0])});
+        this.setState({ 
+            hotelIcon: URL.createObjectURL(e.target.files[0]),
+            hotelIconFile: e.target.files[0],
+        });
     }
 
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+        e.preventDefault()
+        let submitVac = {
+            "vaccine": this.state.vaccineRequirement.map((e) => {
+                if (e === 'KennelCough') {
+                    return 'Kennel Cough'
+                } else {
+                    return e
+                }
+            })
+        }
 
+        let deletePhotoArray = [];
+        for (let i in this.state.roomType) {
+            for (let j in this.state.roomType[i].photos) {
+                if (this.state.roomType[i].photos[j].isDelete !== undefined) {
+                    deletePhotoArray.push(this.state.roomType[i].photos[j].photoID)
+                }
+            }
+        }
+
+        let addPhotosArray = [];
+        for (let i in this.state.roomType) {
+            for (let j in this.state.roomType[i].photos) {
+                if (this.state.roomType[i].photos[j].photoID < 0) {
+                    // console.log(`this.state.roomType[i].photos[j].files: `,this.state.roomType[i].photos[j].files);
+                    addPhotosArray.push({
+                        photoName: this.state.roomType[i].photos[j].name,
+                        files: this.state.roomType[i].photos[j].files,
+                        roomTypeID: this.state.roomType[i].roomTypeID,
+                        path: this.state.roomType[i].photos[j].path,
+                        icon: this.state.roomType[i].photos[j].icon,
+                    })
+                }
+            }
+        }
+
+        console.log(`addPhotosArray: `,addPhotosArray);
+
+        let promiseSubmit = new Promise((resolve, reject) => {
+            axios.post(
+                `http://localhost:8080/api/hotel/edit/submit`,
+                {
+                    name: this.state.hotelName,
+                    telephone: this.state.hotelTel,
+                    address: this.state.hotelAddress,
+                    description: this.state.hotelDescription,
+                    vaccineRequirement: submitVac,
+                    district: this.state.hotelDistrict,
+                    deletePhotos: deletePhotoArray,
+                    addPhotos: [],
+                },
+                { headers: { Authorization: `Bearer ${this.jwt}` } })
+                .then((res) => {
+                    resolve(res);
+                })
+        })
+
+        let promiseArray = []
+        promiseArray.push(promiseSubmit)
+
+        for (let i in this.state.roomType) {
+            promiseArray.push(new Promise((resolve, reject) => {
+                console.log(`http://localhost:8080/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`);
+                axios.put(
+                    `http://localhost:8080/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`,
+                    {
+                        roomType: this.state.roomType[i].roomType, 
+                        price: this.state.roomType[i].price, 
+                        description: this.state.roomType[i].description,
+                        roomTypeID: this.state.roomType[i].roomTypeID,
+                    },
+                    { headers: { Authorization: `Bearer ${this.jwt}` } }
+                ).then((res) => {
+                    resolve(res);
+                })
+            }))
+        }
+
+        for (let i in addPhotosArray) {
+            let formData = new FormData();
+
+            formData.append('file',addPhotosArray[i].files,addPhotosArray[i].photoName);
+            formData.append('roomTypeID',addPhotosArray[i].roomTypeID);
+            formData.append('icon',addPhotosArray[i].icon);
+
+            promiseArray.push(new Promise((resolve, reject) => {
+                axios.post(
+                    `http://localhost:8080/api/hotel/uploadPhoto`,
+                    formData,
+                    { headers: { Authorization: `Bearer ${this.jwt}` } }
+                ).then((res) => {
+                    resolve(res);
+                })
+            }))
+        }
+
+        if (this.state.hotelIconFile !== '') {
+            let formData = new FormData();
+
+            formData.append('file', this.state.hotelIconFile);
+            formData.append('icon', true);
+
+            promiseArray.push(new Promise((resolve, reject) => {
+                axios.post(
+                    `http://localhost:8080/api/hotel/uploadBigIcon`,
+                    formData,
+                    { headers: { Authorization: `Bearer ${this.jwt}` } }
+                ).then((res) => {
+                    resolve(res);
+                })
+            }))
+        }
+
+        Promise.all(promiseArray).then(async (res) => {
+            console.log(`res: `, res);
+            if (res[0].status === 200) {
+                this.setState({ isSaved: true })
+                for (let i = 0; i < 5; i++) {
+                    await this.minusOne();
+                }
+            }
+        })
     }
 
     handleCancel = () => {
@@ -254,9 +384,11 @@ class EditPage extends React.Component {
     }
 
     handleWindowBeforeClose = (e) => {
-        const confirmationMessage = 'Are you sure you want to leave?';
-        (e || window.event).returnValue = confirmationMessage;
-        return confirmationMessage;
+        if (!this.state.isSaved) {
+            const confirmationMessage = 'Are you sure you want to leave?';
+            (e || window.event).returnValue = confirmationMessage;
+            return confirmationMessage;
+        }
     }
 
     componentDidMount() {
@@ -266,6 +398,15 @@ class EditPage extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('beforeunload', this.handleWindowBeforeClose);
+    }
+
+    minusOne () {
+        return new Promise((res, ref) => {
+            setTimeout(() => {
+                this.setState({countDownSecond: this.state.countDownSecond - 1})
+                res()
+            },1000);
+        })
     }
 
     constructEditPage() {
@@ -448,15 +589,19 @@ class EditPage extends React.Component {
                         {this.vaccines}
 
                         <div id='FormFooter'>
-                            <input type='submit' value='Upadate' className='btn btn-success btn-lg px-5'></input>
+                            <input type='submit' value='Upadate' className='btn btn-success btn-lg px-5' data-toggle="modal" data-target="#ConfirmationModal"></input>
                             <button onClick={this.handleCancel} className='btn btn-lg px-5'>Cancel</button>
                         </div>
 
                     </form>
                 </div>
             )
+        } else if (localStorage.getItem('petvago-token') === null) {
+            this.result = <h2>Please login as host to edit</h2>
+        } else if (JSON.parse(window.atob(localStorage.getItem('petvago-token').split('.')[1])).isHotel === false) {
+            this.result = <h2>Please login as host to edit</h2>
         } else {
-            this.result = <h2>Please wait for the loading or login as host to edit</h2>
+            this.result = <h2>Please wait for the page to load</h2>
         }
 
         return (
@@ -465,18 +610,21 @@ class EditPage extends React.Component {
                 <section>
                     {this.result}
                 </section>
-                <RoomModal 
-                    editRoomTypeID={this.state.editRoomTypeID} 
-                    editRoomTypeContent={this.state.editRoomTypeContent} 
+                <RoomModal
+                    editRoomTypeID={this.state.editRoomTypeID}
+                    editRoomTypeContent={this.state.editRoomTypeContent}
                     handleRoomDescription={this.handleRoomDescription}
                     handleAddRoomTypePhoto={this.handleAddRoomTypePhoto}
                     handleDeleteRoomTypePhoto={this.handleDeleteRoomTypePhoto}
                     handleEditRoomTypeIconPhoto={this.handleEditRoomTypeIconPhoto}></RoomModal>
 
-                <WarningModal 
-                    editRoomTypeID={this.state.editRoomTypeID} 
-                    editRoomTypeContent={this.state.editRoomTypeContent} 
+                <WarningModal
+                    editRoomTypeID={this.state.editRoomTypeID}
+                    editRoomTypeContent={this.state.editRoomTypeContent}
                     handleConfirmDeleteRoomType={this.handleConfirmDeleteRoomType}></WarningModal>
+
+                <ConfirmationModal
+                    countDownSecond={this.state.countDownSecond}></ConfirmationModal>
             </div>
         )
     }
