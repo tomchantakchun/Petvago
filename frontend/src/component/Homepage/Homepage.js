@@ -3,7 +3,7 @@ import Axios from 'axios';
 import "./TextSlide.css";
 import "./Homepage.css";
 import TextSlideshow from "../TextSlideshow/TextSlideshow";
-import RatingBar from "../RatingBar-non-edit";
+import RatingBar from "./RatingBar-non-edit";
 import Search from '../Search/Search';
 
 class Homepage extends React.Component {

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import "./SearchResult.css";
 import Filter from "../Filter/Filter";
-import convert from 'object-array-converter'
+import convert from 'object-array-converter';
+import RatingBar from "./RatingBar-non-edit";
 
 const mapStateToProps = state => {
     return {
@@ -40,11 +41,15 @@ class SearchResult extends React.Component {
                 return <div key={e.hotelID.toString()} className="hotel-info-2"  >
                     <img className="hotel-icon-2" src={e.photo} alt="NA" />
                     <div className="hotel-detail-2">
-                        <div className="hotel-name-2">{e.name}</div>
-                        <div className="hotel-rate-2"> {e.averageRating}</div>
-                        <div className="room-type"> {e.roomType}</div>
-                        <div className="hotel-address">{e.district}</div>
-                        <div className="price"> {e.price}</div>
+                        <div className="hotel-row-2"> 
+                            <div className="hotel-name-2">{e.name}</div>
+                            <RatingBar rating={e.averageRating}/>
+                            </div>
+                       
+                        <div className="hotel-row2-2">
+                            <div className="hotel-address-2">{e.district}</div>
+                            <div className="hotel-price-2"> ${e.price}</div>
+                        </div>
                     </div>
                 </div>
             })
@@ -55,8 +60,25 @@ class SearchResult extends React.Component {
                 <div className="filter-container">
                     <Filter />
                 </div>
-                <div className="hotel-container" >
+                <div className="hotel-container-2" >
                     {listItems}
+                </div>
+
+                <div className="hotel-container-2">
+                    <div className="hotel-info-2"  >
+                        <img className="hotel-icon-2" src={"https://i.imgur.com/img0gF3.jpg"} alt="NA" />
+                        <div className="hotel-detail-2">
+                            <div className="hotel-row-2"> 
+                                <div className="hotel-name-2">DOGGY DOGGY</div>
+                                <RatingBar rating={4.0}/>
+                            </div>
+                            <div className="hotel-row2-2">
+                                <div className="hotel-address-2">Wan Chai</div>
+                                <div className="hotel-price-2"> $888</div>
+                            </div>
+                           
+                        </div>
+                    </div>
                 </div>
             </div>
         )

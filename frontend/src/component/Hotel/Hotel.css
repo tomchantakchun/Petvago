@@ -1,0 +1,44 @@
+.demo-photo{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.hotel-photo-3{
+    height: 100%;
+    width: 100%;
+}
+
+.hotel-body{
+    font-family: Sarabun;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.hotel-row-3{
+    padding-top: 1vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 3vh;
+    width:100%;
+}
+
+.hotel-row-3-a{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    width:30vh;
+    height: 50vh;
+}
+
+.hotel-row-3-b{
+    width: 70vh;
+    height: 50vh;
+}
