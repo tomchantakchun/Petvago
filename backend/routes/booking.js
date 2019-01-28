@@ -67,7 +67,6 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
   var db=req.db;
   let query=db.select('b.id as bookingID','b.userID','b.hotelID','h.name as hotelName','b.startDate','b.endDate','p.path').from("booking as b").innerJoin('hotel as h','h.id','b.hotelID').innerJoin('photo as p','h.id','p.hotelID').whereNull('p.roomTypeID').andWhere('b.userID',req.user.id)
   query.then((rows)=>{
-    console.log('8888',rows)
       let newRow=rows.map((current,index,array)=>{
         let booking={
           bookingID:current.bookingID, 
@@ -91,20 +90,45 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
           }
        
         }else if(index<array.length-1 && index>0){
-          array[index+1].upcomingBooking=[]
-          array[index+1].pastBooking=[]
           if(today>current.endDate){
             //past
-            array[index+1].pastBooking=[...current.pastBooking, booking]
+            if(current.pastBooking){
+              array[index+1].pastBooking=[...current.pastBooking, booking]
+              array[index+1].upcomingBooking=current.upcomingBooking
+            }else{
+              array[index+1].pastBooking=[booking]
+              array[index+1].upcomingBooking=current.upcomingBooking
+            }
           }else{
             //upcoming
-            array[index+1].upcomingBooking=[...current.upcomingBooking, booking]
+            if(current.upcomingBooking){
+              array[index+1].upcomingBooking=[...current.upcomingBooking, booking]
+              array[index+1].pastBooking=current.pastBooking
+            }else{
+              array[index+1].upcomingBooking=[booking]
+              array[index+1].pastBooking=current.pastBooking
+
+            }
+
           }
         }else if (index==array.length-1){
+          
           if(today>current.endDate){
-            current.pastBooking=[...current.pastBooking,booking]
+            if(current.pastBooking){
+              current.pastBooking=[...current.pastBooking, booking]
+              current.upcomingBooking=current.upcomingBooking
+            }else{
+              current.pastBooking=[booking]
+              current.upcomingBooking=current.upcomingBooking
+            }
           }else{
-            current.upcomingBooking=[...current.pastBooking,booking]
+            if(current.upcomingBooking){
+              current.upcomingBooking=[...current.upcomingBooking, booking]
+              current.pastBooking=current.pastBooking
+            }else{
+              current.upcomingBooking=[booking]
+              current.pastBooking=current.pastBooking
+            }
           }
           delete current.bookingID;
           delete current.userID;
@@ -113,15 +137,14 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
           delete current.startDate; 
           delete current.endDate;
           delete current.path;
+
           return current
         }
-        console.log('0000',array[index+1].upcomingBooking,array[index+1].pastBooking)
       }).filter((each)=>{
         if(each!=null){
           return true
         }
       })
-      
       res.send(newRow);
            
   }).catch((error)=>{

@@ -32,7 +32,7 @@ router.get('/hotel/:hotelid', function(req, res, next) {
 });
 
 //2. Get all reviews of one user with user id as params
-router.get('/user/:userid', function(req, res, next) {
+router.get('/user', passport.authenticate("jwt", { session: false }), (req, res) => {
   /* Information you get
   { id,
     userID,
@@ -45,7 +45,7 @@ router.get('/user/:userid', function(req, res, next) {
   }
   */
   var db=req.db;
-  let query=db.select().from("review").where("userID",req.params.userID)
+  let query=db.select().from("review").where("userID",req.user.id)
   query.then((rows)=>{
       res.send(rows);
   }).catch((error)=>{

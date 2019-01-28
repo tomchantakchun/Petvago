@@ -5,7 +5,7 @@ import './booking.css'
 import { redirect_to_confirmation } from '../../store/actions';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser,faPhone, faPaw, faWeight, faDog,faSyringe,faBath, faRegistered } from '@fortawesome/free-solid-svg-icons'
+import { faUser,faPhone, faPaw, faWeight, faDog,faSyringe,faBath } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 library.add(faUser)
 library.add(faPhone)
