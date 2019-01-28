@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { choose_hotel_to_book } from '../../store/actions';
 import axios from 'axios';
-
+import GoogleMap from "../GoogleMap/GoogleMap";
 
 class Hotel extends Component {
     constructor(props){
@@ -66,8 +66,12 @@ class Hotel extends Component {
 
     render(){
         return(
-            <div>
+            <div className="hotel-body">
                 {this.state.chosenHotel}
+                <div className="hotel-name-3">hotel name</div>
+                <div className="hotel-rate-3">rating</div>
+                <div className="hotel-map-container"></div>
+                <div></div>
                 <button className="btn btn-primary" onClick={this.book}>Book</button>
             </div>
         )
