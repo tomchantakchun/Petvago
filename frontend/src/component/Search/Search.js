@@ -12,6 +12,7 @@ class Search extends React.Component {
     handleSearch = (e) => {
         e.preventDefault();
         console.log('search start')
+        console.log(this.state)
         axios.post(`http://localhost:8080/api/search/`,
             {
                 startDate: this.state.startDate,

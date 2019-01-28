@@ -36,10 +36,33 @@ class Filter extends React.Component {
     districts = ['Central and Western', 'Eastern', 'Islands', 'Kowloon City', 'Kwai Tsing', 'Kwun Tong', 'North', 'Sai Kung', 'Sha Tin', 'Sham Shui Po', 'Southern', 'Tai Po', 'Tsuen Wan', 'Tuen Mun', 'Wan Chai', 'Wong Tai Sin', 'Yau Tsim Mong', 'Yuen Long']
 
     districtChange = (e) => {
-        console.log('districtChange')
         e.preventDefault();
-        console.log(this.props.SearchResult.endDate)
         this.props.SearchResult.district = e.target.value
+        axios.post(`http://localhost:8080/api/search/`,
+            {
+                startDate: this.props.SearchResult.startDate,
+                endDate: this.props.SearchResult.endDate,
+                district: this.props.SearchResult.district || "all",
+                petType: this.props.SearchResult.petType || "all",
+            })
+            .then(response => {
+                if (response === null) {
+                    console.log('you are living failure')
+                } else {
+                    console.log(response.data)
+                    this.props.afterSearch(response.data)
+                }
+            this.props.onSearch(this.props.SearchResult);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    petTypeChange = (e) => {
+        e.preventDefault();
+        this.props.SearchResult.petType = e.target.value
+        console.log(this.props.SearchResult.petType)
         axios.post(`http://localhost:8080/api/search/`,
             {
                 startDate: this.props.SearchResult.startDate,
@@ -70,7 +93,6 @@ class Filter extends React.Component {
                 <button className="orange">TYPES {this.props.SearchResult.petTypes} </button>
                 <button className="orange">PRICE {this.state.minPrice} {this.state.maxPrice}</button>
                 <button className="orange">RATE {this.state.minRate} {this.state.maxRate}</button>
-                <button className="orange">VACCINE</button>
 
                 <select name="district" onChange={this.districtChange} required>
                     <option value="all" disabled selected hidden>--District--</option>
@@ -78,6 +100,12 @@ class Filter extends React.Component {
                         return <option value={district} key={index}>{district}</option>
                     })}
                 </select>
+
+                <select name="petType" onChange={this.petTypeChange} required>
+                                      <option value="all" disabled selected hidden>--Type of Pet--</option>
+                        <option value='dog'>Dog</option>
+                        <option value='cat'>Cat</option>
+                    </select>
             </div>
         )
     }

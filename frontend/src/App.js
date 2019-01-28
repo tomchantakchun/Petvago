@@ -49,13 +49,13 @@ class App extends Component {
         <div className="main-body">
         <Router>
           <Switch>
+            <Route exact path='/' component={TestHome} />
+            <Route exact path='/home' component={Homepage} />
             <Route exact path='/search' component={Search} />
             <Route exact path='/search_result' component={SearchResult}/> 
             {/* <Route exact path='/result' component={Result} /> */}
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
-            <Route exact path='/' component={TestHome} />
-            <Route exact path='/home' component={Homepage} />
             <Route exact path='/message' component={MessageBox} />
             <Route exact path='/edit-hotel-info' component={EditPage} />
             <Route exact path='/booking' component={Booking} />
