@@ -14,7 +14,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 const rootReducer = combineReducers({
-    searchHistory: searchReducer,
+    search: searchReducer,
     hotel:hotelReducer
 });
 

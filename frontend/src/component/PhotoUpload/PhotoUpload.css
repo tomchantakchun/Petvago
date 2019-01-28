@@ -1,0 +1,51 @@
+#PhotoUpload.add-photo {
+    border: 1px solid;
+    width:100px;
+    height:100px;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#PhotoUpload.add-photo svg{
+    height: 40px;
+    width: 40px;
+    margin: 30px;
+}
+
+#PhotoUpload.add-photo input[type=file]{
+    height:inherit;
+    width:100%;
+    position:absolute;
+    opacity:0;
+    cursor: pointer;
+}
+
+
+/* edit photo */
+
+#PhotoUpload.edit-photo {
+    width:20px;
+    height:20px;
+    display: inline-block;
+    margin: 3px;
+    position: absolute;
+    cursor: pointer;
+}
+
+#PhotoUpload.edit-photo svg{
+    height: 15px;
+    width: 15px;
+}
+
+#PhotoUpload.edit-photo input[type=file]{
+    height:inherit;
+    width:100%;
+    position:absolute;
+    opacity:0;
+    z-index: 200;
+    font-size: 0;
+    cursor: pointer;
+}
+

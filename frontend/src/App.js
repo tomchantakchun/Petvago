@@ -3,7 +3,7 @@ import 'reset-css';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login';
-import Search from './component/Search/Search'
+import Search from './component/Search/Search';
 import User from './component/User';
 import MessageBox from './component/MessageBox';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
@@ -50,6 +50,7 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path='/search' component={Search} />
+            <Route exact path='/search_result' component={SearchResult}/> 
             {/* <Route exact path='/result' component={Result} /> */}
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
@@ -58,7 +59,6 @@ class App extends Component {
             <Route exact path='/message' component={MessageBox} />
             <Route exact path='/edit-hotel-info' component={EditPage} />
             <Route exact path='/booking' component={Booking} />
-            <Route exact path='/search_result' component={SearchResult}/> 
             <Route exact path='/hotel' component={Hotel} />
             <Route exact path='/confirmation' component={Confirmation} />
             <Route exact path='/mybooking' component={MyBooking} />

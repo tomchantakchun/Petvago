@@ -5,7 +5,7 @@ const initialState = {
     endDate: '',
     district: '',
     petType: '',
-    searchResult: []
+    searchResult: ''
 };
 
 const reducer = (state = initialState, action) => {

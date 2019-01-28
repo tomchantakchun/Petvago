@@ -12,19 +12,48 @@ router.post('/', async (req, res, next) => {
   let startDay = new Date(req.body.startDate);
   let endDay = new Date(req.body.endDate);
 
-
-
   //get all room
-  await db.select("*")
+  await db.select("	additionalPrice	"	,
+  "	address	"	,
+  "	app	"	,
+  "	availablePeriod	"	,
+  "	averageRating	"	,
+  "	hotel.description	"	,
+  "	district	"	,
+  "	email	"	,
+  "	facilities	"	,
+  "	hotel.id AS hotelID	"	,
+  "	roomType.id AS roomTypeID	"	,
+  "	latitude	"	,
+  "	longitude	"	,
+  "	name	"	,
+  "	partnershipType	"	,
+  "	password	"	,
+  "	price	"	,
+  "	quantity	"	,
+  "	requirement	"	,
+  "	roomType	"	,
+  "	telephone	"	,
+  "	vaccineRequirement	"	,
+  "photo.path AS photo"
+  )
   .from("roomType")
-  .leftJoin("hotel", "roomType.hotelID","hotel.id")
-  .where("district", req.body.district)
-  .whereRaw("requirement ->> 'pet' = ?", [req.body.petType]) 
+  .innerJoin("hotel", "roomType.hotelID","hotel.id")
+  .innerJoin("photo","photo.hotelID", "hotel.id").whereNull("photo.roomTypeID")
+  .where((queryBuilder)=>{
+    if (req.body.district != "all"){
+      queryBuilder.where("district", req.body.district)
+    }
+  })
+  .where((queryBuilder2)=>{
+    if (req.body.petType != "all"){
+      queryBuilder2.whereRaw("requirement ->> 'pet' = ?", [req.body.petType]) 
+    }
+  })
   .then((rows) => {
     allRoom = [...rows]
+    console.log('First allRoom: ',allRoom.length)
   })
-
-  // console.log('First allRoom: ',allRoom)
 
   //get days between searched start day and end day, pushed in an array 
   while (startDay.getDate() <= endDay.getDate()) {
@@ -40,29 +69,28 @@ let promise = new Promise((resolve,reject)=>{
       .where("district", req.body.district)
       .innerJoin("roomType", 'hotel.id', "roomType.hotelID") //match roomtype with hotel
       .innerJoin('booking', function () {
-        this.on("hotel.id", "booking.hotelID").on("roomType.id", 'booking.roomTypeID')
+        this.on("booking.hotelID", "hotel.id").on('booking.roomTypeID', "roomType.id")
       })
       .where(function () {
         this.where("booking.endDate", '>=', formattedDay)
           .andWhere("booking.startDate", '<=', formattedDay)
       })
-      .then( (rows) => {
-
+      .then((rows) => {
       rows.map((row) => {
         eachDayBookingArray.push(row)
       })
 
       if (allRoom.length > 0){
-      allRoom.map((room, index) => {
+      allRoom.some((room, index) => {
         let count = 0;
         for (let i = 0; i < eachDayBookingArray.length; i++) {
-          if (room.id == eachDayBookingArray[i].roomTypeID) {
-            console.log('add count' + room.id)
+          if (room.roomTypeID == eachDayBookingArray[i].roomTypeID) {
+            console.log('add count' + room.roomTypeID)
             count++
           }
         } // end of count loop      
         if (count >= room.quantity) {
-          allRoom = allRoom.filter(checkRoom => checkRoom.id !== room.id) //filter all unavilable room
+          allRoom = allRoom.filter(checkRoom => checkRoom.roomTypeID !== room.roomTypeID) //filter all unavilable room
         }
         if (
           (day == dayArray[dayArray.length -1] && index +1 == allRoom.length)
@@ -70,9 +98,9 @@ let promise = new Promise((resolve,reject)=>{
           )
         {
           resolve('success');
+          return true
          }   
       })//end of all Room
-      console.log('allRoomfilter',allRoom, day)
     } else {resolve('no room')}
             
     }) //end of query.then 
