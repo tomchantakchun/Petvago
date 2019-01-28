@@ -10,8 +10,9 @@ p{
 }
 
 .carouselContainer{
+    padding:30px 15vw 30px 15vw;
     margin-top: 5vh;
-    background-color: grey;
-    height:10vh;
+    background-color: white;
+    height:30vh;
     width: 100%
 }

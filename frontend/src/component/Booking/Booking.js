@@ -290,7 +290,7 @@ class Booking extends Component {
             
             <div className='booking-form'>
 
-            <h1 style={{marginBottom:"20px"}}>Basic informtion</h1>
+            <h1 style={{marginBottom:"20px"}}>Basic information</h1>
 
             <div className="form-group row">
                 <label className="col-sm-4 col-form-label"> <FontAwesomeIcon icon="user" style={{marginRight:'10px'}}/>Onwer's name</label>

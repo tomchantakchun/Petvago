@@ -434,9 +434,9 @@ class Confirmation extends Component {
 
 
     render(){
-        return(<div className="myBooking row">
-
-        <div className="col-8">
+        return(<div className="myBooking ">
+        <div className="row justify-content-center">
+        <div className="col-md-8 col-12">
         
         <h1 style={{marginBottom:'20px'}}>Upcoming Booking</h1>
         <div className="myBooking-wrap">
@@ -452,7 +452,7 @@ class Confirmation extends Component {
 
         </div>
 
-        <div className="col-4 myBooking-info">
+        <div className="col-md-4 myBooking-info col-12">
            <h1 style={{marginBottom:'20px',marginTop:'20px'}}> My information</h1>
            <div className="booking-line" style={{marginBottom:'20px'}} ></div> 
                 <p><FontAwesomeIcon icon="user" style={{marginRight:'10px', color:'#50b5a9'}}/> {this.state.username}</p>
@@ -476,6 +476,7 @@ class Confirmation extends Component {
                 
                 </div>
             </div>
+        </div>
         </div>
                     
         </div>)
