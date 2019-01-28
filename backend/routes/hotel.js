@@ -12,9 +12,9 @@ const passport = require('passport');
 3. Post request to get information, photo and availability of one hotel (redirected from search) **
 4. Get hotel information for edit
 5. Get roomType and photo based on roomTypeID for edit
+5.1 Post add new roomType
+5.2 Put delete new roomType if not update
 6. Put request to edit information of hotel **
-
-unaudited addition by Matt
 7. Post request to upload photo :: /uploadPhoto
 8. Put request to delete photo
 */
@@ -216,7 +216,7 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
       description,  
       vaccineRequirement (type:object),
       rooms: [
-        {roomTypeID, roomType, price}
+        {roomTypeID, roomType, price, quantity}
       ]
     }
   */
@@ -226,14 +226,15 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
   } else{
 
     var db=req.db;
-    let query=db.select('h.name','h.telephone','h.address','h.vaccineRequirement', 'h.description','t.id as roomTypeID','t.roomType','t.price').from("roomType as t").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.user.id)
+    let query=db.select('h.name','h.telephone','h.address','h.district','h.vaccineRequirement', 'h.description','t.id as roomTypeID','t.roomType','t.price','t.quantity').from("roomType as t").innerJoin('hotel as h', 'h.id','t.hotelID').where('h.id',req.user.id)
     query.then((rows)=>{
 
       let newRow=rows.map((current,index,array)=>{
         let room={
-        roomTypeID: current.roomTypeID, 
-        roomType: current.roomType, 
-        price: current.price
+          roomTypeID: current.roomTypeID, 
+          roomType: current.roomType, 
+          price: current.price,
+          quantity: current.quantity
         }
       
         if(index==0){
@@ -247,13 +248,16 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
           delete current.roomTypeID;
           delete current.roomType;
           delete current.price;
+          delete current.quantity;
           return current
         }
       }).filter((each)=>{
-      if(each!=null){
-        return true
-      }
-    })
+        if(each!=null){
+          return true
+        }
+      })
+
+      newRow[0].userName = req.user.username
       res.send(newRow)
     }).catch((error)=>{
       console.log(error);
@@ -276,10 +280,10 @@ router.get('/edit/roomtype/:roomTypeID', function(req,res){
       ]
     }
   */
-
  var db=req.db;
  let query=db.select('r.id as roomTypeID','r.roomType','r.description', 'p.id as photoID','p.path','p.icon').from("roomType as r").leftJoin('photo as p', 'r.id','p.roomTypeID').where('r.id',req.params.roomTypeID)
  query.then((rows)=>{
+
 
   let newRow=rows.map((current,index,array)=>{
     let photo={
@@ -314,6 +318,31 @@ router.get('/edit/roomtype/:roomTypeID', function(req,res){
 });
 
 })
+
+
+// 5.1 Post add new roomType
+router.post('/edit/new-room-type', passport.authenticate("jwt", { session: false }), (req, res) => {
+    req.db
+    .insert({hotelID: req.user.id},'id')
+    .into("roomType")
+    .then((rows)=>{
+      console.log(`5.1 rows: `,rows);
+      res.send(rows)
+    })
+})
+
+// 5.2 Put delete new roomType if not update
+router.put('/edit/delete-room-type/:roomID', passport.authenticate("jwt", { session: false }), (req, res) => {
+  console.log(`/edit/delete-room-type/${req.params.roomID} called`);
+  req.db
+  .from('roomType')
+  .where('id',req.params.roomID)
+  .delete()
+  .then((rows)=>{
+    res.sendStatus(200)
+  })
+})
+
 
 
 // 6. Put request to edit information of hotel 
