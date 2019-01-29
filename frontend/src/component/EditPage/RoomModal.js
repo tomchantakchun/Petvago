@@ -45,7 +45,6 @@ class RoomModal extends React.Component {
                 roomE = this.props.editRoomTypeContent.photos[i]
                 if (this.firstIcon) {
                     if (roomE.icon) {
-                        console.log(`There is an icon...`);
                         this.firstIcon = false;
                         this.roomIconPhoto = (
                             <div className='other-photo' key={roomE.photoID} id={`icon-photo-${roomE.photoID}`}>

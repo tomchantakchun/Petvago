@@ -78,7 +78,7 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
           hotelIconPath:current.path
         };
 
-        if(index==0){
+        if(index==0 && index!=array.length-1){
           array[index+1].upcomingBooking=[]
           array[index+1].pastBooking=[]
           if(today>current.endDate){
@@ -90,20 +90,45 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
           }
        
         }else if(index<array.length-1 && index>0){
-          array[index+1].upcomingBooking=[]
-          array[index+1].pastBooking=[]
           if(today>current.endDate){
             //past
-            array[index+1].pastBooking=[...current.pastBooking, booking]
+            if(current.pastBooking){
+              array[index+1].pastBooking=[...current.pastBooking, booking]
+              array[index+1].upcomingBooking=current.upcomingBooking
+            }else{
+              array[index+1].pastBooking=[booking]
+              array[index+1].upcomingBooking=current.upcomingBooking
+            }
           }else{
             //upcoming
-            array[index+1].upcomingBooking=[...current.upcomingBooking, booking]
+            if(current.upcomingBooking){
+              array[index+1].upcomingBooking=[...current.upcomingBooking, booking]
+              array[index+1].pastBooking=current.pastBooking
+            }else{
+              array[index+1].upcomingBooking=[booking]
+              array[index+1].pastBooking=current.pastBooking
+
+            }
+
           }
         }else if (index==array.length-1){
+          
           if(today>current.endDate){
-            current.pastBooking=[...current.pastBooking,booking]
+            if(current.pastBooking){
+              current.pastBooking=[...current.pastBooking, booking]
+              current.upcomingBooking=current.upcomingBooking
+            }else{
+              current.pastBooking=[booking]
+              current.upcomingBooking=current.upcomingBooking
+            }
           }else{
-            current.upcomingBooking=[...current.pastBooking,booking]
+            if(current.upcomingBooking){
+              current.upcomingBooking=[...current.upcomingBooking, booking]
+              current.pastBooking=current.pastBooking
+            }else{
+              current.upcomingBooking=[booking]
+              current.pastBooking=current.pastBooking
+            }
           }
           delete current.bookingID;
           delete current.userID;
@@ -112,9 +137,9 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
           delete current.startDate; 
           delete current.endDate;
           delete current.path;
+
           return current
         }
-        console.log('0000',array[index+1].upcomingBooking,array[index+1].pastBooking)
       }).filter((each)=>{
         if(each!=null){
           return true

@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions';
 
+
 const initialState = {
     startDate: '',
     endDate: '',
