@@ -10,5 +10,31 @@ a:hover
      cursor:pointer;  
 }
 .footer {
-  height: 7vh;
+  height: 12vh;
+}
+
+.footer-container{
+  display:flex;
+  justify-content: space-between !important;
+  padding: 20px 50px 10px 50px!important;
+}
+
+.footer-items{
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start
+}
+
+.footer-items a{
+  margin:5px
+}
+
+.footer-box{
+  display:flex;
+  flex-direction: column;
+}
+
+.copyright{
+  align-self:center;
+  font-size:14px;
 }

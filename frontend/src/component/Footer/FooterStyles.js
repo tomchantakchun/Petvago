@@ -17,7 +17,7 @@ const styles = {
         display: "flex",
         flexWrap:"wrap",
         justifyContent: "space-around",
-        height: "7vh",
+        height: "30vh",
         width: "100%",
         fontSize: "1rem",
         fontFamily: "Sarabun",
