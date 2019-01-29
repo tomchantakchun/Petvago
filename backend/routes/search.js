@@ -81,10 +81,11 @@ let promise = new Promise((resolve,reject)=>{
 
 
       if (allRoom.length > 0){
+      let allRoomCounter = allRoom.length;
+
       allRoom.some((room, index) => {
         let count = 0;
-        let allRoomCounter = allRoom.length;
-        console.log(room.roomTypeID)
+        // console.log(room.roomTypeID)
         for (let i = 0; i < eachDayBookingArray.length; i++) {
           if (room.roomTypeID == eachDayBookingArray[i].roomTypeID) {
             console.log('add count' + room.roomTypeID)
@@ -95,13 +96,10 @@ let promise = new Promise((resolve,reject)=>{
         if (count >= room.quantity) {
           allRoom = allRoom.filter(checkRoom => checkRoom.roomTypeID !== room.roomTypeID) //filter all unavilable room
         }
-        if (
-          (day == dayArray[dayArray.length -1] && index +1 == allRoomCounter)
-          || (allRoom.length == 0)
-          )
+        if ((day == dayArray[dayArray.length -1] && index +1 == allRoomCounter)
+          || (allRoom.length == 0))
         {
-          console.log(index)
-          console.log(allRoom.length)
+          console.log('success')
           resolve('success');
           return true
          }   
@@ -110,7 +108,6 @@ let promise = new Promise((resolve,reject)=>{
             
     }) //end of query.then 
   }) //end of dayArray Map filterJob
-    
 }) //promise
 
 promise.then((result)=>{console.log(allRoom)
