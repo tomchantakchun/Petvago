@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './component/Login/Login';
 import Search from './component/Search/Search';
 import User from './component/User';
-import MessageBox from './component/MessageBox';
+import MessageBox from './component/MessageBox/MessageBox';
+import Chatroom from './component/MessageBox/Chatroom';
 import AuthenticatedComponent from './component/Login/AuthenticatedComponent'
 import GoogleMap from './component/GoogleMap/GoogleMap'
 import Navigationbar from './component/Navbar/Navbar'
@@ -58,6 +59,7 @@ class App extends Component {
             <Route exact path='/login' component={Login} />
             <Route exact path='/user' component={User} />
             <Route exact path='/message' component={MessageBox} />
+            <Route exact path='/chatroom' component={Chatroom} />
             <Route exact path='/edit-hotel-info' component={EditPage} />
             <Route exact path='/host-management' component={HostManagement} />
             <Route exact path='/booking' component={Booking} />
