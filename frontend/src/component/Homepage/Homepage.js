@@ -5,6 +5,10 @@ import "./Homepage.css";
 import TextSlideshow from "../TextSlideshow/TextSlideshow";
 import RatingBar from "./RatingBar-non-edit";
 import Search from '../Search/Search';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuoteRight } from '@fortawesome/free-solid-svg-icons'
+library.add(faQuoteRight)
 
 class Homepage extends React.Component {
     constructor(props) {
@@ -60,7 +64,10 @@ class Homepage extends React.Component {
                     {this.state.hotelListItems}
                 </div>
                 
+                <div className="home-testamonial">
+                <h2>What pet lovers say about us <FontAwesomeIcon icon="quote-right" style={{marginLeft:'10px', color:'#50b5a9'}}/></h2>
                 <TextSlideshow/>
+                </div>
                
             </div>
         )
