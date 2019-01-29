@@ -285,7 +285,7 @@ router.get('/edit/roomtype/:roomTypeID', function (req, res) {
   var db = req.db;
   let query = db.select('r.id as roomTypeID', 'r.roomType', 'r.description', 'p.id as photoID', 'p.path', 'p.icon').from("roomType as r").leftJoin('photo as p', 'r.id', 'p.roomTypeID').where('r.id', req.params.roomTypeID)
   query.then((rows) => {
-    console.log(`rows: `, rows);
+    // console.log(`rows: `, rows);
 
     let newRow = rows.map((current, index, array) => {
       let photo = {
@@ -294,10 +294,14 @@ router.get('/edit/roomtype/:roomTypeID', function (req, res) {
         icon: current.icon
       }
       if (index == 0) {
-        if (array[index + 1]) {
+        if (array[index + 1]&& current.photoID!=null) {
           array[index + 1].photos = [photo]
+        }else if(!array[index + 1]&& current.photoID==null){
+          current.photos=[];
+          return current
         }else{
-          current.photos=[photo]
+          current.photos=[photo];
+          return current
         }
       } else if (index < array.length - 1 && index > 0) {
         array[index + 1].photos = [...current.photos, photo]
@@ -314,7 +318,7 @@ router.get('/edit/roomtype/:roomTypeID', function (req, res) {
       }
     })
 
-    console.log(`newRow: `, newRow)
+    console.log(`newRow: `, newRow, newRow[0].photos)
     res.send(newRow)
   }).catch((error) => {
     console.log(error);
