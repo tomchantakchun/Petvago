@@ -110,18 +110,9 @@ class Filter extends React.Component {
         let threeMonthLater = new Date();
         threeMonthLater.setDate(threeMonthLater.getDate() + 84);
         threeMonthLater = threeMonthLater.toISOString().split('T')[0];
-
-        const invisible = {
-            display: 'none'
-        }
-
-        const visible = {
-            display: 'block'
-        }
-
+        
         return (
             <div className="filter">
-                <h1>Filter</h1>
 
                 <DateRangePicker
                     minDate={moment(new Date(today))}

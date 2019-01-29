@@ -52,7 +52,6 @@ class Sorter extends React.Component{
 
         return (
             <div className="sorter">
-            <h1>Sort</h1>
             {nameButton}
             {priceButton}
             {ratingButton}
