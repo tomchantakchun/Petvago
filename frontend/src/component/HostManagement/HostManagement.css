@@ -1,0 +1,14 @@
+#HostManagement {
+    font-family: 'Sarabun';
+}
+
+#HostManagement h2 {
+    padding: 5px;
+    margin: 5px;
+    font-size: 36px;
+    text-decoration: underline;
+}
+
+#HostManagement .edit-hotel h2 {
+    display: inline-block;
+}

@@ -552,6 +552,8 @@ router.post('/uploadBigIcon', passport.authenticate("jwt", { session: false }), 
       }).where('id', roomTypePhotoID)
     })
 
+
+  console.log(`filepath: `,`${__dirname}/../uploadTem/${fileName}`);  
   fs.unlinkSync(`${__dirname}/../uploadTem/${fileName}`)
 
   console.log(`${fileName} uploaded to ${bucketName}.`);

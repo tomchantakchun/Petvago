@@ -1,3 +1,7 @@
 #ConfirmationModal {
     font-family: 'Sarabun'
 }
+
+#ConfirmationModal span.tick {
+    color: #0F9800;
+}
