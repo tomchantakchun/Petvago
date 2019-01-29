@@ -86,6 +86,7 @@ exports.seed = function(knex, Promise) {
         {hotelID:1, roomTypeID:'1',icon:true, path:'./image/hotel1photo2.jpg'},
         {hotelID:1, roomTypeID:'1',icon:false, path:'./image/hotel1photo3.jpg'},
         {hotelID:1, roomTypeID:'1',icon:false, path:'./image/hotel1photo4.jpg'},
+        {hotelID:1, roomTypeID:'2',icon:true, path:'./image/hotel1photo4.jpg'},
         {hotelID:2, icon:true, path:'./image/hotel2photo1.jpg'},
         {hotelID:3, icon:true, path:'./image/hotel3photo1.jpg'},
       ]);
