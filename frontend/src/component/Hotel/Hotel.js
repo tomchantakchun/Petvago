@@ -4,7 +4,9 @@ import { withRouter } from 'react-router-dom';
 import { choose_hotel_to_book } from '../../store/actions';
 import axios from 'axios';
 import GoogleMap from "../GoogleMap/GoogleMap";
-import RatingBarNonEdit from "./RatingBar-non-edit"
+import RatingBarNonEdit from "./RatingBar-non-edit";
+// import Slideshow from "../Slideshow/Slideshow";
+import Mycomponent from "../ImageShow/ImageShow";
 import "./Hotel.css"
 
 class Hotel extends Component {
@@ -16,8 +18,8 @@ class Hotel extends Component {
             roomTypeID: 1,
             roomType: 'Deluxe Room',
             roomPrice: 400,
-            vaccineRequirement: { vaccine: ['DHPPiL', 'Rabies'] }
-
+            vaccineRequirement: { vaccine: ['DHPPiL', 'Rabies'] },
+            gallery: ['https://i.imgur.com/sFq0wAC.jpg',"https://i.imgur.com/IE0fsbI.jpg"]
         }
     }
 
@@ -85,14 +87,16 @@ class Hotel extends Component {
                                         content: '<h1>Dogotel & Spa</h1>'
                                     }
                                 ]}
-                                zoom={17} height={'30vh'} width={'40vh'}
+                                zoom={17} height={'30vh'} width={'35vh'}
                             />
                         </div>
                     </div>
 
                     <div className="hotel-row-3-b">
                         <div className="hotel-photo-3" > 
-                        <img className="demo-photo" src={"https://i.imgur.com/sFq0wAC.jpg"} alt="NA" />
+                        {/* <img className="demo-photo" src={"https://i.imgur.com/sFq0wAC.jpg"} alt="NA" /> */}
+                        {/* <Slideshow /> */}
+                        < Mycomponent urlArray={this.state.gallery}/>
                         </div>
                     </div>
 
@@ -125,7 +129,17 @@ class Hotel extends Component {
                     </ul>
                 </div>
 
-                <div className="align-left hotel-review-3">Review</div>
+                <div className="hotel-review-3">
+                    <p className="align-left"> Review</p>
+                    <div className="hotel-review-box">
+                        <p className="user-name"> user name </p>
+                        <RatingBarNonEdit rating={3}/>
+                        <div className="hotel-review-text">
+                            Amazing Hotel
+                        </div>
+                    </div>
+
+                </div>
 
 
 
