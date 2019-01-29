@@ -3,7 +3,8 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 function Slideshow() {
     return (
-        <Carousel autoPlay>
+    
+        <Carousel className="carousel-slide" width="60vh"  autoPlay>
             <div>
                 <img src="http://lorempixel.com/output/cats-q-c-640-480-1.jpg" />
                 <p className="legend">Legend 1</p>
@@ -61,7 +62,7 @@ function Slideshow() {
                 <p className="legend">Legend 14</p>
             </div>
         </Carousel>
-    )
+    )    
 }
 
 export default Slideshow;
