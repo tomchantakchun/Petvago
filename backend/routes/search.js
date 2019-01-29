@@ -68,7 +68,11 @@ let promise = new Promise((resolve,reject)=>{
  dayArray.map((day) => {
     let formattedDay = day.toISOString().split('T')[0];
     let query2 = db.select("*").from("hotel")
-      .where("district", req.body.district)
+    // .where((queryBuilder)=>{
+    //   if (req.body.district != "all"){
+    //     queryBuilder.where("district", req.body.district)
+    //   }
+    // })
       .innerJoin("roomType", 'hotel.id', "roomType.hotelID") //match roomtype with hotel
       .innerJoin('booking', function () {
         this.on("booking.hotelID", "hotel.id").on('booking.roomTypeID', "roomType.id")
