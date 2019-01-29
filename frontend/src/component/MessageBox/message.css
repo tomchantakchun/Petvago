@@ -1,0 +1,112 @@
+.messageBox{
+    padding:50px;
+    font-family: "Sarabun"
+}
+
+.messageBox>h1{
+    font-size:25px;
+}
+
+.messageBox-conersation{
+    align-items: center    
+}
+
+.messageBox-icon{
+    height:80px;
+    width:80px;
+    border-radius:50%;
+    object-fit: cover
+}
+
+@media only screen and (max-width: 600px) {
+    .messageBox{
+        padding:20px;
+    }
+    .messageBox-icon{
+        height:45px;
+        width:45px;
+    }
+    .messageBox-conersation{
+        padding-right:15px   
+    }
+}
+
+.chatroomBox{
+    padding:40px
+}
+
+.activeChat{
+    overflow-y: scroll;
+    height:80vh !important
+}
+
+.activeChat-box{
+    padding:20px 30px 20px 30px;
+    border: 2px solid #50b5a9;
+    border-radius: 15px;
+    box-shadow: 1px 2px 5px  #ccc;
+    height:80vh !important;
+
+    /* position:relative */
+}
+
+.chatRoom-icon{
+    height:120px;
+    width:120px;
+    border-radius:50%;
+    object-fit: cover;
+    display:block
+}
+
+.activeBooking{
+    background-color: rgb(80, 181, 169,0.5);
+    margin-top:20px;
+    padding:10px 10px 20px 10px;
+    border-radius:5px
+    
+}
+
+.rce-mlist{
+    /* height:70vh;
+    overflow: scroll; */
+
+}
+
+.activeBooking p{
+    font-size:16px;
+    margin-top:10px
+}
+
+.rce-input-textarea{
+    border:1px solid #ccc !important;
+    font-family: "Sarabun"
+}
+
+.rce-button{
+    border:2px solid #50b5a9 !important;
+    background-color:#50b5a9 !important;
+    color:white !important;
+    font-family: "Sarabun"
+/* 
+    border-radius:10px */
+}
+
+.rce-mbox{
+    padding:15px !important;
+    margin-bottom:10px !important;
+    font-family: "Sarabun" !important
+}
+
+.rce-mbox-right{
+    background-color: #b2e9e2 !important;
+}
+
+.rce-mbox-right-notch{
+    fill: #b2e9e2!important;
+
+}
+
+.rce-container-input{
+   /* position:absolute; */
+   /* bottom:0  */
+}
