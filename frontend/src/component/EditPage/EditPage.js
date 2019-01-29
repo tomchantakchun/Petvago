@@ -375,12 +375,13 @@ class EditPage extends React.Component {
                 for (let i = 0; i < 5; i++) {
                     await this.minusOne();
                 }
+                this.props.history.push('/host-management')
             }
         })
     }
 
     handleCancel = () => {
-
+        this.props.history.push('/host-management')
     }
 
     handleWindowBeforeClose = (e) => {

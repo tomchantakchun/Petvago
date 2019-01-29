@@ -17,6 +17,7 @@ import Confirmation from './component/Booking/Confirmation'
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 import SearchResult from './component/SearchResult/SearchResult';
 import Hotel from './component/Hotel/Hotel'
+import HostManagement from './component/HostManagement/HostMangement';
 
 
 const TestHome = (props) => {
@@ -57,6 +58,7 @@ class App extends Component {
             <Route exact path='/user' component={User} />
             <Route exact path='/message' component={MessageBox} />
             <Route exact path='/edit-hotel-info' component={EditPage} />
+            <Route exact path='/host-management' component={HostManagement} />
             <Route exact path='/booking' component={Booking} />
             <Route exact path='/hotel' component={Hotel} />
             <Route exact path='/confirmation' component={Confirmation} />
