@@ -7,7 +7,7 @@ function Footer() {
         <footer className="footer">
             
                 {/* <div style={styles.footerStyle}> */}
-                    <div style={styles.childrenStyle}>
+                    <div className="footer-children" style={styles.childrenStyle}>
                         <a href="/about">About us</a>
                         <a href="/helpcenter">Help center</a>
                         <a href="/term">Terms & conditions</a>

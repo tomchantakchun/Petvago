@@ -101,13 +101,31 @@ class Hotel extends Component {
 
                 <div className="hotel-description-3">DESRIPITION</div>
 
-                <div className="split hotel-date-3">DATE INPUT </div>
+                <div className="align-left hotel-date-3">DATE INPUT </div>
                 
+                <div className="hotel-room-type-3">
+                    <p className="align-left"> Room type:</p>
+                    <div className="hotel-room-data-card">
+                    <img className="hotel-room-data-card-icon" src={"https://i.imgur.com/IE0fsbI.jpg"} alt="NA"/>
+                    <div className="hotel-room-data-card-type left-break-line">type</div>
+                    <div className="hotel-room-data-card-description left-break-line">description</div>
+                    <button className="btn btn-primary hotel-room-data-card-booking">Book</button>
+                    </div>
 
-                
-                <div className="hotel-room-type-3">Room type:</div>
-                <div className="hotel-vaccine-requirement-3">vaccineRequirement (point form)</div>
-                <div className="hotel-review-3">Review</div>
+                </div>
+
+                <div className="hotel-vaccine-3">
+                    <p className="align-left"> Vaccine Requirement:</p>
+                    <ul className="hotel-vaccine-list-3">
+                        <li>DHPPiL</li>
+                        <li>DHPPiL</li>
+                        <li>DHPPiL</li>
+                        <li>DHPPiL</li>
+                        <li>DHPPiL</li>
+                    </ul>
+                </div>
+
+                <div className="align-left hotel-review-3">Review</div>
 
 
 

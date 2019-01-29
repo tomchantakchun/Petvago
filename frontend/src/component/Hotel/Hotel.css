@@ -1,15 +1,12 @@
-.demo-photo{
-    height: 100%;
+.align-left {
+    text-align: left;
     width: 100%;
-    object-fit: cover;
+    padding-top: 2vh;
+    padding-left: 2vh;
+    font-size: 2vh;
 }
 
-.hotel-photo-3{
-    height: 100%;
-    width: 100%;
-}
-
-.hotel-body{
+.hotel-body {
     font-family: Sarabun;
     display: flex;
     flex-wrap: wrap;
@@ -19,34 +16,93 @@
     width: 100%;
 }
 
-.hotel-row-3{
-    padding-top: 1vh;
+.hotel-row-3 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     font-size: 3vh;
-    width:100%;
+    width: 100%;
 }
 
-.hotel-row-3-a{
+.hotel-row-3-a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    
-    width:30vh;
+    padding-top: 1vh;
+    padding-left: 2vh;
+    width: 30vh;
     height: 50vh;
 }
 
-.hotel-row-3-b{
+.hotel-row-3-b {
+    padding-top: 1vh;
     width: 70vh;
     height: 50vh;
 }
 
-.hotel-description-3{
-    height: 20vh;
+.hotel-description-3 {
+    height: 15vh;
     width: 100%;
     text-align: center;
     vertical-align: middle;
-    line-height: 20vh;
+    line-height: 15vh;
+}
+
+.hotel-room-type-3 {
+    width: 100%;
+}
+
+.hotel-room-data-card {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 5vh;
+    margin-top: 2vh;
+    padding: 1vh 2vh 1vh 2vh;
+    border-style: solid;
+    border-radius: 20px;
+    border-width: 2px;
+}
+
+
+.hotel-room-data-card-icon {
+    height: 20vh;
+    width: 20vh;
+    object-fit: cover;
+}
+
+
+.hotel-room-data-card-booking {
+    height: 5vh;
+    width: 10vh;
+}
+
+.left-break-line{
+    border-right: 1px solid black;
+    padding: 1vh 2vh 1vh 2vh;
+    height: 100%;
+}
+
+.hotel-vaccine-3 {
+    width: 100%;
+}
+
+ul.hotel-vaccine-list-3 {
+    list-style-type: square;
+    padding-left: 4vh;
+}
+
+.demo-photo {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.hotel-photo-3 {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
