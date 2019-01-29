@@ -7,14 +7,30 @@ function Footer() {
         <footer className="footer">
             
                 {/* <div style={styles.footerStyle}> */}
-                    <div className="footer-children" style={styles.childrenStyle}>
-                        <a href="/about">About us</a>
-                        <a href="/helpcenter">Help center</a>
-                        <a href="/term">Terms & conditions</a>
-                        <a href="/prviacy">Privacy terms</a>
-                        <a href="/becomehost">Become a host</a>
-                        <a href="/term">Hosting</a>
+                    <div className="footer-box" style={styles.childrenStyle}>
+                    <div className="footer-container">
+                        <div className="footer-items">
+                            <a href="/about">About us</a>
+                            <a href="/helpcenter">Help center</a>
+                            <a href="/term">Terms and conditions</a>
+                            <a href="/prviacy">Privacy policy</a>
+                        </div>
+
+                        <div className="footer-items">
+                            <a href="/becomehost">Become a host</a>
+                            <a href="/term">Hosting</a>
+
+                        </div>
+
+
                     </div>
+                    <p className="copyright">Petvago 2019</p>
+                      
+                        
+                        
+                      
+                    </div>
+                    
                 {/* </div> */}
         </footer>
     );

@@ -34,3 +34,31 @@ button.orange:hover {
 button.orange:active {
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.3);
 }
+
+
+button.grey{
+    margin: 7px;
+    border-radius: 5px;
+    height: 30px;
+}
+
+button.grey {
+    color: white;
+    border: 1px solid rgb(32, 32, 32); 
+    background: -webkit-linear-gradient(top, #D3D3D3, #808080);
+    background: -moz-linear-gradient(top, #D3D3D3, #808080);
+    background: -ms-linear-gradient(top, #D3D3D3, #808080);
+    
+}
+
+button.grey:hover {
+    border: 1px solid #808080;
+    background: -webkit-linear-gradient(top, #D3D3D3, #808080); 
+    background: -moz-linear-gradient(top, #D3D3D3, #808080); 
+    background: -ms-linear-gradient(top, #D3D3D3, #808080); 
+    box-shadow: 0 1px #EFEFEF;
+}
+
+button.grey:active {
+    box-shadow: inset 0 1px 1px D3D3D3;
+}

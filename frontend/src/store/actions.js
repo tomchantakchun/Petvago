@@ -1,6 +1,6 @@
 export const SEARCHHOTEL = 'SEARCHHOTEL';
 export const SEARCHRESULT = 'SEARCHRESULT';
-export const ADVFILTER = 'ADVFILTER';
+export const SORTRESULT = 'SORTRESULT';
 
 
 //hotel
