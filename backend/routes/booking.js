@@ -78,7 +78,7 @@ router.get('/user', passport.authenticate("jwt", { session: false }), (req, res)
           hotelIconPath:current.path
         };
 
-        if(index==0){
+        if(index==0 && index!=array.length-1){
           array[index+1].upcomingBooking=[]
           array[index+1].pastBooking=[]
           if(today>current.endDate){

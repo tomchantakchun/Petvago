@@ -293,7 +293,7 @@ router.get('/edit/roomtype/:roomTypeID', function (req, res) {
         path: current.path,
         icon: current.icon
       }
-      if (index == 0) {
+      if (index == 0 && index!=array.length-1) {
         if (array[index + 1]) {
           array[index + 1].photos = [photo]
         }
