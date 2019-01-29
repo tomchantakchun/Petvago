@@ -33,10 +33,9 @@ class Confirmation extends Component {
     }
 
     componentDidMount(){
+        console.log(!this.props.location.state)
 
-        if (!this.state.bookingID && !this.props.location.state.bookingID) {
-            this.props.history.push('/home')
-        }else{
+        if (!this.props.location.state==false) {
             let promise=new Promise((resolve,reject)=>{
                 this.setState({
                     bookingID:this.props.location.state.bookingID
@@ -49,6 +48,10 @@ class Confirmation extends Component {
                 const jwt = localStorage.getItem('petvago-token');
         if (!jwt) {
             this.props.history.push('/login')
+            
+        }else if(!this.props.location.state===true){
+            console.log('123')
+            this.props.history.push('/home')
         }
 
         axios.get(`http://localhost:8080/api/booking/info/${this.state.bookingID}`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
@@ -85,7 +88,7 @@ class Confirmation extends Component {
                 orderDate:orderDate,
                 ownerName:data.ownerName,
                 hotelName:data.hotelName,
-                ownerPhone:data.ownerName,
+                ownerPhone:data.ownerPhone,
                 petName:data.petName,
                 petWeight:data.petWeight,
                 petType:data.petType,

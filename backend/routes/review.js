@@ -32,7 +32,7 @@ router.get('/hotel/:hotelid', function(req, res, next) {
 });
 
 //2. Get all reviews of one user with user id as params
-router.get('/user/:userid', function(req, res, next) {
+router.get('/user', passport.authenticate("jwt", { session: false }), (req, res) => {
   /* Information you get
   { id,
     userID,
@@ -45,7 +45,7 @@ router.get('/user/:userid', function(req, res, next) {
   }
   */
   var db=req.db;
-  let query=db.select().from("review").where("userID",req.params.userID)
+  let query=db.select().from("review").where("userID",req.user.id)
   query.then((rows)=>{
       res.send(rows);
   }).catch((error)=>{
@@ -71,7 +71,16 @@ router.post('/',passport.authenticate("jwt", { session: false }), (req, res) => 
   let query=db.insert({userID:req.user.id,hotelID:req.body.hotelID,bookingID:req.body.bookingID,rating:req.body.rating,comment:req.body.comment}).into('review')
 
   query.then(()=>{
-      res.send({status:'success'});
+    db.select('peopleRated','averageRating').from('hotel').where('id',req.body.hotelID).then((result)=>{
+      let newRating=((result[0].averageRating*result[0].peopleRated)+req.body.rating)/(result[0].peopleRated+1)
+      let newPeople=(result[0].peopleRated+1)
+
+      db('hotel').update({averageRating:newRating, peopleRated:newPeople}).where('id',req.body.hotelID).then(()=>{
+        res.send({status:'success'});
+      })
+    })
+
+      
   }).catch((error)=>{
     console.log(error);
     res.status(500).send({error:'cannot get review'})
