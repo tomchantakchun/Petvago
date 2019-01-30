@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {withRouter} from "react-router-dom";
+import * as actionTypes from '../../store/actions';
 import "./SearchResult.css";
 import Filter from "../Filter/Filter";
 import Sorter from "../Sorter/Sorter";
@@ -12,6 +14,10 @@ const mapStateToProps = state => {
         SearchResult: state.search,
     }
 };
+
+const mapDispatchToProps = dispatch =>{
+    
+}
 
 class SearchResult extends React.Component {
    
@@ -163,7 +169,7 @@ class SearchResult extends React.Component {
                     {listItems}
                 </div>
 
-                <div className="hotel-container-2">
+                {/* <div className="hotel-container-2">
                     <div className="hotel-info-2"  >
                         <img className="hotel-icon-2" src={"https://i.imgur.com/img0gF3.jpg"} alt="NA" />
                         <div className="hotel-detail-2">
@@ -178,10 +184,11 @@ class SearchResult extends React.Component {
                            
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         )
     }
 }
 
-export default connect(mapStateToProps)(SearchResult);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(SearchResult));
+
