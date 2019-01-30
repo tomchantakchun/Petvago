@@ -9,6 +9,7 @@ const passport = require('passport');
 4. Put request to update booking on submit
 5. Post request to create offline booking by hotel
 6. Get all booking of a hotel **
+7. Get all booking of a hotel within a range of date
 */
 
 
@@ -222,12 +223,13 @@ router.post('/offline-booking', passport.authenticate("jwt", { session: false })
     {
         startDate,
         endDate,
-        roomTypeID
+        roomTypeID,
+        service: { reference: }
     }
   */
 
   var db=req.db;
-  let query=db.insert([{hotelID:req.user.id, roomTypeID:req.body.roomTypeID, startDate:req.body.startDate, endDate:req.body.endDate}],['id']).into('booking')
+  let query=db.insert([{hotelID:req.user.id, roomTypeID:req.body.roomTypeID, startDate:req.body.startDate, endDate:req.body.endDate, service:req.body.service, status:'outside'}],['id']).into('booking')
 
   query.then((result)=>{
       res.send({status:'success',bookingID:result[0].id});        
