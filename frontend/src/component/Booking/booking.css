@@ -72,7 +72,8 @@
     height:50px;
     width:150px;
     font-size:20px;
-    border-radius:10px
+    border-radius:10px;
+    transition: ease 0.2s
 }
 
 .vaccine-not-ok{
@@ -145,7 +146,8 @@
 .confirm-button{
     margin: 0 30px 0 30px;
     display:flex;
-    justify-content: space-between
+    justify-content: space-between;
+    transition: ease 0.2s
 }
 
 @media only screen and (max-width: 600px) {
@@ -236,6 +238,8 @@
     border:none;
     width:17vw;
     height:27vw;
+    transition: ease 0.2s
+
 }
 
 .mybooking-button{
@@ -245,7 +249,9 @@
     font-size: 18px;
     line-height:0;
     padding:15px;
-    margin:0
+    margin:0;
+    transition: ease 0.2s
+
 }
 
 
