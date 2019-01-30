@@ -1,22 +1,24 @@
 .Login {
     background-color: #718EA4;
-    height: 100%;
+    height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+      font-family: "Sarabun"
 }
 
 .Login section {
     background-color: #dddddd;
-    height: 60vh;
-    width: 30vw;
+    height: 80vh;
+    width: 40vw;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column;
-    box-shadow: 1px 0 #bbbbbb;
+    /* box-shadow: 1px 1px 5px #bbbbbb; */
     border-radius: 5px;
+    margin-top:-10vh
 }
 
 .Login section form {
@@ -43,21 +45,34 @@
 }
 
 .Submit {
-    background-color: rgb(84, 129, 163);
-    border: none;
+    background-color: #50b5a9;
+    border: #50b5a9 solid 2px;
     border-radius: 3px;
     color: #f4f4f4;
     cursor: pointer;
     font-family: inherit;
-    height: 50px;
+    height: 40px;
     text-transform: uppercase;
-    width: 300px;
+    width: 280px;
     -webkit-appearance: none;
     margin: 10px 0;
 }
 
+.Submit:hover{
+    background-color: transparent;
+    color: #50b5a9;
+    transition:ease 0.2s;
+    
+}
+
 .loginFailed {
     color: red;
+}
+
+.Login h1{
+    font-size:25px; 
+    margin-bottom:10px
+    
 }
 
 .Signup {
@@ -67,11 +82,11 @@
     color: #f4f4f4;
     cursor: pointer;
     font-family: inherit;
-    height: 50px;
+    height: 40px;
     text-transform: uppercase;
-    width: 300px;
+    width: 280px;
     -webkit-appearance: none;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .Facebook {
@@ -81,11 +96,27 @@
     color: #f4f4f4;
     cursor: pointer;
     font-family: inherit;
-    height: 50px;
+    height: 40px;
     text-transform: uppercase;
-    width: 300px;
+    width: 280px;
+    font-weight:normal;
     -webkit-appearance: none;
     margin: 10px 0;
+    border-radius: 3px;
+    font-family: "Sarabun"
+
+
+}
+
+.kep-login-facebook.metro{
+    border-radius: 3px !important;
+
+}
+
+.kep-login-facebook{
+    border-radius: 3px !important;
+    font-family: "Sarabun" !important;
+
 }
 
 .Wechat {

@@ -24,6 +24,7 @@ class SearchResult extends React.Component {
                 searchResultArray = convert.toArray(searchArray[i].value)
             }
         }
+        console.log(searchResultArray)
 
         //show min price
         searchResultArray = searchResultArray.map(e => e.value).sort(
@@ -125,7 +126,6 @@ class SearchResult extends React.Component {
                     return 0;}
             })
             break;
-            
 
             default:
             console.log("default")

@@ -17,19 +17,24 @@ router.get('/chatlist/user', passport.authenticate("jwt", { session: false }), (
         [  { conversationID,
             userID,
             hotelID,
+            hotelName,
             lastMessageID,
             lastMessage,
             lastMessageType,
-            lastMessageTime
+            lastMessageTime,
+            icon
             } ]
         */
 
   var db=req.db;
-  let query=db.select('c.userID','c.hotelID','c.id as conversationID','m.id as lastMessageID','m.body as lastMessage','m.type as lastMessageType','m.created_at as lastMessageTime')
+  let query=db.select('c.userID','c.hotelID','c.id as conversationID','m.id as lastMessageID','m.body as lastMessage','m.type as lastMessageType','m.created_at as lastMessageTime','p.path as icon','h.name')
   .from(db.raw('(select "conversationID", max(id) as maxid from message group by "conversationID") as x ')).innerJoin('message as m', function() {
     this.on('m.conversationID', '=', 'x.conversationID').andOn('m.id', '=', 'x.maxid')
   })
   .fullOuterJoin('conversation as c','m.conversationID','c.id')
+  .innerJoin('photo as p','p.hotelID','c.hotelID')
+  .innerJoin('hotel as h','h.id','c.hotelID')
+  .whereNull('p.roomTypeID')
   .where("userID",req.user.id)
 
   query.then((rows)=>{
@@ -88,7 +93,17 @@ router.get('/chatlist/hotel', passport.authenticate("jwt", { session: false }), 
         */
 
   var db=req.db;
-  let query=db.select("*").from("conversation").where("hotelID",req.user.id)
+  let query=db.select('c.userID','c.hotelID','c.id as conversationID','m.id as lastMessageID','m.body as lastMessage','m.type as lastMessageType','m.created_at as lastMessageTime','p.path as icon','u.username as name')
+  .from(db.raw('(select "conversationID", max(id) as maxid from message group by "conversationID") as x ')).innerJoin('message as m', function() {
+    this.on('m.conversationID', '=', 'x.conversationID').andOn('m.id', '=', 'x.maxid')
+  })
+  .fullOuterJoin('conversation as c','m.conversationID','c.id')
+  .innerJoin('photo as p','p.hotelID','c.hotelID')
+  .innerJoin('hotel as h','h.id','c.hotelID')
+  .innerJoin('users as u', 'c.userID', 'u.id' )
+  .whereNull('p.roomTypeID')
+  .where("c.hotelID",req.user.id)
+
   query.then((rows)=>{
 
       res.send(rows);
@@ -134,6 +149,7 @@ router.get('/activebooking/:hotelID', passport.authenticate("jwt", { session: fa
         { hotelID,
           hotelName,
           address,
+          icon,
           activeBooking:[
             {bookingID, roomTypeID, roomType, startDate, endDate, duration, status}
           ]
@@ -144,38 +160,58 @@ router.get('/activebooking/:hotelID', passport.authenticate("jwt", { session: fa
   
   var today = new Date();
 
-  let query=db.select('h.name as hotelName','h.address','h.id as hotelID','b.id as bookingID','b.hotelID','b.roomTypeID','b.startDate','b.endDate','b.duration','b.status','r.roomType').from("users as u").leftJoin('booking as b', 'b.userID','u.id').leftJoin('hotel as h', 'h.id', 'b.hotelID').leftJoin('roomType as r', 'r.id', 'b.roomTypeID').where("u.id",req.user.id).andWhere("h.id",req.params.hotelID)
+  let query=db.select('h.name as hotelName','h.address','h.id as hotelID','b.id as bookingID','b.hotelID','b.roomTypeID','b.userID','b.startDate','b.endDate','b.duration','b.status','r.roomType','p.path as icon')
+  .from("users as u")
+  .fullOuterJoin('booking as b', 'b.userID','u.id')
+  .leftJoin('hotel as h', 'h.id', 'b.hotelID')
+  .leftJoin('roomType as r', 'r.id', 'b.roomTypeID')
+  .innerJoin('photo as p','p.hotelID','b.hotelID')
+  .whereNull('p.roomTypeID')
+  .where("h.id",req.params.hotelID)
   
   query.then((rows)=>{
 
    let newRow=rows.map((current,index,array)=>{
-     let booking={
-      bookingID:current.bookingID, 
-      roomTypeID: current.roomTypeID, 
-      roomType: current.roomType, 
-      startDate: current.startDate, 
-      endDate: current.endDate, 
-      duration: current.duration, 
-      status: current.status
+    let booking={}
+     if(current.userID==req.user.id){
+      booking={
+        bookingID:current.bookingID, 
+        roomTypeID: current.roomTypeID, 
+        roomType: current.roomType, 
+        startDate: current.startDate, 
+        endDate: current.endDate, 
+        duration: current.duration, 
+        status: current.status
+       }
+
      }
+     
     
      if(index==0){
+       if(array[index+1]){
         array[index+1].activeBooking=[]
         if(current.endDate>=today){
           array[index+1].activeBooking=[booking]
         }
+       }else{
+        current.activeBooking=[booking]
+        return current
+      }
+       
      
      }else if(index<array.length-1 && index>0){
       array[index+1].activeBooking=[]
       if(current.endDate>=today){
         array[index+1].activeBooking=[...current.activeBooking,booking]
       }else{
+        array[index+1].activeBooking=[...current.activeBooking]
       }
      }else if (index==array.length-1){
       if(current.endDate>=today){
         current.activeBooking=[...current.activeBooking,booking]
         return current
       }else{
+
         return current
       }
      }
@@ -219,6 +255,88 @@ router.post('/sendmessage/:conversationID', passport.authenticate("jwt", { sessi
   });
 
 })
+
+//7. Get user info in conversation
+router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session: false }), (req, res) => {
+  /*Information you get from each row - Array:
+        [  { userID,
+            username,
+            telephone,
+            email
+            } ]
+        */
+
+  var db=req.db;
+  var today = new Date();
+  let query=db.select("u.username","u.telephone","u.email","u.id as userID","b.hotelID","b.startDate","b.endDate","r.roomType")
+  .from("users as u")
+  .innerJoin('conversation as c','c.userID','u.id')
+  .fullOuterJoin('booking as b','c.userID','b.userID')
+  .innerJoin('roomType as r','r.id','b.roomTypeID')
+  .where("c.id",req.params.conversationID)
+  
+  query.then((rows)=>{
+    let newRow=rows.map((current,index,array)=>{
+      let booking=null;
+       if(current.hotelID==req.user.id){
+        booking={
+          bookingID:current.bookingID, 
+          roomType: current.roomType, 
+          startDate: current.startDate, 
+          endDate: current.endDate, 
+         }
+  
+       }
+       
+      
+       if(index==0){
+         if(array[index+1]){
+          array[index+1].activeBooking=[]
+          if(current.endDate>=today){
+            array[index+1].activeBooking=[booking]
+          }
+         }else{
+          current.activeBooking=[booking]
+          return current
+        }
+         
+       
+       }else if(index<array.length-1 && index>0){
+        array[index+1].activeBooking=[]
+        if(current.endDate>=today){
+          array[index+1].activeBooking=[...current.activeBooking,booking]
+        }else{
+          array[index+1].activeBooking=[...current.activeBooking]
+        }
+       }else if (index==array.length-1){
+        if(current.endDate>=today){
+          current.activeBooking=[...current.activeBooking,booking]
+          return current
+        }else{
+  
+          return current
+        }
+       }
+     }).filter((each)=>{
+      if(each!=null){
+        delete each.roomType;
+        delete each.startDate;
+        delete each.endDate;
+        delete each.hotelID;
+        return true
+      }
+    })
+      console.log('rows',rows);
+      console.log('new',newRow)
+
+      res.send(newRow);
+
+  }).catch((error)=>{
+    console.log(error);
+    res.status(500).send({error:'cannot get chatlist'})
+  });
+
+});
 
 
 module.exports = router;

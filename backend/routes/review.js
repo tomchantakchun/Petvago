@@ -13,6 +13,7 @@ router.get('/hotel/:hotelid', function(req, res, next) {
   /* Information you get
   { id,
     userID,
+    username,
     hotelID,
     bookingID,
     rating,
@@ -22,7 +23,7 @@ router.get('/hotel/:hotelid', function(req, res, next) {
   }
   */
   var db=req.db;
-  let query=db.select().from("review").where("hotelID",req.params.hotelid)
+  let query=db.select("r.*","u.username").from("review as r").innerJoin("users as u","r.userID","u.id").where("hotelID",req.params.hotelid)
   query.then((rows)=>{
       res.send(rows);
   }).catch((error)=>{

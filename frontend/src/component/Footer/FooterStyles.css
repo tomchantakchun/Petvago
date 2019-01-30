@@ -38,3 +38,9 @@ a:hover
   align-self:center;
   font-size:14px;
 }
+
+@media only screen and (max-width: 600px) {
+  .footer-container{
+    padding: 10px 10px 10px 10px!important;
+  }
+}

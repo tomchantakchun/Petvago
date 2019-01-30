@@ -23,6 +23,20 @@ p{
     border-radius:5px;
 }
 
+.home-testamonial h2{
+    color:#50b5a9;
+    font-size:25px;
+    font-weight:bold;
+    margin-top:40px;
+    text-align: center
+}
+
+.home-testamonial{
+    background-color: #fafafa;
+    margin-top:30px;
+    height:60vh
+}
+
 .testamonial-icon{
     border-radius:50%;
     border:3px white solid;
@@ -33,5 +47,21 @@ p{
 .testamonial-box{
     display:flex;
     align-items:center
+}
+
+
+@media only screen and (max-width: 600px) {
+    .home-testamonial h2{
+        font-size:20px;
+    }
+    .testamonial-box{
+        flex-direction: column;
+        align-items:center
+    }
+
+    .testamonial-icon{
+        height:60px
+    }
+
 }
 

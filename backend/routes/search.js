@@ -7,7 +7,8 @@ router.post('/', async (req, res, next) => {
 
   let dayArray = [];
   let allRoom = [];
-  let eachDayBookingArray = []
+  let eachDayBookingArray = [];
+let resultRoom = [];
 
   let startDay = new Date(req.body.startDate);
   let endDay = new Date(req.body.endDate);
@@ -67,42 +68,38 @@ router.post('/', async (req, res, next) => {
 let promise = new Promise((resolve,reject)=>{
  dayArray.map((day) => {
     let formattedDay = day.toISOString().split('T')[0];
-    let query2 = db.select("*").from("hotel")
-    // .where((queryBuilder)=>{
-    //   if (req.body.district != "all"){
-    //     queryBuilder.where("district", req.body.district)
-    //   }
-    // })
-      .innerJoin("roomType", 'hotel.id', "roomType.hotelID") //match roomtype with hotel
-      .innerJoin('booking', function () {
-        this.on("booking.hotelID", "hotel.id").on('booking.roomTypeID', "roomType.id")
-      })
-      .where(function () {
-        this.where("booking.endDate", '>=', formattedDay)
-          .andWhere("booking.startDate", '<=', formattedDay)
-      })
+    let query2 = db.select("*").from("roomType")
+    .innerJoin('booking', "booking.roomTypeID",'roomType.id')
+    .where(function () {
+           this.where("booking.endDate", '>=', formattedDay)
+             .andWhere("booking.startDate", '<=', formattedDay)
+        })
       .then((rows) => {
       rows.map((row) => {
         eachDayBookingArray.push(row)
       })
 
+
       if (allRoom.length > 0){
+      let allRoomCounter = allRoom.length;
+
       allRoom.some((room, index) => {
         let count = 0;
+        // console.log(room.roomTypeID)
         for (let i = 0; i < eachDayBookingArray.length; i++) {
           if (room.roomTypeID == eachDayBookingArray[i].roomTypeID) {
             console.log('add count' + room.roomTypeID)
             count++
           }
         } // end of count loop      
+
         if (count >= room.quantity) {
           allRoom = allRoom.filter(checkRoom => checkRoom.roomTypeID !== room.roomTypeID) //filter all unavilable room
         }
-        if (
-          (day == dayArray[dayArray.length -1] && index +1 == allRoom.length)
-          || (allRoom.length == 0)
-          )
+        if ((day == dayArray[dayArray.length -1] && index +1 == allRoomCounter)
+          || (allRoom.length == 0))
         {
+          console.log('success')
           resolve('success');
           return true
          }   
@@ -111,10 +108,9 @@ let promise = new Promise((resolve,reject)=>{
             
     }) //end of query.then 
   }) //end of dayArray Map filterJob
-    
 }) //promise
 
-promise.then((result)=>{console.log(result)
+promise.then((result)=>{console.log(allRoom)
   res.send(allRoom)})
  
 }); //end of all req.post
