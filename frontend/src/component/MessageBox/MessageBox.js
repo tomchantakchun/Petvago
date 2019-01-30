@@ -22,13 +22,13 @@ class MessageBox extends React.Component {
         let promise=new Promise((resolve,reject)=>{
             let user=JSON.parse(window.atob(localStorage.getItem('petvago-token').split('.')[1]));
             this.setState({
-                who: user.isHotel==false? 'users':'hotel'
+                who: user.isHotel===false? 'users':'hotel'
             })
             resolve()
         })
 
         promise.then(()=>{
-            if(this.state.who=='users'){
+            if(this.state.who==='users'){
                 axios.get('http://localhost:8080/api/chatroom/chatlist/user',{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     this.setState({chatlist:res.data})
                     console.log(res.data)
@@ -54,7 +54,7 @@ class MessageBox extends React.Component {
     }
 
     componentWillUpdate=(nextProps, nextState) =>{
-        if (nextState.chatlist != this.state.chatlist ) {
+        if (nextState.chatlist !== this.state.chatlist ) {
           this.renderChatlist()
         }
         
@@ -62,7 +62,7 @@ class MessageBox extends React.Component {
 
     renderChatlist=()=>{
         if(this.state.chatlist){
-            if(this.state.who=='users'){
+            if(this.state.who==='users'){
             return(
                 this.state.chatlist.map((each)=>{
                     let time=''
@@ -76,7 +76,7 @@ class MessageBox extends React.Component {
                         <div key={each.conversationID}>
                         <div className='messageBox-conersation row' onClick={()=>this.click(each.conversationID)}>
                         <div className="col-2">
-                            <img className='messageBox-icon' src={each.icon}/>
+                            <img className='messageBox-icon' src={each.icon} alt="icon"/>
                         </div>
                         <div className="col-3">
                             {each.name}
