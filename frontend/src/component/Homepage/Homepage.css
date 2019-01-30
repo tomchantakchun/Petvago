@@ -8,12 +8,13 @@
 }
 
 .background {
-    background-image: url("./background.jpg");
+    background-image: url("./homepagedog.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center;
+    background-position: top center;
+    background-size:cover;
     width: 100%;
-    height: 60vh;
+    height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;

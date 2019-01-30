@@ -9,6 +9,8 @@ const passport = require('passport');
 4. Get all message of a conversation
 5. User get hotel information with active booking (message page)
 6. Post request to send new message
+7. Get user info in conversation
+
 */
 
 //1. Get chatlist of a user
@@ -70,7 +72,7 @@ router.post('/addchat', passport.authenticate("jwt", { session: false }), (req, 
         res.status(500).send({error:'cannot create new chat'})
       })
     }else{
-      res.status(500).send({error:'conversation already exist'})
+      res.send({conversationID:rows[0].id})
     }
 
 
