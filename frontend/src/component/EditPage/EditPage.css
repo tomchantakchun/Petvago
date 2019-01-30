@@ -18,6 +18,7 @@
     background-size: cover;
     position: absolute;
     overflow: hidden;
+    top: 0;
 }
 
 #EditPage h3 {
