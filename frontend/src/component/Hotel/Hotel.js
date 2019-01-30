@@ -6,26 +6,74 @@ import axios from 'axios';
 import GoogleMap from "../GoogleMap/GoogleMap";
 import RatingBarNonEdit from "./RatingBar-non-edit";
 // import Slideshow from "../Slideshow/Slideshow";
-import Mycomponent from "../ImageShow/ImageShow";
+import ImageShow from "../ImageShow/ImageShow";
 import "./Hotel.css"
 
 class Hotel extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            hotelInfo: "",
             hotelID: 1,
             hotelName: 'Dogotel & Spa',
+            hotelAddress: "1 Downing Street, London",
+            hotelAverageRating: 4.0,
+            hotelDescription: "I am Descripiton",
+            hotelEmail:"dafdw!@email.com",
+            hotelPhone:"2180000",
+            hotelLatitude: 22.320188,
+            hotelLongtitude:114.175812,
+
+            roomTypeArr: [],
+            
             roomTypeID: 1,
             roomType: 'Deluxe Room',
             roomPrice: 400,
             vaccineRequirement: { vaccine: ['DHPPiL', 'Rabies'] },
             gallery: ['https://i.imgur.com/sFq0wAC.jpg',"https://i.imgur.com/IE0fsbI.jpg"]
         }
-    }
+    };
 
-    componentDidMount() {
+    async componentDidMount() {
+        try{
+            const _hotelInfoArray = await axios.get("http://localhost:8080/api/hotel/1");
+            const _hotelReviewArray = await axios.get("http://localhost:8080/api/review/hotel/1");
 
-    }
+            const _hotelInfo = _hotelInfoArray.data[0];
+                console.log(_hotelInfo);
+            const _hotelReview = _hotelReviewArray.data[0];
+                console.log(_hotelReview);
+
+            const _gallaryArr = _hotelInfo.hotelPhoto.map((e) => e.path);
+            const _fillterGallaryArr = _gallaryArr.filter(e => !!e);
+            for (let i= 0; i<_hotelInfo.roomType.length; i++){
+                for (let j=0; j<_hotelInfo.roomType[i].photo.length;i++){
+                    if(_hotelInfo.roomType[i].photo[j].icon = true){
+                        _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo[j].path
+                    }
+                }
+            }
+                console.log(_hotelInfo.roomType);
+                
+            this.setState({
+                hotelID: _hotelInfo.id,
+                hotelName: _hotelInfo.name,
+                hotelAddress: _hotelInfo.address,
+                hotelAverageRating: _hotelInfo.averageRating,
+                hotelDescription: _hotelInfo.description,
+                hotelEmail: _hotelInfo.email,
+                hotelPhone: _hotelInfo.telephone,
+                hotelLatitude: _hotelInfo.latitude,
+                hotelLongtitude:_hotelInfo.longtitude,
+                roomTypeArr:_hotelInfo.roomType,
+                vaccineRequirement: _hotelInfo.vaccineRequirement,
+                gallery: _fillterGallaryArr,
+             });
+        } catch(err){
+            console.log(err);
+        }
+    };
+
 
     book = () => {
         let data = {
@@ -66,15 +114,46 @@ class Hotel extends Component {
             history.push('/booking')
         })
             .catch(err => console.log(err))
+    };
+
+    handleRoomTypeID = () =>{
+
     }
 
     render() {
+        const vaccineListItem = this.state.vaccineRequirement.vaccine.map((e) =>
+            <li> {e} </li>
+        );
+        const roomTypeListItem = this.state.roomTypeArr.map((e) => 
+            
+
+           
+            <div key={e.roomTypeID} className="hotel-room-data-card">
+                <img className="hotel-room-data-card-icon" src={e.icon} alt="NA" />
+                <div className="hotel-room-data-card-type left-break-line">{e.roomType}</div>
+                <div className="hotel-room-data-card-description left-break-line">{e.description}</div>
+                <div id="hotel-room-data-card-price">
+                    ${e.price}
+                </div>
+                <button className="btn btn-primary hotel-room-data-card-booking" onClick={this.handleRoomTypeID}>Book</button>
+            </div>
+            
+        
+        
+        );
+
+        console.log(this.state.roomTypeArr.map((e)=>
+                e.photo
+        ))
+
+        
+        
         return (
             <div className="hotel-body">
                 {this.state.chosenHotel}
                 <div className="hotel-row-3">
                     <div className="hotel-row-3-a">
-                        <div className="hotel-name-3">DOGGY DOGGY</div>
+                        <div className="hotel-name-3">{this.state.hotelName}</div>
                         <div className="hotel-rate-3">
                             <RatingBarNonEdit rating={4.0}/>
                         </div>
@@ -94,39 +173,30 @@ class Hotel extends Component {
 
                     <div className="hotel-row-3-b">
                         <div className="hotel-photo-3" > 
-                        {/* <img className="demo-photo" src={"https://i.imgur.com/sFq0wAC.jpg"} alt="NA" /> */}
-                        {/* <Slideshow /> */}
-                        < Mycomponent urlArray={this.state.gallery}/>
+                        < ImageShow urlArray={this.state.gallery}/>
                         </div>
                     </div>
 
 
                 </div>
 
-                <div className="hotel-description-3">DESRIPITION</div>
+                <div className="hotel-description-3">{this.state.hotelDescription}</div>
 
                 <div className="align-left hotel-date-3">DATE INPUT </div>
                 
                 <div className="hotel-room-type-3">
                     <p className="align-left"> Room type:</p>
-                    <div className="hotel-room-data-card">
-                    <img className="hotel-room-data-card-icon" src={"https://i.imgur.com/IE0fsbI.jpg"} alt="NA"/>
-                    <div className="hotel-room-data-card-type left-break-line">type</div>
-                    <div className="hotel-room-data-card-description left-break-line">description</div>
-                    <button className="btn btn-primary hotel-room-data-card-booking">Book</button>
+                    <div className="hotel-room-data-card-container">
+                        {roomTypeListItem}
                     </div>
 
                 </div>
 
                 <div className="hotel-vaccine-3">
                     <p className="align-left"> Vaccine Requirement:</p>
-                    <ul className="hotel-vaccine-list-3">
-                        <li>DHPPiL</li>
-                        <li>DHPPiL</li>
-                        <li>DHPPiL</li>
-                        <li>DHPPiL</li>
-                        <li>DHPPiL</li>
-                    </ul>
+                    
+                    <ul className="hotel-vaccine-list-3">{vaccineListItem}</ul>
+                    
                 </div>
 
                 <div className="hotel-review-3">

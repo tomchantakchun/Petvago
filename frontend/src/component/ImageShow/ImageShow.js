@@ -1,7 +1,7 @@
 import React from 'react';
 import SlideShow from 'react-image-show';
  
-class MyComponent extends React.Component {
+class ImageShow extends React.Component {
   render() {
     return (
       <SlideShow
@@ -19,4 +19,4 @@ class MyComponent extends React.Component {
  
 }
 
-export default MyComponent;
+export default ImageShow;
