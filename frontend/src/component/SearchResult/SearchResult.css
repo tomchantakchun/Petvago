@@ -2,7 +2,7 @@
     width: 100%;
     height: 10vh;
     padding-top:2vh ;
-    
+    display:flex;
 }
 .hotel-container-2 {
     display: flex;

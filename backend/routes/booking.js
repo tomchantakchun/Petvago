@@ -9,6 +9,8 @@ const passport = require('passport');
 4. Put request to update booking on submit
 5. Post request to create offline booking by hotel
 6. Get all booking of a hotel **
+7. Get all booking of a hotel within a range of date
+8. Get all booking of a hotel booking by day
 */
 
 
@@ -222,12 +224,13 @@ router.post('/offline-booking', passport.authenticate("jwt", { session: false })
     {
         startDate,
         endDate,
-        roomTypeID
+        roomTypeID,
+        service: { reference: }
     }
   */
 
   var db=req.db;
-  let query=db.insert([{hotelID:req.user.id, roomTypeID:req.body.roomTypeID, startDate:req.body.startDate, endDate:req.body.endDate}],['id']).into('booking')
+  let query=db.insert([{hotelID:req.user.id, roomTypeID:req.body.roomTypeID, startDate:req.body.startDate, endDate:req.body.endDate, service:req.body.service, status:'outside'}],['id']).into('booking')
 
   query.then((result)=>{
       res.send({status:'success',bookingID:result[0].id});        
@@ -345,6 +348,38 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
       })  
   }
 })
+
+//8.Get all booking of a hotel booking by day
+router.put('/hotel-by-day', passport.authenticate("jwt", { session: false }), (req, res) => {
+  /* data this function needs:
+    {
+      date (format: '2019-02-02')
+    }
+
+    on success, sends back {status:'success', bookingID, expiryTime}
+  */
+
+  if (req.user.isHotel!=true){
+    res.status(500).send({error:'user is not hotel'})
+  } else{
+    var db=req.db;
+    let query=db.select()
+    .from('booking')
+    .where('hotelID',req.user.id)
+    .andWhere('startDate','<=',req.body.date)
+    .andWhere('endDate','>=',req.body.date)
+
+    query.then((result)=>{
+      res.send(result);        
+    }).catch((error)=>{
+      console.log(error);
+      res.status(500).send({error:'cannot update booking'})
+    });
+  }
+
+  
+})
+
 
 let convertYMD = (dateObj) => {
   let mm = dateObj.getMonth() + 1;
