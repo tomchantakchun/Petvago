@@ -8,7 +8,6 @@ router.post('/', async (req, res, next) => {
   let dayArray = [];
   let allRoom = [];
   let eachDayBookingArray = [];
-let resultRoom = [];
 
   let startDay = new Date(req.body.startDate);
   let endDay = new Date(req.body.endDate);

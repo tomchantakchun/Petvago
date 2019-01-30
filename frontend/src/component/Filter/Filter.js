@@ -128,7 +128,7 @@ class Filter extends React.Component {
                 <button className="orange">
                     <select name="district" onChange={this.districtChange} required >
                         <option value="all" disabled selected hidden >--District--</option>
-                        <option value="all" >None</option>
+                        <option value="all" >- All District -</option>
                         {this.districts.map((district, index) => {
                             return <option value={district} key={index} >{district}</option>
                         })}
@@ -138,7 +138,7 @@ class Filter extends React.Component {
                 <button className="orange">
                     <select name="petType" onChange={this.petTypeChange} required>
                         <option value="all" disabled selected hidden>--Type of Pet--</option>
-                        <option value='all'>None</option>
+                        <option value='all'>- All PetType -</option>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                     </select>

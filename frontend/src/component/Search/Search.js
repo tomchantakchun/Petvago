@@ -5,20 +5,42 @@ import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
 import "./Search.css";
 
+//daterangepicker
+import DateRangePicker from 'react-bootstrap-daterangepicker';
+import 'bootstrap-daterangepicker/daterangepicker.css';
+import moment from 'moment'
+
+//AutoCompleteSelector
+import AutoComplete from 'react-autocomplete';
+
+const mapStateToProps = state => {
+    return {
+        search: state.search,
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSearch: (history) => dispatch({ type: actionTypes.SEARCHHOTEL, history: history }),
+        changeDate: (date) => dispatch({ type: actionTypes.CHANGEDATE, date: date }),
+        changeDistrict: (district) => dispatch({ type: actionTypes.CHANGEDISTRICT, district: district }),
+        changePetType: (petType) => dispatch({ type: actionTypes.CHANGEPETTYPE, petType: petType }),
+        afterSearch: (result) => dispatch({ type: actionTypes.SEARCHRESULT, result: result })
+    }
+};
 
 class Search extends React.Component {
     districts = ['Central and Western', 'Eastern', 'Islands', 'Kowloon City', 'Kwai Tsing', 'Kwun Tong', 'North', 'Sai Kung', 'Sha Tin', 'Sham Shui Po', 'Southern', 'Tai Po', 'Tsuen Wan', 'Tuen Mun', 'Wan Chai', 'Wong Tai Sin', 'Yau Tsim Mong', 'Yuen Long']
 
+
     handleSearch = (e) => {
         e.preventDefault();
-        console.log('search start')
-        console.log(this.state)
         axios.post(`http://localhost:8080/api/search/`,
             {
-                startDate: this.state.startDate,
-                endDate: this.state.endDate,
-                district: this.state.district || "all",
-                petType: this.state.petType || "all",
+                startDate: this.props.search.startDate || moment(new Date()).format("YYYY-MM-DD"),
+                endDate: this.props.search.endDate || moment(new Date()).format("YYYY-MM-DD"),
+                district: this.props.search.district || "all",
+                petType: this.props.search.petType || "all",
             })
             .then(response => {
                 if (response === null) {
@@ -28,31 +50,32 @@ class Search extends React.Component {
                     this.props.afterSearch(response.data)
                     this.props.history.push('./search_result');
                 }
-            this.props.onSearch(this.state);
+            this.props.onSearch(this.props.search);
             })
             .catch(error => {
                 console.log(error)
             })
     }
 
-    startDateChange = (e) => {
-        console.log('startDateChange')
-        this.setState({ startDate: e.target.value })
+    dateChange = async (e, picker) =>{
+        e.preventDefault();
+        console.log('dateChange')
+        await this.setState({ 
+            startDate: moment(new Date(picker.startDate._d|| this.props.search.startDate)).format("YYYY-MM-DD") ,
+            endDate: moment(new Date(picker.endDate._d || this.props.search.endDate)).format("YYYY-MM-DD")  })
+        this.props.changeDate(this.state);
     }
 
-    endDateChange = (e) => {
-        console.log('endDateChange')
-        this.setState({ endDate: e.target.value })
+    districtChange = async (e) => {
+        e.preventDefault();
+        await this.setState({district: e.target.value},)
+        this.props.changeDistrict(this.state);
     }
 
-    districtChange = (e) => {
-        console.log('districtChange')
-        this.setState({ district: e.target.value })
-    }
-
-    petTypeChange = (e) => {
-        console.log('petTypeChange')
-        this.setState({ petType: e.target.value })
+    petTypeChange = async (e) => {
+        e.preventDefault();
+        await this.setState({ petType: e.target.value })
+        this.props.changePetType(this.state);
     }
 
 
@@ -60,6 +83,7 @@ class Search extends React.Component {
         const serachDistricts = (
             <select name="district" onChange={this.districtChange} required>
                 <option value="all" disabled selected hidden>--District--</option>
+                <option value="all">All District</option>
                 {this.districts.map((district, index) => {
                     return <option value={district} key={index}>{district}</option>
                 })}
@@ -75,34 +99,29 @@ class Search extends React.Component {
                
         return (
             <div className="search">
-                <form onSubmit={this.handleSearch}>
-                    <input type='date' id='start' name='startDate' min={today} max={threeMonthLater} onChange={this.startDateChange} required />
-                    <input type='date' id='end' name='endDate' min={today} max={threeMonthLater} onChange={this.endDateChange} required />
+                <DateRangePicker
+                    minDate={moment(new Date(today))}
+                    maxDate={moment(new Date(threeMonthLater))}
+                    startDate={moment(new Date(this.props.search.startDate || today))}
+                    endDate={moment(new Date(this.props.search.endDate || today))}
+                    onApply={this.dateChange}
+                    props={this.props}>
+                    <button className="orange">DATE {this.props.search.startDate || today} {this.props.search.endDate || today} </button>
+                </DateRangePicker>
+
                     {serachDistricts}
+
                     <select name="petType" onChange={this.petTypeChange} required>
                         <option value="all" disabled selected hidden>--Type of Pet--</option>
+                        <option value="all">All PetType</option>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                     </select>
-                    <button type="submit" value="Submit">Search</button>
-                </form>
+                    <button type="submit" value="Submit" onClick={this.handleSearch}>Search</button>
             </div>
         )
     }
 }
 
-
-const mapStateToProps = state => {
-    return {
-        searchResult: state,
-    }
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onSearch: (history) => dispatch({type: actionTypes.SEARCHHOTEL, history:history}),
-        afterSearch: (result) => dispatch({type: actionTypes.SEARCHRESULT, result:result})
-    }
-};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Search));

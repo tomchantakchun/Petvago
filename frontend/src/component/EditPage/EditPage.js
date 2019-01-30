@@ -248,7 +248,7 @@ class EditPage extends React.Component {
     }
 
     handleEditBigIconPhoto = (e) => {
-        this.setState({ 
+        this.setState({
             hotelIcon: URL.createObjectURL(e.target.files[0]),
             hotelIconFile: e.target.files[0],
         });
@@ -279,7 +279,6 @@ class EditPage extends React.Component {
         for (let i in this.state.roomType) {
             for (let j in this.state.roomType[i].photos) {
                 if (this.state.roomType[i].photos[j].photoID < 0) {
-                    // console.log(`this.state.roomType[i].photos[j].files: `,this.state.roomType[i].photos[j].files);
                     addPhotosArray.push({
                         photoName: this.state.roomType[i].photos[j].name,
                         files: this.state.roomType[i].photos[j].files,
@@ -290,8 +289,6 @@ class EditPage extends React.Component {
                 }
             }
         }
-
-        console.log(`addPhotosArray: `,addPhotosArray);
 
         let promiseSubmit = new Promise((resolve, reject) => {
             axios.post(
@@ -321,8 +318,8 @@ class EditPage extends React.Component {
                 axios.put(
                     `http://localhost:8080/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`,
                     {
-                        roomType: this.state.roomType[i].roomType, 
-                        price: this.state.roomType[i].price, 
+                        roomType: this.state.roomType[i].roomType,
+                        price: this.state.roomType[i].price,
                         description: this.state.roomType[i].description,
                         roomTypeID: this.state.roomType[i].roomTypeID,
                     },
@@ -336,9 +333,9 @@ class EditPage extends React.Component {
         for (let i in addPhotosArray) {
             let formData = new FormData();
 
-            formData.append('file',addPhotosArray[i].files,addPhotosArray[i].photoName);
-            formData.append('roomTypeID',addPhotosArray[i].roomTypeID);
-            formData.append('icon',addPhotosArray[i].icon);
+            formData.append('file', addPhotosArray[i].files, addPhotosArray[i].photoName);
+            formData.append('roomTypeID', addPhotosArray[i].roomTypeID);
+            formData.append('icon', addPhotosArray[i].icon);
 
             promiseArray.push(new Promise((resolve, reject) => {
                 axios.post(
@@ -369,13 +366,14 @@ class EditPage extends React.Component {
         }
 
         Promise.all(promiseArray).then(async (res) => {
-            console.log(`res: `, res);
             if (res[0].status === 200) {
                 this.setState({ isSaved: true })
                 for (let i = 0; i < 5; i++) {
                     await this.minusOne();
                 }
-                this.props.history.push('/host-management')
+                document.getElementsByTagName('body')[0].classList.remove('modal-open');
+                document.getElementsByTagName('body')[0].style = '';
+                this.props.history.push('/host-management');
             }
         })
     }
@@ -401,12 +399,12 @@ class EditPage extends React.Component {
         window.removeEventListener('beforeunload', this.handleWindowBeforeClose);
     }
 
-    minusOne () {
+    minusOne() {
         return new Promise((res, ref) => {
             setTimeout(() => {
-                this.setState({countDownSecond: this.state.countDownSecond - 1})
+                this.setState({ countDownSecond: this.state.countDownSecond - 1 })
                 res()
-            },1000);
+            }, 1000);
         })
     }
 
@@ -443,6 +441,13 @@ class EditPage extends React.Component {
                                 }
                             })
                     }
+
+                    await axios.get(
+                        `http://localhost:8080/api/hotel/edit/bigicon`,
+                        { headers: { Authorization: `Bearer ${this.jwt}` } }
+                    ).then((res) => {
+                        this.setState({hotelIcon: res.data})
+                    })
 
                     this.setState({
                         userName: res.data[0].userName,

@@ -268,7 +268,7 @@ router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session:
 
   var db=req.db;
   var today = new Date();
-  let query=db.select("u.username","u.telephone","u.email","u.id as userID","b.hotelID","b.startDate","b.endDate","r.roomType")
+  let query=db.select("u.username","u.telephone","u.email","u.id as userID","b.id as bookingID","b.hotelID","b.startDate","b.endDate","r.roomType")
   .from("users as u")
   .innerJoin('conversation as c','c.userID','u.id')
   .fullOuterJoin('booking as b','c.userID','b.userID')
@@ -292,24 +292,26 @@ router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session:
        if(index==0){
          if(array[index+1]){
           array[index+1].activeBooking=[]
-          if(current.endDate>=today){
+          if(booking && current.endDate>=today){
             array[index+1].activeBooking=[booking]
           }
          }else{
-          current.activeBooking=[booking]
-          return current
+           if(booking){
+            current.activeBooking=[booking]
+            return current
+           }   
         }
          
        
        }else if(index<array.length-1 && index>0){
         array[index+1].activeBooking=[]
-        if(current.endDate>=today){
+        if(booking && current.endDate>=today){
           array[index+1].activeBooking=[...current.activeBooking,booking]
         }else{
           array[index+1].activeBooking=[...current.activeBooking]
         }
        }else if (index==array.length-1){
-        if(current.endDate>=today){
+        if(booking && current.endDate>=today){
           current.activeBooking=[...current.activeBooking,booking]
           return current
         }else{
@@ -326,9 +328,6 @@ router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session:
         return true
       }
     })
-      console.log('rows',rows);
-      console.log('new',newRow)
-
       res.send(newRow);
 
   }).catch((error)=>{

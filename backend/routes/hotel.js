@@ -14,6 +14,7 @@ const passport = require('passport');
 5. Get roomType and photo based on roomTypeID for edit
 5.1 Post add new roomType
 5.2 Put delete new roomType if not update
+5.3 Get big icon
 6. Post request to edit information of hotel **
 6.1 Put request to edit information of roomType **
 7. Post request to upload photo :: /uploadPhoto
@@ -341,7 +342,6 @@ router.post('/edit/new-room-type', passport.authenticate("jwt", { session: false
 
 // 5.2 Put delete new roomType if not update
 router.put('/edit/delete-room-type/:roomID', passport.authenticate("jwt", { session: false }), (req, res) => {
-  console.log(`/edit/delete-room-type/${req.params.roomID} called`);
   req.db
     .from('roomType')
     .where('id', req.params.roomID)
@@ -351,6 +351,18 @@ router.put('/edit/delete-room-type/:roomID', passport.authenticate("jwt", { sess
     })
 })
 
+// 5.3 Get big icon
+router.get('/edit/bigicon', passport.authenticate("jwt", { session: false }), (req, res) => {
+  req.db
+    .select('path')
+    .from('photo')
+    .where('hotelID', req.user.id)
+    .where('roomTypeID', null)
+    .where('icon', 't')
+    .then((rows) => {
+      res.send(rows[0].path)
+    })
+})
 
 
 // 6. Post request to edit information of hotel 
