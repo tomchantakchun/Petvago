@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -35,7 +34,10 @@ class Confirmation extends Component {
     componentDidMount(){
         console.log(!this.props.location.state)
 
-        if (!this.props.location.state==false) {
+        if(!this.props.location.state===true){
+            console.log('123')
+            this.props.history.push('/home')
+        }else if (!this.props.location.state===false) {
             let promise=new Promise((resolve,reject)=>{
                 this.setState({
                     bookingID:this.props.location.state.bookingID
@@ -49,9 +51,6 @@ class Confirmation extends Component {
         if (!jwt) {
             this.props.history.push('/login')
             
-        }else if(!this.props.location.state===true){
-            console.log('123')
-            this.props.history.push('/home')
         }
 
         axios.get(`http://localhost:8080/api/booking/info/${this.state.bookingID}`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{

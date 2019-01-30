@@ -21,6 +21,7 @@
     "passport-jwt": "^4.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
+    "react-autocomplete": "^1.8.1",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-daterangepicker": "^4.1.0",
     "react-chartjs-2": "^2.7.4",
