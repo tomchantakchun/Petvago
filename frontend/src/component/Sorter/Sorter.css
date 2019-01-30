@@ -2,8 +2,9 @@
     display: flex;
     flex-wrap:wrap;
     justify-content: flex-start;
-    width: 100%;
+    width: 40%%;
     height: 100%;
     padding-left: 2vh;
-    border: #FB8F3D
+    border: #FB8F3D;
+    align-content: right;
 }

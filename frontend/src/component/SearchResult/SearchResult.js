@@ -1,21 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {withRouter} from "react-router-dom";
+import * as actionTypes from '../../store/actions';
 import "./SearchResult.css";
 import Filter from "../Filter/Filter";
 import Sorter from "../Sorter/Sorter";
+
 
 import convert from 'object-array-converter';
 import RatingBar from "./RatingBar-non-edit";
 
 const mapStateToProps = state => {
+    console.log(state.search.haveSearch)
     return {
         SearchResult: state.search,
+        SearchAuthenticate: state.search.haveSearch
     }
 };
+
+const mapDispatchToProps = dispatch =>{
+    
+}
 
 class SearchResult extends React.Component {
    
     render() {
+
+        if (!this.props.SearchAuthenticate){
+            this.props.history.push('./home')
+        }
+
+    
         //convert object to Array
         let searchResultArray = []
         let searchArray = convert.toArray(this.props.SearchResult)
@@ -24,7 +39,6 @@ class SearchResult extends React.Component {
                 searchResultArray = convert.toArray(searchArray[i].value)
             }
         }
-        console.log(searchResultArray)
 
         //show min price
         searchResultArray = searchResultArray.map(e => e.value).sort(
@@ -150,20 +164,18 @@ class SearchResult extends React.Component {
                 </div>
             })
         )
+        
             
         return (
             <div className="result-body">
                 <div className="filter-container">
-                    <Filter />
-                </div>
-                <div className="sorter-container">
-                    <Sorter />
+                    <Filter />  <Sorter />
                 </div>
                 <div className="hotel-container-2" >
                     {listItems}
                 </div>
 
-                <div className="hotel-container-2">
+                {/* <div className="hotel-container-2">
                     <div className="hotel-info-2"  >
                         <img className="hotel-icon-2" src={"https://i.imgur.com/img0gF3.jpg"} alt="NA" />
                         <div className="hotel-detail-2">
@@ -178,10 +190,11 @@ class SearchResult extends React.Component {
                            
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         )
     }
 }
 
-export default connect(mapStateToProps)(SearchResult);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(SearchResult));
+

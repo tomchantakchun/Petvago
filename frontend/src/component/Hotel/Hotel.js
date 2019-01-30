@@ -20,7 +20,7 @@ class Hotel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hotelID: this.props.HotelID.hotelId,
+            hotelID: this.props.HotelID.hotelId ,
             hotelName: 'Fake Hotel & Spa',
             hotelIcon: '',
             hotelAddress: "1 Downing Street, London",
@@ -39,9 +39,18 @@ class Hotel extends Component {
             startDate: "DD-MM-YYYY",
             endDate:"DD-MM-YYYY",
         }
+
+        if(this.state.hotelID == 0){
+            console.log('i am zero');
+            this.props.history.push('/')
+        }
+
+        
+
     };
 
     async componentDidMount() {
+        
         try{
             const _hotelInfoArrayData = await axios.get("http://localhost:8080/api/hotel/"+ this.state.hotelID);
             const _hotelReviewArrayData = await axios.get("http://localhost:8080/api/review/hotel/"+this.state.hotelID);
@@ -51,6 +60,12 @@ class Hotel extends Component {
                 console.log(_hotelReviewArray);
             const _gallaryArr = _hotelInfo.hotelPhoto.map((e) => e.path);
             const _fillterGallaryArr = _gallaryArr.filter(e => !!e);
+            {/* once photo uploaded to firebase, have to remove _temp array  */}
+                console.log(_fillterGallaryArr);
+            const _tempGallaryArr = _fillterGallaryArr.map(e => '.'.concat(e));
+                console.log(_tempGallaryArr);
+
+
             for (let i= 0; i<_hotelInfo.roomType.length; i++){
                 for (let j=0; j<_hotelInfo.roomType[i].photo.length;i++){
                     if(_hotelInfo.roomType[i].photo[j].icon === true){
@@ -61,7 +76,10 @@ class Hotel extends Component {
             await this.setState({
                 hotelID: _hotelInfo.id,
                 hotelName: _hotelInfo.name,
-                hotelIcon: _fillterGallaryArr[0],
+
+                // hotelIcon: _fillterGallaryArr[0],
+                hotelIcon: _tempGallaryArr[0],
+
                 hotelAddress: _hotelInfo.address,
                 hotelAverageRating: _hotelInfo.averageRating,
                 hotelDescription: _hotelInfo.description,
@@ -71,7 +89,10 @@ class Hotel extends Component {
                 hotelLongitude:_hotelInfo.longitude,
                 roomTypeArr:_hotelInfo.roomType,
                 reviewArr: _hotelReviewArray,
-                gallery: _fillterGallaryArr,
+
+                // gallery: _fillterGallaryArr,
+                gallery: _tempGallaryArr,
+
                 vaccineRequirement: _hotelInfo.vaccineRequirement,
                 startDate: this.props.SearchResult.startDate,
                 endDate: this.props.SearchResult.endDate,
@@ -139,12 +160,13 @@ class Hotel extends Component {
     }
 
     render() {
-        console.log(this.props.match.params.id);
+       
         const vaccineListItem = this.state.vaccineRequirement.vaccine.map((e,index) =>
             <li key={index}> {e} </li>
         );
         const roomTypeListItem = this.state.roomTypeArr.map((e) => 
             <div key={e.roomTypeID} id={`roomType-id-${e.roomTypeID}`} className="hotel-room-data-card">
+                {/* once photo uploaded to firebase, change the source of icon */}
                 <img className="hotel-room-data-card-icon" src={`.${e.icon}`} alt="NA" />
                 <div id={`roomType-${e.roomType}`} className="hotel-room-data-card-type left-break-line">{e.roomType}</div>
                 <div className="hotel-room-data-card-description left-break-line">{e.description}</div>
@@ -165,57 +187,65 @@ class Hotel extends Component {
             </div>
         )
 
+        const hotelBody = ( 
+                <div className="hotel-body">
+                    {this.state.chosenHotel}
+                    <div className="hotel-row-3">
+                        <div className="hotel-row-3-a">
+                            <div className="hotel-name-3">{this.state.hotelName}</div>
+                            <div className="hotel-rate-3">
+                                <RatingBarNonEdit rating={this.state.hotelAverageRating} />
+                            </div>
+                            <p className="hotel-address-3">{this.state.hotelAddress}</p>
+                            <div className="hotel-map-container">
+                                <GoogleMap
+                                    markerArray={[
+                                        {
+                                            coords: { lat: this.state.hotelLatitude, lng: this.state.hotelLongitude },
+                                            content: '<h1>Dogotel & Spa</h1>'
+                                        }
+                                    ]}
+                                    zoom={17} height={'30vh'} width={'35vh'}
+                                />
+                            </div>
+                        </div>
+                        <div className="hotel-row-3-b">
+                            <div className="hotel-photo-3" >
+                                < ImageShow urlArray={this.state.gallery} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="hotel-description-3">{this.state.hotelDescription}</div>
+
+                    <div className="align-left hotel-date-3">DATE INPUT </div>
+
+                    <div className="hotel-room-type-3">
+                        <p className="align-left"> Room type</p>
+                        <div className="hotel-room-data-card-container">
+                            {roomTypeListItem}
+                        </div>
+                    </div>
+
+                    <div className="hotel-vaccine-3">
+                        <p className="align-left"> Vaccine Requirement</p>
+                        <ul className="hotel-vaccine-list-3">{vaccineListItem}</ul>
+                    </div>
+
+                    <div className="hotel-review-3">
+                        <p className="align-left"> Review</p>
+                        <div className="hotel-review-panel-3">
+                            {reviewListItem}
+                        </div>
+                    </div>
+                    <button className="btn btn-primary" onClick={this.book}>Book</button>
+                </div>
+        )
+
         return (
-            <div className="hotel-body">
-                {this.state.chosenHotel}
-                <div className="hotel-row-3">
-                    <div className="hotel-row-3-a">
-                        <div className="hotel-name-3">{this.state.hotelName}</div>
-                        <div className="hotel-rate-3">
-                            <RatingBarNonEdit rating={this.state.hotelAverageRating}/>
-                        </div>
-                        <p className="hotel-address-3">{this.state.hotelAddress}</p>
-                        <div className="hotel-map-container">
-                            <GoogleMap
-                                markerArray={[
-                                    {
-                                        coords: { lat: this.state.hotelLatitude, lng: this.state.hotelLongitude },
-                                        content: '<h1>Dogotel & Spa</h1>'
-                                    }
-                                ]}
-                                zoom={17} height={'30vh'} width={'35vh'}
-                            />
-                        </div>
-                    </div>
-                    <div className="hotel-row-3-b">
-                        <div className="hotel-photo-3" > 
-                        < ImageShow urlArray={this.state.gallery}/>
-                        </div>
-                    </div>
-                </div>
-                <div className="hotel-description-3">{this.state.hotelDescription}</div>
+            <div className="hotel-upper-body">
 
-                <div className="align-left hotel-date-3">DATE INPUT </div>
-        
-                <div className="hotel-room-type-3">
-                    <p className="align-left"> Room type</p>
-                    <div className="hotel-room-data-card-container">
-                        {roomTypeListItem}
-                    </div>
-                </div>
 
-                <div className="hotel-vaccine-3">
-                    <p className="align-left"> Vaccine Requirement</p>
-                    <ul className="hotel-vaccine-list-3">{vaccineListItem}</ul>
-                </div>
-
-                <div className="hotel-review-3">
-                    <p className="align-left"> Review</p>
-                    <div className="hotel-review-panel-3">
-                        {reviewListItem}
-                    </div>
-                </div>
-                <button className="btn btn-primary" onClick={this.book}>Book</button>
+                {hotelBody}
             </div>
         )
     }
