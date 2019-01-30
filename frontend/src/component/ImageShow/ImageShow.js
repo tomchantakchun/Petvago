@@ -6,8 +6,8 @@ class ImageShow extends React.Component {
     return (
       <SlideShow
         images={this.props.urlArray}
-        width="70vh"
-        imagesWidth="65vh"
+        width="80vh"
+        imagesWidth="70vh"
         imagesHeight="50vh"
         imagesHeightMobile="80vw"
         thumbnailsWidth="70vh"

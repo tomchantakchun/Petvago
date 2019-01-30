@@ -21,7 +21,6 @@ const styles = {
         width: "100%",
         fontSize: "1rem",
         fontFamily: "Sarabun",
-        width: "100%",
         padding: "1rem",
         borderTop: "1px solid #E7E7E7",
     }
