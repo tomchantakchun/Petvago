@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import * as actionTypes from '../../store/actions';
 
+
 import "./Filter.css";
 
 //daterangepicker
@@ -122,10 +123,9 @@ class Filter extends React.Component {
                     onApply={this.dateChange}
                     props={this.props}
                 >
-                    <button className="lightgreen">DATE {this.props.SearchResult.startDate} {this.props.SearchResult.endDate} </button>
+                    <button className="filterDate">DATE {this.props.SearchResult.startDate} {this.props.SearchResult.endDate} </button>
                 </DateRangePicker>
 
-                <button className="lightgreen">
                     <select name="district" onChange={this.districtChange} required >
                         <option value="all" disabled selected hidden >--District--</option>
                         <option value="all" >- All District -</option>
@@ -133,18 +133,13 @@ class Filter extends React.Component {
                             return <option value={district} key={index} >{district}</option>
                         })}
                     </select>
-                </button>
 
-                <button className="lightgreen">
                     <select name="petType" onChange={this.petTypeChange} required>
                         <option value="all" disabled selected hidden>--Type of Pet--</option>
                         <option value='all'>- All PetType -</option>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                     </select>
-                </button>
-
-
             </div >
         )
     }

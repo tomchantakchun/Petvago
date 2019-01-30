@@ -4,6 +4,7 @@ import "./SearchResult.css";
 import Filter from "../Filter/Filter";
 import Sorter from "../Sorter/Sorter";
 
+
 import convert from 'object-array-converter';
 import RatingBar from "./RatingBar-non-edit";
 
@@ -162,10 +163,7 @@ class SearchResult extends React.Component {
         return (
             <div className="result-body">
                 <div className="filter-container">
-                    <Filter />
-                </div>
-                <div className="sorter-container">
-                    <Sorter />
+                    <Filter />  <Sorter />
                 </div>
                 <div className="hotel-container-2" >
                     {listItems}
