@@ -82,7 +82,7 @@ router.get('/:hotelID', function (req, res) {
           latitude,
           longitude,
           district,
-          hotelPhoto:[{photoID, path}],
+          hotelPhoto:[{photoID, path}.......],
           roomType:{
             [
               {roomTypeID, 
