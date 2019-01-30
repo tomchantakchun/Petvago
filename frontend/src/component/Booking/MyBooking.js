@@ -4,7 +4,7 @@ import axios from 'axios';
 import Ratings from 'react-ratings-declarative';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser,faPhone,faEnvelope,faHotel, faCalendarAlt,faReceipt, faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faUser,faPhone,faEnvelope,faHotel, faCalendarAlt,faReceipt, faThumbsUp,faComments } from '@fortawesome/free-solid-svg-icons'
 library.add(faUser)
 library.add(faPhone)
 library.add(faEnvelope)
@@ -12,6 +12,7 @@ library.add(faHotel)
 library.add(faCalendarAlt)
 library.add(faReceipt)
 library.add(faThumbsUp)
+library.add(faComments)
 
 class Confirmation extends Component {
     constructor(props){
@@ -62,6 +63,7 @@ class Confirmation extends Component {
         }).catch((err)=>console.log(err))
 
         axios.get(`http://localhost:8080/api/booking/user`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+            console.log('result',result)
             this.setState({
                 pastBooking:result.data[0].pastBooking,
                 upcomingBooking:result.data[0].upcomingBooking,
@@ -103,6 +105,18 @@ class Confirmation extends Component {
             this.renderModal()
         })
         
+    }
+
+    contactHotel=(hotelID)=>{
+        const jwt = localStorage.getItem('petvago-token');
+        let history=this.props.history;
+        axios.post('http://localhost:8080/api/chatroom/addchat',{hotelID}, { headers: { Authorization: `Bearer ${jwt}` } })
+        .then((result)=>{
+            console.log('contact',result.data.conversationID)
+            history.push({pathname:'/chatroom',state:{conversationID:result.data.conversationID}})
+
+
+        }).catch((err)=>console.log(err))
     }
 
 
@@ -187,7 +201,7 @@ class Confirmation extends Component {
                                 <p> Price: ${this.state.totalPrice}</p>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn mybooking-button">Contact Hotel</button>
+                                    <button onClick={()=>this.contactHotel(this.state.hotelID)} type="button" className="btn mybooking-button" data-dismiss="modal"><FontAwesomeIcon icon="comments" style={{marginRight:'10px', color:'#fff'}} />Contact Hotel</button>
                                 </div>
                             </div>)
                         });
@@ -368,11 +382,11 @@ class Confirmation extends Component {
 
                     return (
                  
-                            <div className="mybooking-each-box" >
-                            <button className="mybooking-toggle-button" type="button" data-toggle="modal" data-target="#exampleModal" onClick={()=>this.handleToggle('past',each.bookingID)}>
-                                </button>
+                            <div key={each.bookingID} className="mybooking-each-box" data-toggle="modal" data-target="#exampleModal" onClick={()=>this.handleToggle('past',each.bookingID)}>
+                           
                                 <img className='mybooking-icon' key={each.id} src={each.hotelIconPath} alt="hotel"/>
-                                <p><FontAwesomeIcon icon="hotel" style={{marginRight:'10px', color:'#50b5a9'}}/> {each.hotelName}</p>
+                                <div className='mybooking-each-box-text' style={{display:'flex'}}><div><FontAwesomeIcon icon="hotel" style={{marginRight:'12px', marginLeft:'2px',color:'#50b5a9'}}/> </div><div>{each.hotelName}</div></div>
+                               
                                 <div className='mybooking-each-box-text' style={{display:'flex'}}><div><FontAwesomeIcon icon="calendar-alt" style={{marginRight:'12px', marginLeft:'2px',color:'#50b5a9'}}/> </div><div>{startDate} - {endDate}</div></div>
                             </div>
                  
@@ -415,11 +429,11 @@ class Confirmation extends Component {
 
                     return (
                  
-                            <div className="mybooking-each-box">
-                                <button className="mybooking-toggle-button" type="button" data-toggle="modal" data-target="#exampleModal" onClick={()=>this.handleToggle('upcoming',each.bookingID)}>
-                                </button>
+                            <div key={each.bookingID} className="mybooking-each-box" data-toggle="modal" data-target="#exampleModal" onClick={()=>this.handleToggle('upcoming',each.bookingID)}>
+                              
                                 <img className='mybooking-icon' key={each.id} src={each.hotelIconPath} alt="hotel"/>
-                                <p><FontAwesomeIcon icon="hotel" style={{marginRight:'10px', color:'#50b5a9'}}/> {each.hotelName}</p>
+                                <div className='mybooking-each-box-text' style={{display:'flex'}}><div><FontAwesomeIcon icon="hotel" style={{marginRight:'12px', marginLeft:'2px',color:'#50b5a9'}}/> </div><div>{each.hotelName}</div></div>
+                               
                                 <div className='mybooking-each-box-text' style={{display:'flex'}}><div><FontAwesomeIcon icon="calendar-alt" style={{marginRight:'12px', marginLeft:'2px',color:'#50b5a9'}}/> </div><div>{startDate} - {endDate}</div></div>
                             </div>
                  

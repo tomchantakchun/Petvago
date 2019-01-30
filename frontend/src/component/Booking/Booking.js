@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import './booking.css'
-import { redirect_to_confirmation } from '../../store/actions';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser,faPhone, faPaw, faWeight, faDog,faSyringe,faBath } from '@fortawesome/free-solid-svg-icons'
@@ -130,11 +129,11 @@ class Booking extends Component {
     }
 
     handleVaccineChange=(e)=>{
-        if(e.target.checked==true){
+        if(e.target.checked===true){
             this.setState({
                 vaccineCheck: this.state.vaccineCheck+1
             })
-        }else if(e.target.checked==false && this.state.vaccineCheck>0){
+        }else if(e.target.checked===false && this.state.vaccineCheck>0){
             this.setState({
                 vaccineCheck: this.state.vaccineCheck-1
             })
@@ -143,7 +142,7 @@ class Booking extends Component {
     }
 
     handleServiceChange=(e)=>{
-        if(e.target.checked==true){
+        if(e.target.checked===true){
             //add service
             let newService=this.state.service;
             newService[e.target.name]=1;
@@ -201,7 +200,7 @@ class Booking extends Component {
         clearInterval(this.timerID)
 
         //check vaccine.length
-        if(this.state.vaccineRequirement && this.state.vaccineRequirement.vaccine.length!=this.state.vaccineCheck){
+        if(this.state.vaccineRequirement && this.state.vaccineRequirement.vaccine.length!==this.state.vaccineCheck){
             console.log('not ok')
             this.setState({
                 vaccineError:<div style={{color:'#da3846'}}>Make sure you pet has received all the vaccine.</div>,
@@ -222,7 +221,7 @@ class Booking extends Component {
         console.log('222',checkPhone)
 
         //
-        if( this.state.ownerName && this.state.ownerPhone && isNaN(checkPhone)==false && this.state.petName && this.state.petType && this.state.petWeight && isNaN(checkWeight)== false && this.state.vaccineCheck==this.state.vaccineRequirement.vaccine.length){
+        if( this.state.ownerName && this.state.ownerPhone && isNaN(checkPhone)===false && this.state.petName && this.state.petType && this.state.petWeight && isNaN(checkWeight)=== false && this.state.vaccineCheck===this.state.vaccineRequirement.vaccine.length){
             const jwt = localStorage.getItem('petvago-token');
             if (!jwt) {
                 this.props.history.push('/login')

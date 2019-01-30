@@ -208,7 +208,7 @@
     margin:0 15px 15px 0;
     /* padding-bottom:10px; */
     width:18vw;
-    height:28vw;
+    cursor:pointer;
     border-radius: 5px;
     z-index:100;
     box-shadow: 1px 1px 5px #ccc;
