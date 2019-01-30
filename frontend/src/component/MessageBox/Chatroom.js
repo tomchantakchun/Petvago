@@ -184,9 +184,9 @@ class Chatroom extends React.Component {
             </div>)
         }else if(this.state.activeBooking && this.state.author=="hotel"){
             return(<div>
-                <p style={{ marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="user" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.username}</p>
-                <p style={{fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="phone" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.telephone}</p>
-                <p style={{ fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="envelope" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.email}</p>
+                <p style={{ fontSize:'18px',marginTop:'18px', textAlign:'left'}}><FontAwesomeIcon icon="user" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.username}</p>
+                <p style={{fontSize:'18px', marginTop:'20px', textAlign:'left'}}><FontAwesomeIcon icon="phone" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.telephone}</p>
+                <p style={{ fontSize:'18px', marginTop:'20px', textAlign:'left'}}><FontAwesomeIcon icon="envelope" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.email}</p>
 
         
             </div>)

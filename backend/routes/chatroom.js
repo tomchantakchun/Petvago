@@ -257,7 +257,7 @@ router.post('/sendmessage/:conversationID', passport.authenticate("jwt", { sessi
 })
 
 //7. Get user info in conversation
-router.get('/userinfo/:conversationID', function(req,res){
+router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session: false }), (req, res) => {
   /*Information you get from each row - Array:
         [  { userID,
             username,
@@ -267,10 +267,69 @@ router.get('/userinfo/:conversationID', function(req,res){
         */
 
   var db=req.db;
-  let query=db.select("u.username","u.telephone","u.email","u.id as userID").from("users as u").innerJoin('conversation as c','c.userID','u.id').where("c.id",req.params.conversationID)
+  var today = new Date();
+  let query=db.select("u.username","u.telephone","u.email","u.id as userID","b.hotelID","b.startDate","b.endDate","r.roomType")
+  .from("users as u")
+  .innerJoin('conversation as c','c.userID','u.id')
+  .fullOuterJoin('booking as b','c.userID','b.userID')
+  .innerJoin('roomType as r','r.id','b.roomTypeID')
+  .where("c.id",req.params.conversationID)
+  
   query.then((rows)=>{
+    let newRow=rows.map((current,index,array)=>{
+      let booking=null;
+       if(current.hotelID==req.user.id){
+        booking={
+          bookingID:current.bookingID, 
+          roomType: current.roomType, 
+          startDate: current.startDate, 
+          endDate: current.endDate, 
+         }
+  
+       }
+       
+      
+       if(index==0){
+         if(array[index+1]){
+          array[index+1].activeBooking=[]
+          if(current.endDate>=today){
+            array[index+1].activeBooking=[booking]
+          }
+         }else{
+          current.activeBooking=[booking]
+          return current
+        }
+         
+       
+       }else if(index<array.length-1 && index>0){
+        array[index+1].activeBooking=[]
+        if(current.endDate>=today){
+          array[index+1].activeBooking=[...current.activeBooking,booking]
+        }else{
+          array[index+1].activeBooking=[...current.activeBooking]
+        }
+       }else if (index==array.length-1){
+        if(current.endDate>=today){
+          current.activeBooking=[...current.activeBooking,booking]
+          return current
+        }else{
+  
+          return current
+        }
+       }
+     }).filter((each)=>{
+      if(each!=null){
+        delete each.roomType;
+        delete each.startDate;
+        delete each.endDate;
+        delete each.hotelID;
+        return true
+      }
+    })
+      console.log('rows',rows);
+      console.log('new',newRow)
 
-      res.send(rows);
+      res.send(newRow);
 
   }).catch((error)=>{
     console.log(error);
