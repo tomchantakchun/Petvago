@@ -51,7 +51,10 @@ exports.seed = function(knex, Promise) {
         {name:'Dogotel & Spa',address:'G/F. & Cockloft, 21 Yik Yam Street, Happy Valley',description:'It all began with our first shop in 2002 featuring services that were not available elsewhere in HK. This quickly established itself as the leading example in K9 care, raising standards for the whole pet-care industry.', telephone:27110051, username: 'partner1', password: '$2a$10$6b0WmWeZDCmcVrCSI6wN7uYqkl4rcqt6N8.I5WF6VCPc/ApCkQmSa', email:'partner1@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}, facilities:{swimmingPool:false, airConditioner:true, blanket:true, playTime:true}, partnershipType:'paid', app:'yes', averageRating:4.2,peopleRated:10, availablePeriod:6, latitude:22.269193, longitude:114.184680, district:'Wan Chai'},
         {name:'Pet Pet Planet',address:'Shop 7b, G/f., 211 - 213a Sai Yeung Choi Street North, Prince Edward',description:'Our experienced staff provide expert advice, vet and quarantine assistance & safe international pet moving services. Talk with staff today.', telephone:26095882, username: 'partner2', password: '$2a$10$DRtoXx4NZeqaF8sIiq9/Q.HteUtP7AzVCu7dVGUwMEItka.5bSgu6', email:'partner2@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies']}, facilities:{swimmingPool:false, airConditioner:true, blanket:true, playTime:false}, partnershipType:'paid', app:'no', averageRating:3.9, peopleRated:10, availablePeriod:2, latitude:22.327285, longitude:114.167993, district:'Yau Tsim Mong'},
         {name:'Posh Paws Resort',address:'No.169B Tai Tong Road, Hung Cho Tin Tsuen, Yuen Long',description:'Safe clean and fun boarding, grooming, and daycare is our mission.', telephone:29474001,  email:'partner3@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}, facilities:{swimmingPool:true, airConditioner:true, blanket:true, playTime:true}, partnershipType:'nonpaid', app:'no', averageRating:3.3, peopleRated:5, availablePeriod:6, latitude:22.423431, longitude:114.031928, district:'Yuen Long'},
-        {name:'Posh Paws Resort',address:'No.169B Tai Tong Road, Hung Cho Tin Tsuen, Yuen Long',description:'Safe clean and fun boarding, grooming, and daycare is our mission.', telephone:29474001,  email:'partner3@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}, facilities:{swimmingPool:true, airConditioner:true, blanket:true, playTime:true}, partnershipType:'nonpaid', app:'no', averageRating:3.3, peopleRated:8, availablePeriod:6, latitude:22.423431, longitude:114.031928, district:'Yuen Long'}
+        //new
+        {name:'Doggyland Kennel Limited',address:'Rm 6, 3/F, Kin Wing Industrial Building, 33 Kin Wing Street, Tuen Mun, NT',description:'Safe clean and fun boarding, grooming, and daycare is our mission.', telephone:69094444,  email:'partner4@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}, facilities:{swimmingPool:true, airConditioner:true, blanket:true, playTime:true}, partnershipType:'nonpaid', app:'no', averageRating:2.3, peopleRated:8, availablePeriod:6, latitude:22.423431, longitude:114.031928, district:'Tuen Mun'},
+        {name:'Hong Kong Canine Working and Agility Club',address:'Lot No 3265 SA, DD91 52 On Po Village, Sheung Shui',description:'Safe clean and fun boarding, grooming, and daycare is our mission.', telephone:65103333,  email:'partner5@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies']}, facilities:{swimmingPool:true, airConditioner:true, blanket:true, playTime:true}, partnershipType:'nonpaid', app:'no', averageRating:3.4, peopleRated:8, availablePeriod:6, latitude:22.423431, longitude:114.031928, district:'North'},
+        {name:'Honey Pet Limited',address:'No. 30 Shek Wu Tong Tsuen, Kam Sheung Road, Pat Heung, Yuen Long',description:'Safe clean and fun boarding, grooming, and daycare is our mission.', telephone:97708866,  email:'partner6@demo.com',vaccineRequirement:{vaccine:['DHPPiL','Rabies']}, facilities:{swimmingPool:true, airConditioner:true, blanket:true, playTime:true}, partnershipType:'nonpaid', app:'no', averageRating:4.4, peopleRated:8, availablePeriod:6, latitude:22.423431, longitude:114.031928, district:'Yuen Long'}
       ]);
     }).then(function () {
       console.log('create roomType')
@@ -61,24 +64,16 @@ exports.seed = function(knex, Promise) {
         {hotelID:1, roomType:'Family Room', price:880, description: 'This room fits 3 dogs in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:45, numberOfPet:3,pet:'dog'}, additionalPrice:{Christmas:300}, quantity: 1},
         {hotelID:2, roomType:'Purin Room', price:999, description: 'Only for Pompompurin and his friends.', requirement: {minWeight:5, maxWeight:45, numberOfPet:3,pet:'dog'}, additionalPrice:{Christmas:300}, quantity: 1},
         {hotelID:3, roomType:'Small cat Room', price:220, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:10, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:50}, quantity: 1},
-        {hotelID:3, roomType:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}, quantity: 1}
+        {hotelID:3, roomType:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}, quantity: 1},
+        //new
+        {hotelID:4, roomType:'small dog Room', price:200, description: 'This room fits 1 dog in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:10, numberOfPet:1,pet:'dog'}, additionalPrice:{ChineseNewYear:100}, quantity: 1},
+        {hotelID:4, roomType:'big dog Room', price:800, description: 'This room fits 1 dog in 100ft room with air-conditioner.', requirement: {minWeight:11, maxWeight:20, numberOfPet:1,pet:'dog'}, additionalPrice:{ChineseNewYear:100}, quantity: 1},
+        {hotelID:5, roomType:'Small cat Room', price:220, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:10, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:50}, quantity: 1},
+        {hotelID:5, roomType:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}, quantity: 1},
+        {hotelID:6, roomType:'Small cat Room', price:220, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:5, maxWeight:10, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:50}, quantity: 1},
+        {hotelID:6, roomType:'Big cat Room', price:420, description: 'This room fits 1 cat in 100ft room with air-conditioner.', requirement: {minWeight:10, maxWeight:20, numberOfPet:1,pet:'cat'}, additionalPrice:{ChineseNewYear:100}, quantity: 1}
       ]);
     }) 
-    // .then(function () {
-    //   console.log('create roomAvailability')
-    //   return knex('roomAvailability').insert([
-    //     {roomTypeID:1, bookedDate:'2018-12-16',status:'taken'},
-    //     {roomTypeID:1, bookedDate:'2018-12-17',status:'taken'},
-    //     {roomTypeID:1, bookedDate:'2018-12-18',status:'taken'},
-    //     {roomTypeID:1, bookedDate:'2018-2-3',status:'taken'},
-    //     {roomTypeID:1, bookedDate:'2018-2-3',status:'taken'},
-    //     {roomTypeID:2, bookedDate:'2018-11-5',status:'taken'},
-    //     {roomTypeID:2, bookedDate:'2018-11-6',status:'taken'},
-    //     {roomTypeID:4, bookedDate:'2018-2-10',status:'taken'},
-    //     {roomTypeID:4, bookedDate:'2018-2-11',status:'taken'},
-    //     {roomTypeID:4, bookedDate:'2018-2-12',status:'taken'},
-    //   ]);
-    // })
     .then(function () {
       console.log('create photo')
       return knex('photo').insert([
@@ -89,6 +84,10 @@ exports.seed = function(knex, Promise) {
         {hotelID:1, roomTypeID:'2',icon:true, path:'./image/hotel1photo4.jpg'},
         {hotelID:2, icon:true, path:'./image/hotel2photo1.jpg'},
         {hotelID:3, icon:true, path:'./image/hotel3photo1.jpg'},
+                //new
+        {hotelID:4, icon:true, path:'./image/hotel4photo1.jpg'},
+        {hotelID:5, icon:true, path:'./image/hotel5photo1.jpg'},
+        {hotelID:6, icon:true, path:'./image/hotel6photo1.jpg'}
       ]);
     }).then(function () {
       console.log('create service')
@@ -96,6 +95,12 @@ exports.seed = function(knex, Promise) {
         {hotelID:1, serviceType:'Bath', price:200, description:'30-minutes warm water bath with nail trims',petType:'dog'},
         {hotelID:1, serviceType:'Grooming', price:350, description:'Pamper your pet with our professional pet grooming service',petType:'dog'},
         {hotelID:1, serviceType:'Obedience training', price:600, description:'Professional trainers give teaching basic commands.',petType:'dog'},
+        {hotelID:2, serviceType:'Bath', price:200, description:'30-minutes warm water bath with nail trims',petType:'dog'},
+        {hotelID:3, serviceType:'Grooming', price:350, description:'Pamper your pet with our professional pet grooming service',petType:'dog'},
+        //new
+        {hotelID:4, serviceType:'Obedience training', price:600, description:'Professional trainers give teaching basic commands.',petType:'cat'},
+        {hotelID:5, serviceType:'Grooming', price:350, description:'Pamper your pet with our professional pet grooming service',petType:'dog'},
+        {hotelID:6, serviceType:'Grooming', price:350, description:'Pamper your pet with our professional pet grooming service',petType:'cat'},
       ]);
     }).then(function () {
       console.log('create booking')
@@ -105,15 +110,15 @@ exports.seed = function(knex, Promise) {
         {userID:1, hotelID:1, roomTypeID:3, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-7', endDate:'2019-2-12',duration:6,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:2, hotelID:3, roomTypeID:1, expiryTime:'2018-01-25T08:36:00',startDate:'2019-1-17', endDate:'2019-1-25',duration:9,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
-        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2017-2-5', endDate:'2017-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
-        {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:4, roomTypeID:8, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:5, roomTypeID:10, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:5, roomTypeID:9, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Tom Chan',ownerPhone:93290902,petName:'Purin',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
       ]);
     }).then(function () {
       console.log('create review')
       return knex('review').insert([
         {userID:1, hotelID:1, bookingID:7, rating:4,comment:'Great experience. My dog had a good time at the hotel. I wish they can give my dog my play time'},
         {userID:2, hotelID:2, bookingID:2, rating:3, comment:'My dog was returned to me in perfect condition.'},
-
       ]);
     }).then(function () {
       console.log('create conversation')

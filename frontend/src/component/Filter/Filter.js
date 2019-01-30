@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import * as actionTypes from '../../store/actions';
@@ -43,7 +43,7 @@ class Filter extends React.Component {
                     console.log(response.data)
                     this.props.afterSearch(response.data)
                 }
-        
+
                 this.props.onSearch(this.props.SearchResult);
             })
             .catch(error => {
@@ -77,7 +77,7 @@ class Filter extends React.Component {
     }
 
 
-    dateChange =(e, picker) => {
+    dateChange = (e, picker) => {
         e.preventDefault();
         console.log(this.props.SearchResult.startDate)
         console.log(picker.startDate._d)
@@ -102,7 +102,7 @@ class Filter extends React.Component {
             .catch(error => {
                 console.log(error)
             })
-      }
+    }
 
     render() {
         let today = new Date().toISOString().split('T')[0];
@@ -110,39 +110,41 @@ class Filter extends React.Component {
         let threeMonthLater = new Date();
         threeMonthLater.setDate(threeMonthLater.getDate() + 84);
         threeMonthLater = threeMonthLater.toISOString().split('T')[0];
-
+        
         return (
             <div className="filter">
-            <h1>Filter</h1>
-                <button className="orange">DATE {this.props.SearchResult.startDate} {this.props.SearchResult.endDate} </button>
-                <button className="orange">DISTRICT {this.props.SearchResult.district}</button>
-                <button className="orange">TYPES {this.props.SearchResult.petTypes} </button>
-                <button className="orange">PRICE </button>
-                <button className="orange">RATE </button>
 
-                <select name="district" onChange={this.districtChange} required>
-                    <option value="all" disabled selected hidden>--District--</option>
-                    {this.districts.map((district, index) => {
-                        return <option value={district} key={index}>{district}</option>
-                    })}
-                </select>
-
-                <select name="petType" onChange={this.petTypeChange} required>
-                    <option value="all" disabled selected hidden>--Type of Pet--</option>
-                    <option value='dog'>Dog</option>
-                    <option value='cat'>Cat</option>
-                </select>
-                            
-                <DateRangePicker 
-                minDate={moment(new Date(today))} 
-                maxDate={moment(new Date(threeMonthLater))}
-                startDate={moment(new Date(this.props.SearchResult.startDate || today))}
-                endDate={moment(new Date(this.props.SearchResult.endDate|| today))}
-                onApply={this.dateChange}
-                props = {this.props}
+                <DateRangePicker
+                    minDate={moment(new Date(today))}
+                    maxDate={moment(new Date(threeMonthLater))}
+                    startDate={moment(new Date(this.props.SearchResult.startDate || today))}
+                    endDate={moment(new Date(this.props.SearchResult.endDate || today))}
+                    onApply={this.dateChange}
+                    props={this.props}
                 >
-                <button>Date</button>
+                    <button className="orange">DATE {this.props.SearchResult.startDate} {this.props.SearchResult.endDate} </button>
                 </DateRangePicker>
+
+                <button className="orange">
+                    <select name="district" onChange={this.districtChange} required >
+                        <option value="all" disabled selected hidden >--District--</option>
+                        <option value="all" >None</option>
+                        {this.districts.map((district, index) => {
+                            return <option value={district} key={index} >{district}</option>
+                        })}
+                    </select>
+                </button>
+
+                <button className="orange">
+                    <select name="petType" onChange={this.petTypeChange} required>
+                        <option value="all" disabled selected hidden>--Type of Pet--</option>
+                        <option value='all'>None</option>
+                        <option value='dog'>Dog</option>
+                        <option value='cat'>Cat</option>
+                    </select>
+                </button>
+
+
             </div >
         )
     }
