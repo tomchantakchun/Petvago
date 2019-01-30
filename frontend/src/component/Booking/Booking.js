@@ -44,7 +44,8 @@ class Booking extends Component {
             vaccineCheck:null,
             vaccineError:null,
             vaccineClass:null,
-            time:''
+            time:'',
+            hotelIcon:this.props.hotelIcon
             
         }
     }
@@ -377,7 +378,7 @@ class Booking extends Component {
             <div className='booking-box'>
                 <div style={{display:'flex'}}>
                     <h1 style={{width:'50%', fontWeight: "bold"}}>{this.state.hotelName}</h1>
-                    <img style={{width:'50%'}} src="./image/hotel1photo1.jpg" alt="hotel" className="booking-icon"/>
+                    <img style={{width:'50%'}} src={this.state.hotelIcon} alt="hotel" className="booking-icon"/>
                 </div>
                 <div className="booking-line"></div>  
 
@@ -435,7 +436,8 @@ const mapStateToProps = state => ({
     roomType: state.hotel.roomType,
     roomTypeID: state.hotel.roomTypeID,
     roomPrice: state.hotel.roomPrice,
-    vaccineRequirement: state.hotel.vaccineRequirement
+    vaccineRequirement: state.hotel.vaccineRequirement,
+    hotelIcon: state.hotel.hotelIcon
 });
 
 
