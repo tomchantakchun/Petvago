@@ -108,7 +108,7 @@ class Chatroom extends React.Component {
 
 
     renderActive=()=>{
-        if(this.state.activeBooking && this.state.author=="users"){
+        if(this.state.activeBooking){
             return(
                 this.state.activeBooking.activeBooking.map((each)=>{
                     //format date

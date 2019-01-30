@@ -292,24 +292,26 @@ router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session:
        if(index==0){
          if(array[index+1]){
           array[index+1].activeBooking=[]
-          if(current.endDate>=today){
+          if(booking && current.endDate>=today){
             array[index+1].activeBooking=[booking]
           }
          }else{
-          current.activeBooking=[booking]
-          return current
+           if(booking){
+            current.activeBooking=[booking]
+            return current
+           }   
         }
          
        
        }else if(index<array.length-1 && index>0){
         array[index+1].activeBooking=[]
-        if(current.endDate>=today){
+        if(booking && current.endDate>=today){
           array[index+1].activeBooking=[...current.activeBooking,booking]
         }else{
           array[index+1].activeBooking=[...current.activeBooking]
         }
        }else if (index==array.length-1){
-        if(current.endDate>=today){
+        if(booking && current.endDate>=today){
           current.activeBooking=[...current.activeBooking,booking]
           return current
         }else{
