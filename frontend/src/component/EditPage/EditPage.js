@@ -442,6 +442,12 @@ class EditPage extends React.Component {
                             })
                     }
 
+                    processedRoomType = processedRoomType.sort((a,b) => {
+                        if(a.roomType < b.roomType) { return -1; }
+                        if(a.roomType > b.roomType) { return 1; }
+                        return 0;
+                    })
+
                     await axios.get(
                         `http://localhost:8080/api/hotel/edit/bigicon`,
                         { headers: { Authorization: `Bearer ${this.jwt}` } }
@@ -496,32 +502,38 @@ class EditPage extends React.Component {
                 )
             })
 
+            let vaccineI = 0;
             this.vaccines = this.allVaccine.map((vaccine) => {
                 let requiredVaccine = this.state.vaccineRequirement.find((element) => {
                     return element === vaccine
                 })
                 if (requiredVaccine) {
+                    vaccineI ++;
                     return (
-                        <div className='custom-control custom-checkbox'>
+                        <div className='custom-control custom-checkbox' key={vaccineI}>
                             <input type='checkbox' name={vaccine} value={vaccine} id={vaccine} className="custom-control-input" onChange={this.handleChangeCheckbox} checked />
-                            <label className="custom-control-label" for={vaccine}>{vaccine}</label>
+                            <label className="custom-control-label" htmlFor={vaccine}>{vaccine}</label>
                         </div>
                     );
                 } else {
+                    vaccineI ++;
                     return (
-                        <div className='custom-control custom-checkbox'>
+                        <div className='custom-control custom-checkbox' key={vaccineI}>
                             <input type='checkbox' name={vaccine} value={vaccine} id={vaccine} className="custom-control-input" onChange={this.handleChangeCheckbox} />
-                            <label className="custom-control-label" for={vaccine}>{vaccine}</label>
+                            <label className="custom-control-label" htmlFor={vaccine}>{vaccine}</label>
                         </div>
                     );
                 }
             })
 
+            let districtI = 0;
             this.options = this.allDistricts.map((district) => {
                 if (this.state.hotelDistrict === district) {
-                    return <option selected>{district}</option>
+                    districtI ++;
+                    return <option key={districtI} value={true}>{district}</option>
                 } else {
-                    return <option>{district}</option>
+                    districtI ++;
+                    return <option key={districtI}>{district}</option>
                 }
             })
 
@@ -547,8 +559,8 @@ class EditPage extends React.Component {
                                     <tr>
                                         <td><label>District: </label></td>
                                         <td>
-                                            <div class="form-group">
-                                                <select class="form-control district" id="sel1" onChange={this.handleChangeDistrict}>
+                                            <div className="form-group">
+                                                <select className="form-control district" id="sel1" onChange={this.handleChangeDistrict}>
                                                     {this.options}
                                                 </select>
                                             </div>

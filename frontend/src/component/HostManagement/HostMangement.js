@@ -59,10 +59,10 @@ class HostManagement extends React.Component {
 
     handleDateChange = async (e, picker) => {
         e.preventDefault();
-        console.log(picker.startDate._d)
+        let newStartDate = this.findfirstDOW(new Date(picker.startDate._d)) > new Date() ? this.findfirstDOW(new Date(picker.startDate._d)) : new Date()
         await this.setState({
             startDOW: this.convertYMD(this.findfirstDOW(new Date(picker.startDate._d))),
-            startDate: this.convertYMD(this.findfirstDOW(new Date(picker.startDate._d))),
+            startDate: this.convertYMD(newStartDate),
             endDate: this.convertYMD(this.findLastDOW(new Date(picker.startDate._d))),
         })
         this.searchBookingRecord(this.state.startDate, this.state.endDate);
@@ -133,10 +133,7 @@ class HostManagement extends React.Component {
                         // console.log(`date: `,this.convertDM(new Date(eDate.date)));
                         // console.log(`dowArr: `,[this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/'));
                         // console.log(`comparison: `,this.convertDM(new Date(eDate.date)) === [this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/'));
-
-                        
-
-                        return this.convertDM(new Date(eDate.date)) === [this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/')
+                        return this.convertDM(new Date(eDate.date)) === this.convertDM(new Date([dowArr[i].split('/')[1], dowArr[i].split('/')[0]].join('/')))
                     })
 
                     if (targetDate === undefined) {
@@ -158,22 +155,22 @@ class HostManagement extends React.Component {
                         label: 'available',
                         backgroundColor: '#8DCF8A',
                         data: availableArr
-                        // 0,3,4,5,8,9,4
+                        // 0,3,4,5,8,9,4 // for testing
                     },{
                         label: 'confirmed',
                         backgroundColor: '#FFB0AA',
                         data: confirmedArr
-                        // 0,3,3,1,2,1,5
+                        // 0,3,3,1,2,1,5 // for testing
                     },{
                         label: 'outside',
                         backgroundColor: '#D4996A',
                         data: outsideArr
-                        // 0,4,3,4,0,0,1
+                        // 0,4,3,4,0,0,1 // for testing
                     },{
                         label: 'past',
                         backgroundColor: '#777777',
                         data: pastArr
-                        // 10,0,0,0,0,0,0
+                        // 10,0,0,0,0,0,0 // for testing
                     }]
                 }
 
@@ -202,11 +199,9 @@ class HostManagement extends React.Component {
                     <DateRangePicker
                         singleDatePicker={true}
                         minDate={moment(new Date(this.state.minDate))}
-                        // maxDate={moment(new Date(threeMonthLater))}
                         startDate={moment(new Date(this.state.startDOW))}
                         endDate={moment(new Date(this.state.endDate))}
                         onApply={this.handleDateChange}
-                        // props={this.props}
                     >
                         <button className="date-picker btn btn-outline-secondary">From {this.state.startDOW} to {this.state.endDate} </button>
                     </DateRangePicker>
