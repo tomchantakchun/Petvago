@@ -257,4 +257,108 @@ router.get('/hotel', passport.authenticate("jwt", { session: false }), (req, res
 })
 
 
+// 7. Get all booking of a hotel within a range of date
+router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }), (req, res) => {
+  if (req.user.isHotel!=true){
+    res.status(500).send({error:'user is not hotel'})
+  } else{
+
+    // let startDate = new Date(req.body.startDate);
+    let startDate = new Date('2019-02-03');
+    let intDate = startDate;
+    // let endDate = new Date(req.body.endDate);
+    let endDate = new Date('2019-02-09');
+    let dateRangeArr = [];
+    while (intDate <= endDate) {
+      dateRangeArr.push(new Date(intDate));
+      intDate = new Date(intDate.setTime( intDate.getTime() + 86400000 ))
+    }
+    console.log(`dateRangeArr: `, dateRangeArr);
+
+    let db=req.db;
+    let promiseArr = [];
+    db.select('id','roomType','quantity')
+      .from('roomType')
+      .where('hotelID',req.user.id)
+      .then((rows) => {
+        console.log(`/hotel-with-date: `, rows);
+
+        for (let i in rows) {
+          promiseArr.push(new Promise (async (resolve, reject) => {
+            await db.select('startDate','endDate','status')
+              .from('booking')
+              .where('roomTypeID',rows[i].id)
+              .then(async (rows2) => {
+  
+                let processedDateArr = dateRangeArr.map((eDate) => {
+                  return {  date: eDate,
+                    availability: {
+                      available: rows[i].quantity,
+                      confirmed: 0,
+                      outside: 0,
+                    }
+                  };
+                })
+                
+                for (let i in rows2) {
+                  let iDate = rows2[i].startDate
+  
+                  while (iDate <= rows2[i].endDate) {
+                    let result = processedDateArr.find((e) => {
+                      return convertYMD(e.date) === convertYMD(iDate)
+                    })
+                    
+                    if (result !== undefined) {
+                      if (rows2[i].status === 'confirmed') {
+                        result.availability.confirmed += 1;
+                        result.availability.available -= 1;
+                      } else if (rows2[i].status === 'outside') {
+                        result.availability.outside += 1;
+                        result.availability.available -= 1;
+                      }
+                    }
+  
+                    iDate = new Date(iDate.setTime( iDate.getTime() + 86400000 ));
+                  }
+                }
+  
+                let newRooms = {
+                  roomType: rows[i].roomType,
+                  quantity: rows[i].quantity,
+                  roomTypeID: rows[i].id,
+                  dateArr: processedDateArr
+                }
+                console.log(`newRooms: `, newRooms);
+                console.log(`processedDateArr: `, processedDateArr);
+                // console.log(`newRooms: `, newRooms);
+                resolve(newRooms);
+              })
+          }))
+        }
+
+        // .sort((e) => {
+        //   // need sorting
+        // })
+
+        Promise.all(promiseArr).then((result) => {
+          console.log(`result: `, result);
+          res.send(result)
+        })
+      }).catch((error) => {
+        console.log(error);
+        res.status(500).send({error:'cannot get booking'})        
+      })
+
+    let query=db.select().from('booking').where('hotelID',req.user.id)
+  
+  }
+})
+
+let convertYMD = (dateObj) => {
+  let mm = dateObj.getMonth() + 1;
+  let dd = dateObj.getDate();
+
+  return [dateObj.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('-')
+}
+
 module.exports = router;
