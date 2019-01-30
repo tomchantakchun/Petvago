@@ -19,4 +19,17 @@
 
 #HostManagement div.booking-management {
     margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+}
+
+#HostManagement button.date-picker {
+    margin: 5px;
+}
+
+#HostManagement canvas {
+    width: 100%;
+    height: 50vh;
 }

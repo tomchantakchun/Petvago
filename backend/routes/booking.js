@@ -264,10 +264,10 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
   } else{
 
     // let startDate = new Date(req.body.startDate);
-    let startDate = new Date('2019-02-03');
+    let startDate = new Date(req.body.startDate);
     let intDate = startDate;
     // let endDate = new Date(req.body.endDate);
-    let endDate = new Date('2019-02-09');
+    let endDate = new Date(req.body.endDate);
     let dateRangeArr = [];
     while (intDate <= endDate) {
       dateRangeArr.push(new Date(intDate));
