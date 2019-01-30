@@ -8,6 +8,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "axios": "^0.18.0",
     "bootstrap-daterangepicker": "^3.0.3",
+    "chart.js": "^2.7.3",
     "i": "^0.3.6",
     "jquery": "^3.3.1",
     "jwt-simple": "^0.5.5",
@@ -23,6 +24,7 @@
     "react-autocomplete": "^1.8.1",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-daterangepicker": "^4.1.0",
+    "react-chartjs-2": "^2.7.4",
     "react-chat-elements": "^10.2.0",
     "react-dom": "^16.7.0",
     "react-facebook-login": "^4.1.1",
@@ -38,7 +40,8 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "reset-css": "^4.0.1"
+    "reset-css": "^4.0.1",
+    "socket.io-client": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

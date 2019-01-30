@@ -1,11 +1,14 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const http = require('http')
+const socketIO = require('socket.io')
 const db = require('./config/database-init.js').knex;
 // const cookieSession = require('cookie-session');
 require('dotenv').config();
 
-// var cookieParser = require('cookie-parser');
+
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -28,6 +31,9 @@ require('./login-signup/passport-service');
 // --}
 
 var app = express();
+//socket
+const server = http.createServer(app)
+const io = socketIO(server)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -80,9 +86,31 @@ app.use(function(err, req, res, next) {
 });
 
 
+io.on('connect', socket => {
+  console.log('User connected')
 
-app.listen(8080,()=>{
-  console.log("Application started at port:8080");
-});
+  socket.on('enter conversation',(conversationID)=>{
+    socket.join(conversationID)
+    console.log('user join : ' + conversationID )
+
+  })
+
+  socket.on('send messages',(data)=>{
+    socket.to(data.room).emit('refresh messages', data.data)
+    
+    console.log('send message : ' + data.data )
+
+  })
+  
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+})
+
+
+server.listen(8080, () => console.log(`Application started at port:8080`))
+// app.listen(8080,()=>{
+//   console.log("Application started at port:8080");
+// });
 
 module.exports = app;

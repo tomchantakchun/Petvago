@@ -6,9 +6,30 @@
     padding: 5px;
     margin: 5px;
     font-size: 36px;
-    text-decoration: underline;
 }
 
-#HostManagement .edit-hotel h2 {
+#HostManagement div.edit-hotel {
+    display: flex;
+    align-items: center;
+}
+
+#HostManagement div.edit-hotel h2 {
     display: inline-block;
+}
+
+#HostManagement div.booking-management {
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+}
+
+#HostManagement button.date-picker {
+    margin: 5px;
+}
+
+#HostManagement canvas {
+    width: 100%;
+    height: 50vh;
 }

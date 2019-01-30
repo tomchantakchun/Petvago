@@ -2,16 +2,17 @@ import React from 'react';
 import axios from 'axios';
 import './message.css'
 import { withRouter } from 'react-router-dom';
+import socketIOClient from 'socket.io-client';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarkerAlt , faUser ,faPhone, faEnvelope} from '@fortawesome/free-solid-svg-icons'
-import { Input , Button , MessageList } from 'react-chat-elements'
+import { faMapMarkerAlt , faUser ,faPhone, faEnvelope} from '@fortawesome/free-solid-svg-icons';
+import { Input , Button , MessageList } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
 library.add(faMapMarkerAlt)
 library.add(faUser)
 library.add(faPhone)
 library.add(faEnvelope)
-
+var moment = require('moment');
  
 
 class Chatroom extends React.Component {
@@ -23,7 +24,10 @@ class Chatroom extends React.Component {
             author:null,
             body:null,
             conversationID:null,
-        }
+        };
+        this.socket = socketIOClient('http://localhost:8080',{
+            transports: [ 'websocket' ]
+        });
     }
 
 
@@ -34,7 +38,8 @@ class Chatroom extends React.Component {
             this.props.history.push('/login')
         }
 
-        
+        this.socketListener()
+
 
         let promise=new Promise((resolve,reject)=>{
             let user=JSON.parse(window.atob(localStorage.getItem('petvago-token').split('.')[1]));
@@ -48,8 +53,7 @@ class Chatroom extends React.Component {
             axios.get(`http://localhost:8080/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArr=res.data.map((each)=>{
                 each.text=each.body;
-                each.date=new Date(each.created_at);
-                each.position=Object.keys(each.authorID)[0]==this.state.author? 'right':'left';
+                each.dateString=moment(new Date(each.created_at)).format('HH:mm');                each.position=Object.keys(each.authorID)[0]==this.state.author? 'right':'left';
                 return each
             })
             this.setState({
@@ -61,7 +65,6 @@ class Chatroom extends React.Component {
 
             if(this.state.author=='users'){
                 axios.get(`http://localhost:8080/api/chatroom/activebooking/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
-                    console.log('active booking',res.data)
                     this.setState({
                         activeBooking:res.data[0],
                         conversationID:this.props.location.state.conversationID
@@ -71,7 +74,6 @@ class Chatroom extends React.Component {
                 })
             }else{
                 axios.get(`http://localhost:8080/api/chatroom/userinfo/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
-                    console.log('active booking for hotel',res.data)
                     this.setState({
                         activeBooking:res.data[0],
                         conversationID:this.props.location.state.conversationID
@@ -79,13 +81,39 @@ class Chatroom extends React.Component {
                 }).catch(err => {
                     console.log(err)
                 })
-
             }
+        })     
 
+    }
+
+    socketListener=()=>{
+        const jwt = localStorage.getItem('petvago-token');
+
+        this.socket.on('connect',() => {
+            axios.get(`http://localhost:8080/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+            let newArr=res.data.map((each)=>{
+                each.text=each.body;
+                each.dateString=moment(new Date(each.created_at)).format('HH:mm');
+                each.position=Object.keys(each.authorID)[0]==this.state.author? 'right':'left';
+                return each
+            })
+            this.setState({
+                chat:newArr
+            })
+        }).catch(err => {
+            console.log(err)
         })
+            this.socket.emit('enter conversation', this.props.location.state.conversationID);
+        });
 
-        
-
+        this.socket.on('refresh messages', data => {
+            let chat=this.state.chat;
+            let dateString=moment(new Date()).format('HH:mm');
+            if(data.author!=this.state.author){
+                let newArray=[...chat,{text:data.body,type:data.type,position:'left',dateString} ]
+                this.setState({chat:newArray})
+            }
+        });
     }
 
     componentWillUpdate=(nextProps, nextState) =>{
@@ -98,17 +126,14 @@ class Chatroom extends React.Component {
                 this.renderChat()
                 resolve(111)
             }).then((data)=>{
-                console.log('scroll sent')
                 this.scrollToBottom()
             })
-           
           }
-        
       }
 
 
     renderActive=()=>{
-        if(this.state.activeBooking && this.state.author=="users"){
+        if(this.state.activeBooking){
             return(
                 this.state.activeBooking.activeBooking.map((each)=>{
                     //format date
@@ -144,8 +169,7 @@ class Chatroom extends React.Component {
 
     scrollToBottom = () => {
         if(this.state.activeBooking){
-            console.log('scroll')
-            this.el.scrollIntoView();
+            this.el.scrollIntoView({block: "end", inline: "nearest"});
         }
         
     }
@@ -162,13 +186,25 @@ class Chatroom extends React.Component {
             body:this.state.body,
             type:'text'
         }
-        let date=new Date();
+        let dateString=moment(new Date()).format('HH:mm');
         let chat=this.state.chat;
+
+        
+        //socket
+        let socketData={
+            body:this.state.body,
+            type:'text',
+            author:this.state.author
+        }
+
+        this.socket.emit('send messages', {data:socketData, room:this.props.location.state.conversationID});
+
+
+        //database
         const jwt = localStorage.getItem('petvago-token');
 
         axios.post(`http://localhost:8080/api/chatroom/sendmessage/${this.state.conversationID}`,data,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
-            console.log('sent',res.data)
-            let newArray=[...chat,{text:data.body,type:data.type,position:'right',date} ]
+            let newArray=[...chat,{text:data.body,type:data.type,position:'right',dateString} ]
             this.setState({chat:newArray})
            
         }).catch(err => {
@@ -178,15 +214,15 @@ class Chatroom extends React.Component {
 
     renderBox=()=>{
         if (this.state.activeBooking && this.state.author=="users"){
-            return(<div><img className='chatRoom-icon' src={this.state.activeBooking.icon} alt="icon"/>
-            <p style={{ marginTop:'20px'}}>{this.state.activeBooking.hotelName}</p>
+            return(<div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}><img className='chatRoom-icon' src={this.state.activeBooking.icon} alt="icon"/>
+            <p style={{ marginTop:'20px',textAlign:'center'}}>{this.state.activeBooking.hotelName}</p>
             <p style={{fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="map-marker-alt" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.address}</p>
             </div>)
         }else if(this.state.activeBooking && this.state.author=="hotel"){
             return(<div>
-                <p style={{ marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="user" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.username}</p>
-                <p style={{fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="phone" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.telephone}</p>
-                <p style={{ fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="envelope" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.email}</p>
+                <p style={{ fontSize:'18px',marginTop:'18px', textAlign:'left'}}><FontAwesomeIcon icon="user" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.username}</p>
+                <p style={{fontSize:'18px', marginTop:'20px', textAlign:'left'}}><FontAwesomeIcon icon="phone" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.telephone}</p>
+                <p style={{ fontSize:'18px', marginTop:'20px', textAlign:'left'}}><FontAwesomeIcon icon="envelope" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.email}</p>
 
         
             </div>)
@@ -217,9 +253,13 @@ class Chatroom extends React.Component {
                     
                     </div>
                     <div className="activeChat col-8">
-                    {this.renderChat()}
+                        <div className="chatroom-message-list">
+                            {this.renderChat()}
+                            <div ref={el => { this.el = el; }} />
+                        </div>
+                   
                     
-                    <div ref={el => { this.el = el; }} />
+                    
                    
                     <Input
                         placeholder="Type here..."
