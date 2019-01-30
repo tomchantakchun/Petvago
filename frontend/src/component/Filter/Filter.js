@@ -122,10 +122,10 @@ class Filter extends React.Component {
                     onApply={this.dateChange}
                     props={this.props}
                 >
-                    <button className="orange">DATE {this.props.SearchResult.startDate} {this.props.SearchResult.endDate} </button>
+                    <button className="lightgreen">DATE {this.props.SearchResult.startDate} {this.props.SearchResult.endDate} </button>
                 </DateRangePicker>
 
-                <button className="orange">
+                <button className="lightgreen">
                     <select name="district" onChange={this.districtChange} required >
                         <option value="all" disabled selected hidden >--District--</option>
                         <option value="all" >- All District -</option>
@@ -135,7 +135,7 @@ class Filter extends React.Component {
                     </select>
                 </button>
 
-                <button className="orange">
+                <button className="lightgreen">
                     <select name="petType" onChange={this.petTypeChange} required>
                         <option value="all" disabled selected hidden>--Type of Pet--</option>
                         <option value='all'>- All PetType -</option>

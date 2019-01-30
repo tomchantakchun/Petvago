@@ -54,9 +54,7 @@ class Homepage extends React.Component {
         return (
             <div className="home-body" >
                 <div className="background" >
-                    <div className="search-bar">
-                        <Search history={this.redirectToSearchResult}/>
-                    </div>
+                 <Search history={this.redirectToSearchResult}/>
                 </div>
                 <div className="split text-left">Recommended Hotel:</div>
                 <div className="hotel-container">

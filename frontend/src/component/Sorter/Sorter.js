@@ -26,24 +26,24 @@ class Sorter extends React.Component{
         let nameButton, priceButton, ratingButton;
       
         if (this.props.SearchResult.sortPeference === "NameAscending"){
-            nameButton = <button className="orange" onClick={()=>this.onSort('NameDescending')}>Name A-Z </button>;
+            nameButton = <button className="lightgreen" onClick={()=>this.onSort('NameDescending')}>Name A-Z </button>;
         } else if (this.props.SearchResult.sortPeference === "NameDescending") {
-            nameButton = <button className="orange" onClick={()=>this.onSort('NameAscending')}>Name Z-A</button>;
+            nameButton = <button className="lightgreen" onClick={()=>this.onSort('NameAscending')}>Name Z-A</button>;
         } else {
             nameButton = <button className="grey" onClick={()=>this.onSort('NameAscending')}>Name</button>;
         }
         if (this.props.SearchResult.sortPeference === "PriceAscending"){
-            priceButton = <button className="orange" onClick={()=>this.onSort('PriceDescending')}>Price: Low to High </button>;
+            priceButton = <button className="lightgreen" onClick={()=>this.onSort('PriceDescending')}>Price: Low to High </button>;
         } else if (this.props.SearchResult.sortPeference === "PriceDescending") {
-            priceButton = <button className="orange" onClick={()=>this.onSort('PriceAscending')}>Price: High to Low</button>;
+            priceButton = <button className="lightgreen" onClick={()=>this.onSort('PriceAscending')}>Price: High to Low</button>;
         } else {
             priceButton = <button className="grey" onClick={()=>this.onSort('PriceAscending')}>Price</button>;
         }
        
         if (this.props.SearchResult.sortPeference === "RatingAscending"){
-            ratingButton = <button className="orange" onClick={()=>this.onSort('RatingDescending')}>Rating: Low to High </button>;
+            ratingButton = <button className="lightgreen" onClick={()=>this.onSort('RatingDescending')}>Rating: Low to High </button>;
         } else if (this.props.SearchResult.sortPeference === "RatingDescending") {
-            ratingButton = <button className="orange" onClick={()=>this.onSort('RatingAscending')}>Rating: High to Low</button>;
+            ratingButton = <button className="lightgreen" onClick={()=>this.onSort('RatingAscending')}>Rating: High to Low</button>;
         } else {
             ratingButton = <button className="grey" onClick={()=>this.onSort('RatingDescending')}>Rating</button>;
         }

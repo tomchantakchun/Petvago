@@ -10,9 +10,6 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import moment from 'moment'
 
-//AutoCompleteSelector
-import AutoComplete from 'react-autocomplete';
-
 const mapStateToProps = state => {
     return {
         search: state.search,
@@ -106,7 +103,7 @@ class Search extends React.Component {
                     endDate={moment(new Date(this.props.search.endDate || today))}
                     onApply={this.dateChange}
                     props={this.props}>
-                    <button className="orange">DATE {this.props.search.startDate || today} {this.props.search.endDate || today} </button>
+                    <button className="searchDate">DATE {this.props.search.startDate || today} {this.props.search.endDate || today} </button>
                 </DateRangePicker>
 
                     {serachDistricts}
@@ -117,7 +114,8 @@ class Search extends React.Component {
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                     </select>
-                    <button type="submit" value="Submit" onClick={this.handleSearch}>Search</button>
+
+                    <button className="searchSubmit" type="submit" value="Submit" onClick={this.handleSearch}>Search</button>                    
             </div>
         )
     }

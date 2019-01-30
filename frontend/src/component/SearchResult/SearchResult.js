@@ -8,14 +8,22 @@ import convert from 'object-array-converter';
 import RatingBar from "./RatingBar-non-edit";
 
 const mapStateToProps = state => {
+    console.log(state.search.haveSearch)
     return {
         SearchResult: state.search,
+        SearchAuthenticate: state.search.haveSearch
     }
 };
 
 class SearchResult extends React.Component {
    
     render() {
+
+        if (!this.props.SearchAuthenticate){
+            this.props.history.push('./home')
+        }
+
+    
         //convert object to Array
         let searchResultArray = []
         let searchArray = convert.toArray(this.props.SearchResult)
@@ -24,7 +32,6 @@ class SearchResult extends React.Component {
                 searchResultArray = convert.toArray(searchArray[i].value)
             }
         }
-        console.log(searchResultArray)
 
         //show min price
         searchResultArray = searchResultArray.map(e => e.value).sort(
@@ -150,6 +157,7 @@ class SearchResult extends React.Component {
                 </div>
             })
         )
+        
             
         return (
             <div className="result-body">

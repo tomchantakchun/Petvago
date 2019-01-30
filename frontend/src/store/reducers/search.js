@@ -8,7 +8,8 @@ const initialState = {
     district: 'all',
     petType: 'all',
     sortPeference: "NameAscending",
-    searchResult: ''
+    searchResult: '',
+    haveSearch: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,7 +22,8 @@ const reducer = (state = initialState, action) => {
                 startDate: action.history.startDate,
                 endDate: action.history.endDate,
                 district: action.history.district,
-                petType: action.history.petType
+                petType: action.history.petType,
+                haveSearch: true
             }
 
         case actionTypes.CHANGEDATE:
@@ -49,7 +51,8 @@ const reducer = (state = initialState, action) => {
             let resultStore = Object.keys(action.result).map(i => action.result[i])
             return {
                 ...state,
-                searchResult: resultStore
+                searchResult: resultStore,
+                haveSearch: true
             }
 
         case actionTypes.SORTRESULT:
