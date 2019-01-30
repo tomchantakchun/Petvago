@@ -168,7 +168,7 @@ class SearchResult extends React.Component {
                         <img className="hotel-icon-2" src={"https://i.imgur.com/img0gF3.jpg"} alt="NA" />
                         <div className="hotel-detail-2">
                             <div className="hotel-row-2"> 
-                                <div className="hotel-name-2">DOGGY DOGGY</div>
+                                <div className="hotel-name-2">DOGGY DOGGY DOGGY DOGGY DOGGY DOGGY</div>
                                 <RatingBar rating={4.0}/>
                             </div>
                             <div className="hotel-row2-2">

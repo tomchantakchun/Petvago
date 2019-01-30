@@ -109,7 +109,7 @@ class Login extends React.Component {
         return (
             <div className={classes.Login}>
                 <section>
-                    <h1>Please login</h1>
+                    <h1>Login</h1>
                     <form>
                         <h6>Name: </h6>
                         <input type='text' name='name' className={classes.TextBox} onChange={this.handleInputChange} value={this.state.name}></input>
@@ -119,8 +119,8 @@ class Login extends React.Component {
                         {this.state.signupFailed ? <h6 className={classes.loginFailed}>Signup failed</h6> : null}
                         {this.state.signupHotelFailed ? <h6 className={classes.loginFailed}>You cannot signup as hotel</h6> : null}
                         <h6>{this.state.errorMessage}</h6>
-                        <label><input type="checkbox" name="isHotel" checked={this.state.isHotel} onChange={this.handleInputChange} />hotel</label>
-                        <input type='submit' value='Submit' className={classes.Submit} onClick={this.handleSubmit}></input>
+                        <label><input type="checkbox" name="isHotel" checked={this.state.isHotel} onChange={this.handleInputChange} />Petvago Hotel Partner</label>
+                        <input  type='submit' value='Submit' className={classes.Submit} onClick={this.handleSubmit}></input>
                     </form>
                     <button className={classes.Signup} onClick={this.handleSignup}>Signup</button>
                     <Facebook redirectToIndex={this.redirectToIndex} />
