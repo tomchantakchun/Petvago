@@ -6,7 +6,8 @@ import { applyMiddleware, createStore, combineReducers } from 'redux';
 import logger from 'redux-logger'
 
 import searchReducer from './store/reducers/search';
-import hotelReducer from './store/reducers/hotel'
+import hotelReducer from './store/reducers/hotel';
+import hotelIdReducer from './store/reducers/hotelId';
 
 
 import './index.css';
@@ -15,7 +16,8 @@ import * as serviceWorker from './serviceWorker';
 
 const rootReducer = combineReducers({
     search: searchReducer,
-    hotel:hotelReducer
+    hotel:hotelReducer,
+    hotelId:hotelIdReducer,
 });
 
 const store = createStore(rootReducer,applyMiddleware(logger));

@@ -4,7 +4,7 @@ export const SORTRESULT = 'SORTRESULT';
 export const CHANGEDATE = 'CHANGEDATE';
 export const CHANGEDISTRICT = 'CHANGEDISTRICT';
 export const CHANGEPETTYPE = 'CHANGEPETTYPE';
-
+export const CHANGEHOTELID = 'CHANGEHOTELID';
 
 
 
@@ -24,3 +24,7 @@ export const redirect_to_confirmation = (data) => {
         payload: data
     }
 }
+
+// export const change_hotel_id = (data) =>{
+//     return 
+// }

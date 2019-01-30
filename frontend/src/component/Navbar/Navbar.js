@@ -30,8 +30,8 @@ class Navigationbar extends React.Component {
                 <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
                     <div className="d-flex flex-grow-1">
                         {/* <span className="w-100 d-lg-none d-block"></span> */}
-                        <a className="navbar-brand d-none d-lg-inline-block" href="/"></a>
-                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"></a>
+                        <a className="navbar-brand d-none d-lg-inline-block" href="/"> </a>
+                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"> </a>
                         <div className="w-100 text-right">
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
                                 <span className="navbar-toggler-icon">
@@ -68,8 +68,8 @@ class Navigationbar extends React.Component {
                 <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
                     <div className="d-flex flex-grow-1">
                         {/* <span className="w-100 d-lg-none d-block"></span> */}
-                        <a className="navbar-brand d-none d-lg-inline-block" href="/"></a>
-                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"></a>
+                        <a className="navbar-brand d-none d-lg-inline-block" href="/"> </a>
+                        <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"> </a>
                         <div className="w-100 text-right">
                             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
                                 <span className="navbar-toggler-icon">
