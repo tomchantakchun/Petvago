@@ -268,7 +268,7 @@ router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session:
 
   var db=req.db;
   var today = new Date();
-  let query=db.select("u.username","u.telephone","u.email","u.id as userID","b.hotelID","b.startDate","b.endDate","r.roomType")
+  let query=db.select("u.username","u.telephone","u.email","u.id as userID","b.id as bookingID","b.hotelID","b.startDate","b.endDate","r.roomType")
   .from("users as u")
   .innerJoin('conversation as c','c.userID','u.id')
   .fullOuterJoin('booking as b','c.userID','b.userID')
@@ -328,9 +328,6 @@ router.get('/userinfo/:conversationID',  passport.authenticate("jwt", { session:
         return true
       }
     })
-      console.log('rows',rows);
-      console.log('new',newRow)
-
       res.send(newRow);
 
   }).catch((error)=>{
