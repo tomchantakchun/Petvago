@@ -9,11 +9,18 @@ import RatingBarNonEdit from "./RatingBar-non-edit";
 import ImageShow from "../ImageShow/ImageShow";
 import "./Hotel.css"
 
+const mapStateToProps = state => {
+    return {
+        SearchResult: state.search,
+        HotelID : state.hotelId,
+    }
+};
+
 class Hotel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hotelID: 0,
+            hotelID: this.props.HotelID.hotelId,
             hotelName: 'Fake Hotel & Spa',
             hotelIcon: '',
             hotelAddress: "1 Downing Street, London",
@@ -29,14 +36,15 @@ class Hotel extends Component {
             reviewArr:[],
             gallery: [],
             vaccineRequirement: { vaccine: ['DHPPiL', 'Rabies'] },
-            
+            startDate: "DD-MM-YYYY",
+            endDate:"DD-MM-YYYY",
         }
     };
 
     async componentDidMount() {
         try{
-            const _hotelInfoArrayData = await axios.get("http://localhost:8080/api/hotel/1");
-            const _hotelReviewArrayData = await axios.get("http://localhost:8080/api/review/hotel/1");
+            const _hotelInfoArrayData = await axios.get("http://localhost:8080/api/hotel/"+ this.state.hotelID);
+            const _hotelReviewArrayData = await axios.get("http://localhost:8080/api/review/hotel/"+this.state.hotelID);
             const _hotelInfo = _hotelInfoArrayData.data[0];
                 console.log(_hotelInfo);
             const _hotelReviewArray = _hotelReviewArrayData.data;
@@ -45,7 +53,7 @@ class Hotel extends Component {
             const _fillterGallaryArr = _gallaryArr.filter(e => !!e);
             for (let i= 0; i<_hotelInfo.roomType.length; i++){
                 for (let j=0; j<_hotelInfo.roomType[i].photo.length;i++){
-                    if(_hotelInfo.roomType[i].photo[j].icon = true){
+                    if(_hotelInfo.roomType[i].photo[j].icon === true){
                         _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo[j].path
                     }
                 }
@@ -65,6 +73,8 @@ class Hotel extends Component {
                 reviewArr: _hotelReviewArray,
                 gallery: _fillterGallaryArr,
                 vaccineRequirement: _hotelInfo.vaccineRequirement,
+                startDate: this.props.SearchResult.startDate,
+                endDate: this.props.SearchResult.endDate,
                 
              });
         } catch(err){
@@ -77,8 +87,8 @@ class Hotel extends Component {
         let data = {
             hotelID: this.state.hotelID,
             roomTypeID: this.state.roomTypeID,
-            startDate: '2019-02-01',
-            endDate: '2019-02-03',
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
         }
         let hotelID = this.state.hotelID;
         let hotelName = this.state.hotelName;
@@ -113,7 +123,7 @@ class Hotel extends Component {
         }).then(() => {
             history.push('/booking')
         })
-            .catch(err => console.log(err))
+        .catch(err => console.log(err))
     };
 
     handleRoomTypeID = async(e) =>{
@@ -129,12 +139,13 @@ class Hotel extends Component {
     }
 
     render() {
-        const vaccineListItem = this.state.vaccineRequirement.vaccine.map((e) =>
-            <li key={Math.random}> {e} </li>
+        console.log(this.props.match.params.id);
+        const vaccineListItem = this.state.vaccineRequirement.vaccine.map((e,index) =>
+            <li key={index}> {e} </li>
         );
         const roomTypeListItem = this.state.roomTypeArr.map((e) => 
             <div key={e.roomTypeID} id={`roomType-id-${e.roomTypeID}`} className="hotel-room-data-card">
-                <img className="hotel-room-data-card-icon" src={e.icon} alt="NA" />
+                <img className="hotel-room-data-card-icon" src={`.${e.icon}`} alt="NA" />
                 <div id={`roomType-${e.roomType}`} className="hotel-room-data-card-type left-break-line">{e.roomType}</div>
                 <div className="hotel-room-data-card-description left-break-line">{e.description}</div>
                 <div id={`roomType-price-${e.price}`} className="hotel-room-data-card-price">
@@ -210,11 +221,6 @@ class Hotel extends Component {
     }
 }
 
-
-
-const mapStateToProps = state => ({
-
-});
 
 const mapDispatchtoProps = (dispatch) => {
     return {

@@ -2,11 +2,7 @@ import React from 'react';
 import Ratings from 'react-ratings-declarative';
 
 class RatingBarNonEdit extends React.Component{
-    constructor(props){
-        super(props);
-    }
    
-
     render(){
 
         console.log(

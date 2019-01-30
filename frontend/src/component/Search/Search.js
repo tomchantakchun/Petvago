@@ -1,6 +1,6 @@
 import React from 'react';
-import {withRouter} from "react-router-dom";
 import axios from 'axios';
+import {withRouter} from "react-router-dom";
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions';
 import "./Search.css";

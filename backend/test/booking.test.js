@@ -67,6 +67,21 @@ describe('Booking backend test', () => {
                  console.log(err)
              })
      });
+
+     it('8. Get all booking of a hotel booking by day', async () => {
+        //jwt of partner1
+        const jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJwYXJ0bmVyMSIsImlzSG90ZWwiOnRydWV9.QtkreWj8q4OD--qbCJNa68jQlZ0vhtZFtl0cOeQzNAk';
+  
+        
+          await axios.put(`http://localhost:8080/api/booking/hotel-by-day`,{date:'2019-02-02'}, { headers: { Authorization: `Bearer ${jwt}` } })
+              .then(response => {
+                 console.log(response.data)
+                 expect(response.data).not.toBe(null);
+              }).catch((err)=>{
+                  console.log(err)
+              })
+      });
+ 
  
 
     

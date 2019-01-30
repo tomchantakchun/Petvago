@@ -30,6 +30,9 @@ class MessageBox extends React.Component {
         promise.then(()=>{
             if(this.state.who==='users'){
                 axios.get('http://localhost:8080/api/chatroom/chatlist/user',{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+                    res.data=res.data.sort(function(a,b){
+                        return new Date(b.lastMessageTime) - new Date(a.lastMessageTime);
+                      });
                     this.setState({chatlist:res.data})
                     console.log(res.data)
         

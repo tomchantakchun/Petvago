@@ -2,11 +2,6 @@ import React from 'react';
 import Ratings from 'react-ratings-declarative';
 
 class RatingBar extends React.Component{
-    constructor(props){
-        super(props);
-    }
-   
-
     render(){
 
         console.log(

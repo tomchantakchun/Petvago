@@ -5,10 +5,22 @@ import "./Homepage.css";
 import TextSlideshow from "../TextSlideshow/TextSlideshow";
 import RatingBar from "./RatingBar-non-edit";
 import Search from '../Search/Search';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuoteRight } from '@fortawesome/free-solid-svg-icons'
-library.add(faQuoteRight)
+import * as actionTypes from '../../store/actions';
+import {withRouter} from "react-router-dom";
+import { connect } from 'react-redux';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuoteRight } from '@fortawesome/free-solid-svg-icons';
+library.add(faQuoteRight);
+
+const mapStateToProps = state => {
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        changeHotelId:(hotelId) =>dispatch({type:actionTypes.CHANGEHOTELID, hotelId :hotelId})
+    }
+};
 
 class Homepage extends React.Component {
     constructor(props) {
@@ -24,7 +36,7 @@ class Homepage extends React.Component {
             const _hotelInfo = await Axios.get('http://localhost:8080/api/hotel');
             this.setState({ hotelInfo: _hotelInfo.data });
             const listItems = this.state.hotelInfo.map(
-                (e) => <div key={e.id.toString()} className="hotel-info"  >
+                (e) => <div key={e.id.toString()} id={`hotel-id-${e.id}`} className="hotel-info"  >
                     <img className="hotel-icon " src={e.path}  onClick={(e)=>{this.onClickHotelInfo(e)}} alt="hotelIcon"></img>
                     <div className="hotel-detail">
                         <div className="hotel-name">{e.name}</div>
@@ -42,8 +54,10 @@ class Homepage extends React.Component {
     }
 
     onClickHotelInfo(e){
-        console.log(e);
-        // put corresponding index in to redux for redirection
+        console.log(Number(e.target.parentElement.id.replace('hotel-id-','')));
+        const _hotelId = Number(e.target.parentElement.id.replace('hotel-id-',''));
+        this.props.changeHotelId(_hotelId);
+        this.props.history.push('./hotel/');
     }
 
     redirectToSearchResult = ()=>{
@@ -75,4 +89,4 @@ class Homepage extends React.Component {
 }
 
 
-export default Homepage;
+export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(Homepage));

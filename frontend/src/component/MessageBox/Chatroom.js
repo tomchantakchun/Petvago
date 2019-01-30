@@ -156,13 +156,17 @@ class Chatroom extends React.Component {
     }
 
     renderChat=()=>{
-        if(this.state.chat){
+        if(this.state.chat && this.state.chat.length>0){
             return(
                 <MessageList
                             className='message-list'
                             lockable={true}
                             toBottomHeight={'100%'}
                             dataSource={this.state.chat} />
+            )
+        }else{
+            return(
+                <p style={{color:'#ccc', fontSize:'18px', marginTop:'30px', textAlign:'center'}}>Send a message!</p>
             )
         }
         
@@ -215,9 +219,13 @@ class Chatroom extends React.Component {
 
     renderBox=()=>{
         if (this.state.activeBooking && this.state.author==="users"){
-            return(<div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}><img className='chatRoom-icon' src={this.state.activeBooking.icon} alt="icon"/>
+            return(<div className="chatroom-render-box">
+            <img className='chatRoom-icon' src={this.state.activeBooking.icon} alt="icon"/>
+            <div>
             <p style={{ marginTop:'20px',textAlign:'center'}}>{this.state.activeBooking.hotelName}</p>
-            <p style={{fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="map-marker-alt" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.address}</p>
+            <p style={{fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="map-marker-alt" style={{marginRight:'10px', color:'#50b5a9'}}/>
+            {this.state.activeBooking.address}</p>
+            </div>
             </div>)
         }else if(this.state.activeBooking && this.state.author==="hotel"){
             return(<div>
@@ -244,7 +252,7 @@ class Chatroom extends React.Component {
                
                 <div className="chatroomBox row">
                 
-                    <div className="activeChat-box col-4 d-flex flex-column align-items-center">
+                    <div className="activeChat-box col-md-4 col-12 d-flex flex-column align-items-center">
                         {this.renderBox()}
                     <div className='activeBooking'>
                         <p style={{fontWeight:'bold'}}>Active booking:</p>
@@ -253,7 +261,7 @@ class Chatroom extends React.Component {
                         
                     
                     </div>
-                    <div className="activeChat col-8">
+                    <div className="activeChat col-md-8 col-12">
                         <div className="chatroom-message-list">
                             {this.renderChat()}
                             <div ref={el => { this.el = el; }} />

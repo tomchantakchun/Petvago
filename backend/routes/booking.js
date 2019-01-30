@@ -10,6 +10,7 @@ const passport = require('passport');
 5. Post request to create offline booking by hotel
 6. Get all booking of a hotel **
 7. Get all booking of a hotel within a range of date
+8. Get all booking of a hotel booking by day
 */
 
 
@@ -347,6 +348,38 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
       })  
   }
 })
+
+//8.Get all booking of a hotel booking by day
+router.put('/hotel-by-day', passport.authenticate("jwt", { session: false }), (req, res) => {
+  /* data this function needs:
+    {
+      date (format: '2019-02-02')
+    }
+
+    on success, sends back {status:'success', bookingID, expiryTime}
+  */
+
+  if (req.user.isHotel!=true){
+    res.status(500).send({error:'user is not hotel'})
+  } else{
+    var db=req.db;
+    let query=db.select()
+    .from('booking')
+    .where('hotelID',req.user.id)
+    .andWhere('startDate','<=',req.body.date)
+    .andWhere('endDate','>=',req.body.date)
+
+    query.then((result)=>{
+      res.send(result);        
+    }).catch((error)=>{
+      console.log(error);
+      res.status(500).send({error:'cannot update booking'})
+    });
+  }
+
+  
+})
+
 
 let convertYMD = (dateObj) => {
   let mm = dateObj.getMonth() + 1;
