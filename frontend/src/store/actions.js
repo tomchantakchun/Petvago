@@ -1,6 +1,11 @@
 export const SEARCHHOTEL = 'SEARCHHOTEL';
 export const SEARCHRESULT = 'SEARCHRESULT';
 export const SORTRESULT = 'SORTRESULT';
+export const CHANGEDATE = 'CHANGEDATE';
+export const CHANGEDISTRICT = 'CHANGEDISTRICT';
+export const CHANGEPETTYPE = 'CHANGEPETTYPE';
+
+
 
 
 //hotel
