@@ -561,7 +561,7 @@ class EditPage extends React.Component {
                                 </tbody>
                             </table>
                             <div id='HotelIcon'>
-                                <img src={this.state.hotelIcon === '' ? './image/empty-photo.png' : this.state.hotelIcon} alt={`Icon Photo for this hotel: ${this.state.hotelName}`}></img>
+                                <img src={this.state.hotelIcon === '' ? './image/empty-photo.png' : this.state.hotelIcon} alt={`Icon for this hotel: ${this.state.hotelName}`}></img>
                                 <PhotoUpload isEdit={true} handleEditRoomTypeIconPhoto={this.handleEditBigIconPhoto}></PhotoUpload>
                             </div>
                         </div>

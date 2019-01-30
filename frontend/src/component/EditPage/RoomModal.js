@@ -31,7 +31,7 @@ class RoomModal extends React.Component {
                 } else if (e.isDelete === undefined) {
                     return (
                         <div className='other-photo' key={e.photoID} id={`other-photo-${e.photoID}`}>
-                            <img src={e.path} alt={`Photo for this room type: ${this.props.editRoomTypeContent.roomType}`}></img>
+                            <img src={e.path} alt={`This room type: ${this.props.editRoomTypeContent.roomType}`}></img>
                             <FontAwesomeIcon icon="times" onClick={this.props.handleDeleteRoomTypePhoto}/>
                         </div>
                     )
@@ -48,7 +48,7 @@ class RoomModal extends React.Component {
                         this.firstIcon = false;
                         this.roomIconPhoto = (
                             <div className='other-photo' key={roomE.photoID} id={`icon-photo-${roomE.photoID}`}>
-                                <img src={roomE.path} alt={`Photo for this room type: ${this.props.editRoomTypeContent.roomType}`}></img>
+                                <img src={roomE.path} alt={`This room type: ${this.props.editRoomTypeContent.roomType}`}></img>
                                 <PhotoUpload isEdit={true} handleEditRoomTypeIconPhoto={this.props.handleEditRoomTypeIconPhoto}></PhotoUpload>
                             </div>
                         )
@@ -60,7 +60,7 @@ class RoomModal extends React.Component {
             if (this.roomIconPhoto === null) {
                 this.roomIconPhoto = (
                     <div className='other-photo'>
-                        <img src='./image/empty-photo.png' alt={`No photo uploaded here yet`}></img>
+                        <img src='./image/empty-photo.png' alt={`No uploaded here yet`}></img>
                         <PhotoUpload isEdit={true} handleEditRoomTypeIconPhoto={this.props.handleEditRoomTypeIconPhoto}></PhotoUpload>
                     </div>
                 )

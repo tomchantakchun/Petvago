@@ -59,15 +59,12 @@ class HostManagement extends React.Component {
 
     handleDateChange = async (e, picker) => {
         e.preventDefault();
-        // console.log(this.props.SearchResult.startDate)
         console.log(picker.startDate._d)
         await this.setState({
             startDOW: this.convertYMD(this.findfirstDOW(new Date(picker.startDate._d))),
             startDate: this.convertYMD(this.findfirstDOW(new Date(picker.startDate._d))),
             endDate: this.convertYMD(this.findLastDOW(new Date(picker.startDate._d))),
         })
-        // this.props.SearchResult.startDate = moment(new Date(picker.startDate._d)).format("YYYY-MM-DD")
-        // this.props.SearchResult.endDate = moment(new Date(picker.endDate._d)).format("YYYY-MM-DD")
         this.searchBookingRecord(this.state.startDate, this.state.endDate);
     }
 
@@ -133,9 +130,12 @@ class HostManagement extends React.Component {
 
                 for (let i in dowArr) {
                     let targetDate = e.dateArr.find((eDate) => {
-                        console.log(`date: `,this.convertDM(new Date(eDate.date)));
-                        console.log(`dowArr: `,[this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/'));
-                        console.log(`comparison: `,this.convertDM(new Date(eDate.date)) === [this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/'));
+                        // console.log(`date: `,this.convertDM(new Date(eDate.date)));
+                        // console.log(`dowArr: `,[this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/'));
+                        // console.log(`comparison: `,this.convertDM(new Date(eDate.date)) === [this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/'));
+
+                        
+
                         return this.convertDM(new Date(eDate.date)) === [this.convertDM(new Date(dowArr[i])).split('/')[1],this.convertDM(new Date(dowArr[i])).split('/')[0]].join('/')
                     })
 

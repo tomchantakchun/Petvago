@@ -9,10 +9,6 @@ library.add(faPlus)
 library.add(faEdit)
 
 class PhotoUpload extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     handleClick = () => {
         // document.getElementById('PhotoUploadInput').click();
     }
