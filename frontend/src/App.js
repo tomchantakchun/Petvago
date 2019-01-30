@@ -19,6 +19,7 @@ import MyBooking from './component/Booking/MyBooking'
 import PhotoUpload from './component/PhotoUpload/PhotoUpload'
 import SearchResult from './component/SearchResult/SearchResult';
 import Hotel from './component/Hotel/Hotel'
+import NoMatch from './component/NoMatch'
 import HostManagement from './component/HostManagement/HostMangement';
 
 
@@ -66,6 +67,7 @@ class App extends Component {
             <Route exact path='/hotel' component={Hotel} />
             <Route exact path='/confirmation' component={Confirmation} />
             <Route exact path='/mybooking' component={MyBooking} />
+            <Route component={NoMatch} />
 
 
 

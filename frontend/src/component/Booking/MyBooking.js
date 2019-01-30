@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Ratings from 'react-ratings-declarative';
@@ -85,10 +84,10 @@ class Confirmation extends Component {
     }
 
     componentWillUpdate=(nextProps, nextState) =>{
-        if (nextState.pastBooking != this.state.pastBooking ) {
+        if (nextState.pastBooking !== this.state.pastBooking ) {
           this.renderPast()
         }
-        if (nextState.upcomingBooking != this.state.upcomingBooking ) {
+        if (nextState.upcomingBooking !== this.state.upcomingBooking ) {
             this.renderUpcoming()
           }
       }
@@ -168,7 +167,7 @@ class Confirmation extends Component {
                 })
                 }).then(()=>{
                     
-                    if(this.state.modal && this.state.modal=='upcoming'){
+                    if(this.state.modal && this.state.modal==='upcoming'){
                         this.setState({
                             modalBody: ( <div>
                                 <div className="modal-body mybooking-modal-body">
@@ -193,10 +192,10 @@ class Confirmation extends Component {
                             </div>)
                         });
                        
-                    }else if(this.state.modal && this.state.modal=='past'){
+                    }else if(this.state.modal && this.state.modal==='past'){
 
                         let isReviewed=this.state.reviewArray.filter((each)=>{
-                            if (each.bookingID==this.state.bookingID){
+                            if (each.bookingID===this.state.bookingID){
                                 return true
                             }else{return false}
                         })
@@ -213,7 +212,7 @@ class Confirmation extends Component {
                           }
 
                         const set=()=>{
-                            if (isReviewed.length==0){
+                            if (isReviewed.length===0){
                                 this.setState({
                                     modalBody: ( <div>
                                            <div className="modal-body mybooking-modal-body">

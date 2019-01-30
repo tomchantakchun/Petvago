@@ -44,7 +44,7 @@ class Chatroom extends React.Component {
         let promise=new Promise((resolve,reject)=>{
             let user=JSON.parse(window.atob(localStorage.getItem('petvago-token').split('.')[1]));
             this.setState({
-                author: user.isHotel==false? 'users':'hotel'
+                author: user.isHotel===false? 'users':'hotel'
             })
             resolve()
         })
@@ -53,7 +53,8 @@ class Chatroom extends React.Component {
             axios.get(`http://localhost:8080/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArr=res.data.map((each)=>{
                 each.text=each.body;
-                each.dateString=moment(new Date(each.created_at)).format('HH:mm');                each.position=Object.keys(each.authorID)[0]==this.state.author? 'right':'left';
+                each.dateString=moment(new Date(each.created_at)).format('HH:mm');               
+                each.position=Object.keys(each.authorID)[0]===this.state.author? 'right':'left';
                 return each
             })
             this.setState({
@@ -63,7 +64,7 @@ class Chatroom extends React.Component {
             console.log(err)
         })
 
-            if(this.state.author=='users'){
+            if(this.state.author==='users'){
                 axios.get(`http://localhost:8080/api/chatroom/activebooking/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     this.setState({
                         activeBooking:res.data[0],
@@ -94,7 +95,7 @@ class Chatroom extends React.Component {
             let newArr=res.data.map((each)=>{
                 each.text=each.body;
                 each.dateString=moment(new Date(each.created_at)).format('HH:mm');
-                each.position=Object.keys(each.authorID)[0]==this.state.author? 'right':'left';
+                each.position=Object.keys(each.authorID)[0]===this.state.author? 'right':'left';
                 return each
             })
             this.setState({
@@ -109,7 +110,7 @@ class Chatroom extends React.Component {
         this.socket.on('refresh messages', data => {
             let chat=this.state.chat;
             let dateString=moment(new Date()).format('HH:mm');
-            if(data.author!=this.state.author){
+            if(data.author!==this.state.author){
                 let newArray=[...chat,{text:data.body,type:data.type,position:'left',dateString} ]
                 this.setState({chat:newArray})
             }
@@ -117,11 +118,11 @@ class Chatroom extends React.Component {
     }
 
     componentWillUpdate=(nextProps, nextState) =>{
-        if (nextState.activeBooking != this.state.activeBooking ) {
+        if (nextState.activeBooking !== this.state.activeBooking ) {
           this.renderActive()
         }
 
-        if (nextState.chat != this.state.chat ) {
+        if (nextState.chat !== this.state.chat ) {
             return new Promise((resolve,reject)=>{
                 this.renderChat()
                 resolve(111)
@@ -213,12 +214,12 @@ class Chatroom extends React.Component {
     }
 
     renderBox=()=>{
-        if (this.state.activeBooking && this.state.author=="users"){
+        if (this.state.activeBooking && this.state.author==="users"){
             return(<div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}><img className='chatRoom-icon' src={this.state.activeBooking.icon} alt="icon"/>
             <p style={{ marginTop:'20px',textAlign:'center'}}>{this.state.activeBooking.hotelName}</p>
             <p style={{fontSize:'16px', marginTop:'20px', textAlign:'center'}}><FontAwesomeIcon icon="map-marker-alt" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.address}</p>
             </div>)
-        }else if(this.state.activeBooking && this.state.author=="hotel"){
+        }else if(this.state.activeBooking && this.state.author==="hotel"){
             return(<div>
                 <p style={{ fontSize:'18px',marginTop:'18px', textAlign:'left'}}><FontAwesomeIcon icon="user" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.username}</p>
                 <p style={{fontSize:'18px', marginTop:'20px', textAlign:'left'}}><FontAwesomeIcon icon="phone" style={{marginRight:'10px', color:'#50b5a9'}}/>{this.state.activeBooking.telephone}</p>

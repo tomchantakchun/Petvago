@@ -25,7 +25,7 @@ class Homepage extends React.Component {
             this.setState({ hotelInfo: _hotelInfo.data });
             const listItems = this.state.hotelInfo.map(
                 (e) => <div key={e.id.toString()} className="hotel-info"  >
-                    <img className="hotel-icon " src={e.path}  onClick={(e)=>{this.onClickHotelInfo(e)}}></img>
+                    <img className="hotel-icon " src={e.path}  onClick={(e)=>{this.onClickHotelInfo(e)}} alt="hotelIcon"></img>
                     <div className="hotel-detail">
                         <div className="hotel-name">{e.name}</div>
                         <div className="hotel-rate">
