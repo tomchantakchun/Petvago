@@ -35,9 +35,7 @@
     padding:40px
 }
 
-.activeChat{
-    
-}
+
 
 .activeChat-box{
     padding:20px 30px 20px 30px;
@@ -45,8 +43,6 @@
     border-radius: 15px;
     box-shadow: 1px 2px 5px  #ccc;
     height:80vh !important;
-
-    /* position:relative */
 }
 
 .chatRoom-icon{
@@ -65,11 +61,6 @@
     
 }
 
-.rce-mlist{
-    /* height:70vh;
-    overflow: scroll; */
-
-}
 
 .activeBooking p{
     font-size:16px;
@@ -112,11 +103,6 @@
 
 }
 
-.rce-container-input{
-   /* position:absolute; */
-   /* bottom:0  */
-}
-
 .rce-input{
     font-size:16px !important
 }
@@ -124,4 +110,64 @@
 .chatroom-message-list{
     overflow-y: scroll;
     height:72vh !important
+}
+
+.chatroom-render-box{
+   display:flex;
+   flex-direction:column;
+   align-items:center;
+   justify-content:center
+}
+
+@media only screen and (max-width: 600px) {
+    .chatroomBox{
+        padding:20px 40px 20px 40px;
+    }
+    .activeChat-box{
+        height:30vh !important;
+        padding:10px;
+        margin-bottom:10px
+    }
+    .chatroom-render-box{
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:center;
+     }
+
+     .chatRoom-icon{
+        height:80px;
+        width:80px !important;
+    }
+
+    .chatroom-message-list{
+        height:48vh !important
+    }
+
+    .chatroom-render-box p{
+        margin-top:5px !important;
+        margin-bottom:10px !important
+
+     }
+
+    .activeBooking{
+        background-color: rgb(80, 181, 169,0.5);
+        margin-top:10px;
+        padding:5px;
+        border-radius:5px;
+        width:70vw;
+        height:10vh;
+        overflow-y:scroll
+    }
+    
+    
+    .activeBooking p{
+        font-size:16px;
+        margin-bottom:5px;
+        margin-top:0
+    }
+
+    .activeChat{
+        padding:0
+    }
 }

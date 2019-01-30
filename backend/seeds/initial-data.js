@@ -106,19 +106,19 @@ exports.seed = function(knex, Promise) {
       console.log('create booking')
       return knex('booking').insert([
         {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
-        {userID:1, hotelID:1, roomTypeID:2, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-7', endDate:'2019-2-8',duration:2,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:1, roomTypeID:2, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-7', endDate:'2018-2-8',duration:2,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:1, hotelID:1, roomTypeID:3, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-7', endDate:'2019-2-12',duration:6,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:2, hotelID:3, roomTypeID:1, expiryTime:'2018-01-25T08:36:00',startDate:'2019-1-17', endDate:'2019-1-25',duration:9,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:1, hotelID:4, roomTypeID:8, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'past',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
-        {userID:1, hotelID:5, roomTypeID:10, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:5, roomTypeID:10, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-5', endDate:'2018-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:1, hotelID:5, roomTypeID:9, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Tom Chan',ownerPhone:93290902,petName:'Purin',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
       ]);
     }).then(function () {
       console.log('create review')
       return knex('review').insert([
         {userID:1, hotelID:1, bookingID:7, rating:4,comment:'Great experience. My dog had a good time at the hotel. I wish they can give my dog my play time'},
-        {userID:2, hotelID:2, bookingID:2, rating:3, comment:'My dog was returned to me in perfect condition.'},
+        {userID:1, hotelID:2, bookingID:2, rating:3, comment:'My dog was returned to me in perfect condition.'},
       ]);
     }).then(function () {
       console.log('create conversation')

@@ -31,7 +31,7 @@ class RoomModal extends React.Component {
                 } else if (e.isDelete === undefined) {
                     return (
                         <div className='other-photo' key={e.photoID} id={`other-photo-${e.photoID}`}>
-                            <img src={e.path} alt={`Photo for this room type: ${this.props.editRoomTypeContent.roomType}`}></img>
+                            <img src={e.path} alt={`This room type: ${this.props.editRoomTypeContent.roomType}`}></img>
                             <FontAwesomeIcon icon="times" onClick={this.props.handleDeleteRoomTypePhoto}/>
                         </div>
                     )
@@ -48,7 +48,7 @@ class RoomModal extends React.Component {
                         this.firstIcon = false;
                         this.roomIconPhoto = (
                             <div className='other-photo' key={roomE.photoID} id={`icon-photo-${roomE.photoID}`}>
-                                <img src={roomE.path} alt={`Photo for this room type: ${this.props.editRoomTypeContent.roomType}`}></img>
+                                <img src={roomE.path} alt={`This room type: ${this.props.editRoomTypeContent.roomType}`}></img>
                                 <PhotoUpload isEdit={true} handleEditRoomTypeIconPhoto={this.props.handleEditRoomTypeIconPhoto}></PhotoUpload>
                             </div>
                         )
@@ -60,7 +60,7 @@ class RoomModal extends React.Component {
             if (this.roomIconPhoto === null) {
                 this.roomIconPhoto = (
                     <div className='other-photo'>
-                        <img src='./image/empty-photo.png' alt={`No photo uploaded here yet`}></img>
+                        <img src='./image/empty-photo.png' alt={`No uploaded here yet`}></img>
                         <PhotoUpload isEdit={true} handleEditRoomTypeIconPhoto={this.props.handleEditRoomTypeIconPhoto}></PhotoUpload>
                     </div>
                 )
@@ -68,29 +68,29 @@ class RoomModal extends React.Component {
         }
 
         return (   
-            <div class="modal fade" id="RoomModal" tabindex="-1" role="dialog" aria-labelledby="RoomModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="RoomModalLabel">Room Types: {this.props.editRoomTypeContent.roomType}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div className="modal fade" id="RoomModal" tabIndex="-1" role="dialog" aria-labelledby="RoomModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="RoomModalLabel">Room Types: {this.props.editRoomTypeContent.roomType}</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                     <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Room Description: </label>
-                        <textarea type="text" class="form-control" id="recipient-name" value={this.props.editRoomTypeContent.description} onChange={this.props.handleRoomDescription}></textarea>
+                    <div className="form-group">
+                        <label htmlFor="recipient-name" className="col-form-label">Room Description: </label>
+                        <textarea type="text" className="form-control" id="recipient-name" value={this.props.editRoomTypeContent.description} onChange={this.props.handleRoomDescription}></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Room Icon Photo:</label>
+                    <div className="form-group">
+                        <label htmlFor="message-text" className="col-form-label">Room Icon Photo:</label>
                         <div className='other-photo-group'>
                             {this.roomIconPhoto} 
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Other Room Photo:</label>
+                    <div className="form-group">
+                        <label htmlFor="message-text" className="col-form-label">Other Room Photo:</label>
                         <div className='other-photo-group'>
                             {this.roomPhoto}
                             <PhotoUpload handleAddRoomTypePhoto={this.props.handleAddRoomTypePhoto}></PhotoUpload>
@@ -98,8 +98,8 @@ class RoomModal extends React.Component {
                     </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
                 </div>
             </div>

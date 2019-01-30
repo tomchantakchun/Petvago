@@ -84,7 +84,7 @@ class Navigationbar extends React.Component {
                                 <a href="/message" className="nav-link m-2 menu-item nav-active">Message</a>
                             </li>
                             <li className="nav-item">
-                                <a href="/mybooking" className="nav-link m-2 menu-item">{this.props.userName}'s booking</a>
+                                <a href="/mybooking" className="nav-link m-2 menu-item">Booking</a>
                             </li>
                             <li className="nav-item" onClick={this.handleLogout}>
                                 <a href="/logout" className="nav-link m-2 menu-item">Logout</a>

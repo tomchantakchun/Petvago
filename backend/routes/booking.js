@@ -330,15 +330,10 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
                 }
                 console.log(`newRooms: `, newRooms);
                 console.log(`processedDateArr: `, processedDateArr);
-                // console.log(`newRooms: `, newRooms);
                 resolve(newRooms);
               })
           }))
         }
-
-        // .sort((e) => {
-        //   // need sorting
-        // })
 
         Promise.all(promiseArr).then((result) => {
           console.log(`result: `, result);
@@ -347,10 +342,7 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
       }).catch((error) => {
         console.log(error);
         res.status(500).send({error:'cannot get booking'})        
-      })
-
-    let query=db.select().from('booking').where('hotelID',req.user.id)
-  
+      })  
   }
 })
 
