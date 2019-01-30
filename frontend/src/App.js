@@ -52,8 +52,8 @@ class App extends Component {
         <div className="main-body">
         <Router>
           <Switch>
-            <Route exact path='/' component={TestHome} />
-            <Route exact path='/home' component={Homepage} />
+            <Route exact path='/test_home' component={TestHome} />
+            <Route exact path='/' component={Homepage} />
             <Route exact path='/search' component={Search} />
             <Route exact path='/search_result' component={SearchResult}/> 
             {/* <Route exact path='/result' component={Result} /> */}
@@ -64,7 +64,8 @@ class App extends Component {
             <Route exact path='/edit-hotel-info' component={EditPage} />
             <Route exact path='/host-management' component={HostManagement} />
             <Route exact path='/booking' component={Booking} />
-            <Route exact path='/hotel' component={Hotel} />
+            {/* <Route path='/hotels/:id' component={Hotel} /> */}
+            <Route exact path='/hotel'component={Hotel} />
             <Route exact path='/confirmation' component={Confirmation} />
             <Route exact path='/mybooking' component={MyBooking} />
             <Route component={NoMatch} />

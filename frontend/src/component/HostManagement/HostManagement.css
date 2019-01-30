@@ -18,7 +18,7 @@
 }
 
 #HostManagement div.booking-management {
-    margin: 5px;
+    margin: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,4 +32,47 @@
 #HostManagement canvas {
     width: 100%;
     height: 50vh;
+}
+
+#HostManagement tr {
+    vertical-align: middle;
+}
+
+#HostManagement td {
+    padding: 5px;
+    vertical-align: middle;
+}
+
+#HostManagement span.hotel-name {
+    color: #4c6189;
+    font-weight: 700;
+}
+
+#HostManagement #OfflineBooking {
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #ddcf9d;
+}
+
+#HostManagement #OfflineBooking textarea {
+    width: 100%;
+}
+
+#HostManagement #OfflineBooking label {
+    font-size: 22px;
+}
+
+#HostManagement #OfflineBooking .form-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#HostManagement #OfflineBooking .form-footer input, #HostManagement #OfflineBooking .form-footer button {
+    margin: 10px;
+}
+
+#HostManagement #OfflineBooking h6.update-success {
+    color: #28A745;
+    margin: 3px;
 }

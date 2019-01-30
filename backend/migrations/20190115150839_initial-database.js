@@ -90,7 +90,7 @@ exports.up = function(knex, Promise) {
         table.integer('duration');
         table.json('service');
         table.decimal('totalPrice');
-        table.enu('status',['confirming','expired','confirmed','past','requested','cancelled']);
+        table.enu('status',['confirming','expired','confirmed','past','requested','cancelled','outside']);
         table.timestamps(false,true);
       })
 
