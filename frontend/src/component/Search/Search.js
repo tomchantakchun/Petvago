@@ -123,12 +123,12 @@ class Search extends React.Component {
                 </DateRangePicker>
                 </div>
                 <div className="search-input-box">
-                    <FontAwesomeIcon icon="map-marker-alt" style={{color:'#50b5a9', marginLeft:'10px'}}/>
+                    <FontAwesomeIcon icon="map-marker-alt" style={{color:'#50b5a9', marginLeft:'10px',marginRight:'5px'}}/>
                         {serachDistricts}
                 </div>
 
                 <div className="search-input-box">
-                    <FontAwesomeIcon icon="paw" style={{color:'#50b5a9',marginLeft:'10px'}}/>
+                    <FontAwesomeIcon icon="paw" style={{color:'#50b5a9',marginLeft:'10px',marginRight:'5px'}}/>
 
                     <select name="petType" onChange={this.petTypeChange} required>
                         <option value="all" disabled selected hidden>Type of Pet</option>
