@@ -6,10 +6,13 @@ import axios from 'axios';
 import GoogleMap from "../GoogleMap/GoogleMap";
 import RatingBarNonEdit from "./RatingBar-non-edit";
 import * as actionTypes from '../../store/actions';
+
 //daterangepicker
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import moment from 'moment'
+
+// import Slideshow from "../Slideshow/Slideshow";
 import ImageShow from "../ImageShow/ImageShow";
 import "./Hotel.css"
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -17,6 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments,faPhoneSquare } from '@fortawesome/free-solid-svg-icons';
 library.add(faComments);
 library.add(faPhoneSquare);
+
 
 const mapStateToProps = state => {
     return {

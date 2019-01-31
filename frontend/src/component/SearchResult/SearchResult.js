@@ -26,6 +26,8 @@ const mapDispatchToProps = dispatch =>{
 
 class SearchResult extends React.Component {
     
+
+    
     onClickHotelInfo (e) {
         console.log(Number(e.target.parentElement.id.replace('hotel-result-id-','')));
         const _hotelId = Number(e.target.parentElement.id.replace('hotel-result-id-',''));
@@ -36,7 +38,7 @@ class SearchResult extends React.Component {
     render() {
 
         if (!this.props.SearchAuthenticate){
-            this.props.history.push('./home')
+            this.props.history.push('./')
         }
 
     
@@ -155,27 +157,33 @@ class SearchResult extends React.Component {
         }
 
         //create list item with unique hotel list and map function
-        const listItems = (
-            uniqueArray.map((e) => {
-                return <div id={`hotel-result-id-${e.hotelID.toString()}`} key={e.hotelID.toString()} className="hotel-info-2"  >
-                    <img className="hotel-icon-2" src={e.photo} onClick={(e)=>{this.onClickHotelInfo(e)}} alt="NA" />
-                    <div className="hotel-detail-2">
-                        <div className="hotel-row-2"> 
-                            <div className="hotel-name-2">{e.name}</div>
-                            <RatingBar rating={e.averageRating}/>
+
+        let listItems;
+
+
+        if (uniqueArray.length !== 0){
+            listItems = (
+                uniqueArray.map((e) => {
+                    return <div id={`hotel-result-id-${e.hotelID.toString()}`} key={e.hotelID.toString()} className="hotel-info-2"  >
+                        <img className="hotel-icon-2" src={e.photo} onClick={(e)=>{this.onClickHotelInfo(e)}} alt="NA" />
+                        <div className="hotel-detail-2">
+                            <div className="hotel-row-2"> 
+                                <div className="hotel-name-2">{e.name}</div>
+                                <RatingBar rating={e.averageRating}/>
+                                </div>
+                           
+                            <div className="hotel-row2-2">
+                                <div className="hotel-address-2">{e.district}</div>
+                                <div className="hotel-price-2"> starting ${e.price}</div>
                             </div>
-                       
-                        <div className="hotel-row2-2">
-                            <div className="hotel-address-2">{e.district}</div>
-                            <div className="hotel-price-2"> starting ${e.price}</div>
                         </div>
                     </div>
-                </div>
-            })
-        );
-
-        
-        
+                })
+            ); 
+        } else {listItems = (
+            <h3>No available hotel is found. Refine your search with above filters.</h3>
+            )
+        }
             
         return (
             <div className="result-body">
@@ -207,5 +215,5 @@ class SearchResult extends React.Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(SearchResult));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchResult));
 
