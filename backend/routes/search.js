@@ -1,7 +1,12 @@
+const moment = require('moment')
 const express = require('express');
 const router = express.Router();
 
 router.post('/', async (req, res, next) => {
+
+  
+  console.log('searchReceived')
+  console.log(req.body)
 
   let db = req.db;
 
@@ -9,10 +14,9 @@ router.post('/', async (req, res, next) => {
   let allRoom = [];
   let eachDayBookingArray = [];
 
-  let startDay = new Date(req.body.startDate);
-  let endDay = new Date(req.body.endDate);
+  let startDay = moment(new Date(req.body.startDate)).format("YYYY-MM-DD");
+  let endDay = moment(new Date(req.body.endDate)).format("YYYY-MM-DD");
 
-  console.log('searchReceived')
 
   //get all room
   await db.select("	additionalPrice	"	,
@@ -57,21 +61,28 @@ router.post('/', async (req, res, next) => {
     console.log('First allRoom: ',allRoom.length)
   })
 
+  console.log(startDay)
+  console.log(endDay)
+  console.log(startDay <= endDay)
+  console.log(moment(startDay).add(1, 'days'))
+
+
   //get days between searched start day and end day, pushed in an array 
-  while (startDay.getDate() <= endDay.getDate()) {
-    dayArray.push(new Date(startDay));
-    startDay.setDate(startDay.getDate() + 1)
+  while (moment(startDay).isSameOrBefore(endDay, 'day')) {
+    console.log('pushday')
+    dayArray.push(startDay);
+    startDay = moment(startDay).add(1, 'days').format("YYYY-MM-DD")
   }
 
   //get occupied room for each day
 let promise = new Promise((resolve,reject)=>{
  dayArray.map((day) => {
-    let formattedDay = day.toISOString().split('T')[0];
+   console.log(day)
     let query2 = db.select("*").from("roomType")
     .innerJoin('booking', "booking.roomTypeID",'roomType.id')
     .where(function () {
-           this.where("booking.endDate", '>=', formattedDay)
-             .andWhere("booking.startDate", '<=', formattedDay)
+           this.where("booking.endDate", '>=', day)
+             .andWhere("booking.startDate", '<=', day)
         })
       .then((rows) => {
       rows.map((row) => {

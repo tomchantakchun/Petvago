@@ -4,6 +4,10 @@ import axios from 'axios'
 import { withRouter } from 'react-router-dom';
 import Facebook from './Facebook';
 import Instagram from './Instagram';
+import { connect } from 'react-redux';
+import {login} from '../../store/actions';
+import './facebook.css'
+
 
 class Login extends React.Component {
     state = {
@@ -13,7 +17,9 @@ class Login extends React.Component {
         loginFailed: false,
         signupFailed: false,
         signupHotelFailed: false,
-        errorMessage: ''
+        errorMessage: '',
+        hotelClass:'login-not-chosen',
+        customerClass:'login-chosen'
     }
 
     handleSubmit = (e) => {
@@ -36,6 +42,7 @@ class Login extends React.Component {
                     console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
                     console.log(`Token: ${response.data.token}`);
                     localStorage.setItem('petvago-token', response.data.token);
+                    this.props.login(response.data.token)
                     this.props.history.push('/')
                 }
             })
@@ -67,6 +74,7 @@ class Login extends React.Component {
                     console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
                     console.log(`Token: ${response.data.token}`);
                     localStorage.setItem('petvago-token', response.data.token);
+                    this.props.login(response.data.token)
                     this.props.history.push('/')
                 }
             })
@@ -105,12 +113,34 @@ class Login extends React.Component {
         this.props.history.push('/')
     }
 
+    chooseCustomer =()=>{
+        this.setState({
+            hotelClass:'login-not-chosen',
+            customerClass:'login-chosen',
+            isHotel:false
+        })
+    }
+
+    chooseHotel=()=>{
+        this.setState({
+            hotelClass:'login-chosen',
+            customerClass:'login-not-chosen',
+            isHotel:true
+        })
+    }
+
     render() {
         return (
             <div className={classes.Login}>
                 <section>
                     <h1>Login</h1>
-                    <form>
+                    <div >
+                    <div style={{display:'flex'}}>
+                        <button className={this.state.customerClass} onClick={this.chooseCustomer}>Customer</button>
+                        <button className={this.state.hotelClass} onClick={this.chooseHotel}>Hotel</button>
+                    </div>
+                    <div className="login-form" style={{padding:'10px'}}>
+                    <form >
                         <h6>Name: </h6>
                         <input type='text' name='name' className={classes.TextBox} onChange={this.handleInputChange} value={this.state.name}></input>
                         <h6>Password: </h6>
@@ -119,16 +149,29 @@ class Login extends React.Component {
                         {this.state.signupFailed ? <h6 className={classes.loginFailed}>Signup failed</h6> : null}
                         {this.state.signupHotelFailed ? <h6 className={classes.loginFailed}>You cannot signup as hotel</h6> : null}
                         <h6>{this.state.errorMessage}</h6>
-                        <label><input type="checkbox" name="isHotel" checked={this.state.isHotel} onChange={this.handleInputChange} />Petvago Hotel Partner</label>
                         <input  type='submit' value='Submit' className={classes.Submit} onClick={this.handleSubmit}></input>
                     </form>
-                    <button className={classes.Signup} onClick={this.handleSignup}>Signup</button>
-                    <Facebook redirectToIndex={this.redirectToIndex} />
-                    <Instagram redirectToIndex={this.redirectToIndex} />
+                    {this.state.isHotel===false?<button className={classes.Signup} onClick={this.handleSignup}>Signup</button>:null}
+                    
+                    {this.state.isHotel===false?<Facebook redirectToIndex={this.redirectToIndex} />:null}
+                    {this.state.isHotel===false? <Instagram redirectToIndex={this.redirectToIndex} />:null}
+                    </div>
+                    </div>
                 </section>
             </div>
         )
     }
 }
 
-export default withRouter(Login);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (data) => { dispatch(login(data)) },
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+    }
+};
+
+export default connect( mapStateToProps, mapDispatchToProps)(withRouter(Login));
