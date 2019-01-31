@@ -77,17 +77,17 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       console.log('create photo')
       return knex('photo').insert([
-        {hotelID:1, icon:true, path:'./image/hotel1photo4.jpg'},
-        {hotelID:1, roomTypeID:'1',icon:true, path:'./image/hotel1photo2.jpg'},
-        {hotelID:1, roomTypeID:'1',icon:false, path:'./image/hotel1photo3.jpg'},
-        {hotelID:1, roomTypeID:'1',icon:false, path:'./image/hotel1photo4.jpg'},
-        {hotelID:1, roomTypeID:'2',icon:true, path:'./image/hotel1photo4.jpg'},
-        {hotelID:2, icon:true, path:'./image/hotel2photo1.jpg'},
-        {hotelID:3, icon:true, path:'./image/hotel3photo1.jpg'},
+        {hotelID:1, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fcocomomo-300x226.png?alt=media&token=cf9834fb-fd89-4dfe-a985-b5e48ed5a8a6'},
+        {hotelID:1, roomTypeID:'1',icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fdog-furnace.jpg?alt=media&token=8f465711-a9e3-46d2-b9fb-f70a9497a408'},
+        {hotelID:1, roomTypeID:'1',icon:false, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fhotel-icon.jpg?alt=media&token=d9ad6d60-6ae4-4917-bd13-f23ea097229a'},
+        {hotelID:1, roomTypeID:'1',icon:false, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fjet-palace.jpg?alt=media&token=e470030f-aec6-4dbd-aa82-e9ce6a89b536'},
+        {hotelID:1, roomTypeID:'2',icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fking-suite.jpg?alt=media&token=d2bd53b3-73d3-43c5-ae93-f2dbf2193f3f'},
+        {hotelID:2, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2FMason%20Hadley%20MA0177-L.jpg?alt=media&token=63410dfd-9ae4-406b-863b-373cd3db16ff'},
+        {hotelID:3, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-1.jpg?alt=media&token=2244dfca-5eb5-461c-8e6c-a4fc60139305'},
                 //new
-        {hotelID:4, icon:true, path:'./image/hotel4photo1.jpg'},
-        {hotelID:5, icon:true, path:'./image/hotel5photo1.jpg'},
-        {hotelID:6, icon:true, path:'./image/hotel6photo1.jpg'}
+        {hotelID:4, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-10.jpeg?alt=media&token=bb730a92-036a-4228-8678-c9bf8588a3b3'},
+        {hotelID:5, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-2.jpg?alt=media&token=e4c3df44-1e39-4dde-83fd-d005b354da12'},
+        {hotelID:6, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-3.jpg?alt=media&token=ec7c46db-49b1-4692-93a9-94583fe44c0c'},
       ]);
     }).then(function () {
       console.log('create service')
@@ -107,6 +107,7 @@ exports.seed = function(knex, Promise) {
       return knex('booking').insert([
         {userID:1, hotelID:1, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:1, hotelID:1, roomTypeID:2, expiryTime:'2018-01-07T08:36:00',startDate:'2018-2-7', endDate:'2018-2-8',duration:2,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
+        {userID:1, hotelID:1, roomTypeID:2, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-7', endDate:'2019-2-8',duration:2,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:1, hotelID:1, roomTypeID:3, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-7', endDate:'2019-2-12',duration:6,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Katy Chan',ownerPhone:91234567,petName:'Pooh',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:2, hotelID:2, roomTypeID:1, expiryTime:'2018-01-07T08:36:00',startDate:'2019-2-5', endDate:'2019-2-7',duration:3,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},
         {userID:2, hotelID:3, roomTypeID:1, expiryTime:'2018-01-25T08:36:00',startDate:'2019-1-17', endDate:'2019-1-25',duration:9,service:{Bath:1,['Obedience training']:2},totalPrice:1200,status:'confirmed',ownerName:'Peter Lam',ownerPhone:91234567,petName:'Blackie',petWeight:15,petType:'dog',vaccineRequirement:{vaccine:['DHPPiL','Rabies','Kennel Cough']}},

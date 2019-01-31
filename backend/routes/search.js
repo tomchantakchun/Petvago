@@ -61,12 +61,6 @@ router.post('/', async (req, res, next) => {
     console.log('First allRoom: ',allRoom.length)
   })
 
-  console.log(startDay)
-  console.log(endDay)
-  console.log(startDay <= endDay)
-  console.log(moment(startDay).add(1, 'days'))
-
-
   //get days between searched start day and end day, pushed in an array 
   while (moment(startDay).isSameOrBefore(endDay, 'day')) {
     console.log('pushday')

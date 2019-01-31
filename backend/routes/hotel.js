@@ -99,7 +99,7 @@ router.get('/:hotelID', function (req, res) {
           }
       */
   var db = req.db;
-  let query = db.select('h.*', 't.id as roomTypeID', 't.roomType', 't.price', 't.requirement', 't.description', 't.additionalPrice', 'p.id as photoID', 'p.path', 'p.icon').from("roomType as t").leftJoin("photo as p", "t.id", "p.roomTypeID").innerJoin('hotel as h', 'h.id', 't.hotelID').where('h.id', req.params.hotelID).orderBy('p.id', 'asc')
+  let query = db.select('h.*','h.description as hotelDescription', 't.id as roomTypeID', 't.roomType', 't.price', 't.requirement', 't.description', 't.additionalPrice', 'p.id as photoID', 'p.path', 'p.icon').from("roomType as t").leftJoin("photo as p", "t.id", "p.roomTypeID").innerJoin('hotel as h', 'h.id', 't.hotelID').where('h.id', req.params.hotelID).orderBy('p.id', 'asc')
   query.then((rows) => {
 
 
@@ -245,8 +245,14 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
         }
 
         if (index == 0) {
-          if (array[index + 1]) {
+          if (array[index + 1] && current.roomTypeID!==null) {
             array[index + 1].rooms = [room]
+          }else if(!array[index + 1]&& current.roomTypeID==null){
+            current.rooms=[];
+            return current
+          }else{
+            current.rooms=[room];
+            return current
           }
         } else if (index < array.length - 1 && index > 0) {
           array[index + 1].rooms = [...current.rooms, room]
