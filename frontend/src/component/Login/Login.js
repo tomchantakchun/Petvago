@@ -4,6 +4,9 @@ import axios from 'axios'
 import { withRouter } from 'react-router-dom';
 import Facebook from './Facebook';
 import Instagram from './Instagram';
+import { connect } from 'react-redux';
+import {login} from '../../store/actions';
+
 
 class Login extends React.Component {
     state = {
@@ -36,6 +39,7 @@ class Login extends React.Component {
                     console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
                     console.log(`Token: ${response.data.token}`);
                     localStorage.setItem('petvago-token', response.data.token);
+                    this.props.login(response.data.token)
                     this.props.history.push('/')
                 }
             })
@@ -67,6 +71,7 @@ class Login extends React.Component {
                     console.log(`Setting tokent to localstorage: ${'petvago-token'}`);
                     console.log(`Token: ${response.data.token}`);
                     localStorage.setItem('petvago-token', response.data.token);
+                    this.props.login(response.data.token)
                     this.props.history.push('/')
                 }
             })
@@ -131,4 +136,15 @@ class Login extends React.Component {
     }
 }
 
-export default withRouter(Login);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (data) => { dispatch(login(data)) },
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+    }
+};
+
+export default connect( mapStateToProps, mapDispatchToProps)(withRouter(Login));

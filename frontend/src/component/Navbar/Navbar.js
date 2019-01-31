@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import "./Navbar.css"
 
@@ -6,13 +7,23 @@ class Navigationbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            token:this.props.token
         }
     }
     componentDidMount() {
         this.isLoggedInNavbar();
-
     }
+
+    
+    componentWillUpdate=(nextProps, nextState) =>{
+        if (nextState.token !== this.state.token ) {
+            console.log('22222')
+        }
+        
+      }
+
     isLoggedInNavbar() {
+        
         if (!localStorage.getItem('petvago-token')) {
             return this.guestNavbar();
         } else {
@@ -48,10 +59,10 @@ class Navigationbar extends React.Component {
                                 <a href="/becomehost" className="nav-link m-2 menu-item nav-active">Become a host </a>
                             </li>
                             <li className="nav-item">
-                                <a href="/login" className="nav-link m-2 menu-item">login</a>
+                                <a href="/login" className="nav-link m-2 menu-item">Login</a>
                             </li>
                             <li className="nav-item">
-                                <a href="/signup" className="nav-link m-2 menu-item"> Sign up</a>
+                                <a href="/login" className="nav-link m-2 menu-item"> Sign up</a>
                             </li>
                         </ul>
                     </div>
@@ -87,7 +98,7 @@ class Navigationbar extends React.Component {
                                 <a href="/mybooking" className="nav-link m-2 menu-item">Booking</a>
                             </li>
                             <li className="nav-item" onClick={this.handleLogout}>
-                                <a href="/logout" className="nav-link m-2 menu-item">Logout</a>
+                                <a href="/" className="nav-link m-2 menu-item">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -107,4 +118,10 @@ class Navigationbar extends React.Component {
     }
 }
 
-export default Navigationbar;
+const mapStateToProps = state => {
+    return {
+        token:state.login.token
+    }
+};
+
+export default connect( mapStateToProps)(Navigationbar);

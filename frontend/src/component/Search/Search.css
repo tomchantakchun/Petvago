@@ -1,11 +1,24 @@
 .search {
-    width: 100%;
-    padding: 0 1.5em;
+    /* width: 100%; */
+    padding: 10px;
+    height:60px !important;
     box-sizing: border-box;
     bottom: 3.5em;
     display:flex;
     justify-content: center;
+
     flex-flow: row wrap;
+    background-color: rgb(255, 255, 255);
+    border-radius:15px;
+    box-shadow: 2px 2px 5px #ccc;
+ 
+}
+
+
+.search-inner{
+    border-radius:15px;
+    display:flex;
+    border:1px solid #ccc;
 }
 
 .search select {
@@ -13,9 +26,11 @@
     box-sizing: border-box;
     text-align: center;
     vertical-align: middle;
-    height: 100%;
-    border-top: 1px solid #eeeeee;
-    border-right: 1px solid #eeeeee;
+    height: 40px;
+    border:none;
+    /* -webkit-appearance: none; */
+    -webkit-border-radius: 0px;
+    margin-right:5px;
     background: #ffffff;
     padding: 10px 0;
     color: #585353;
@@ -31,15 +46,16 @@
     font-size: 1em;
     line-height: 1.5em;
     padding: 8px 16px;
-    border-radius: 4px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 
-    background: rgba(23,179,163,1);
-    color: #ffffff;
+    /* background: #50b5a9; */
+    /* color: #ffffff; */
     box-sizing: border-box;
 }
 
 .searchSubmit {
-    height: 100%;
+    height: 40px;
     cursor: pointer;
     border: none;
     position: relative;
@@ -47,8 +63,9 @@
     font-size: 1em;
     line-height: 1.5em;
     padding: 8px 16px;
-    border-radius: 4px;
-    background: rgba(23,179,163,1);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: #50b5a9;
     color: #ffffff;
     box-sizing: border-box;
 }

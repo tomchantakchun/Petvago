@@ -25,6 +25,15 @@ export const redirect_to_confirmation = (data) => {
     }
 }
 
+//login
+export const login = (data) => {
+    return {
+        type: "LOGIN",
+        payload: data
+    }
+  
+}
+
 // export const change_hotel_id = (data) =>{
 //     return 
 // }
