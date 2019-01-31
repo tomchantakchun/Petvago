@@ -1,24 +1,31 @@
+.search-outer h1{
+    margin-bottom:5vh;
+    margin-top:10vh;
+    text-align: center;
+    font-size:35px;
+    color:#000;
+    font-weight: bold;
+    color: #383434;
+
+}
+
 .search {
-    /* width: 100%; */
-    padding: 10px;
-    height:60px !important;
+    padding: 5px;
     box-sizing: border-box;
     bottom: 3.5em;
     display:flex;
     justify-content: center;
-
     flex-flow: row wrap;
-    background-color: rgb(255, 255, 255);
-    border-radius:15px;
-    box-shadow: 2px 2px 5px #ccc;
+    background-color: rgb(255, 255, 255,0.8);
+    border-radius:10px;
  
 }
 
 
 .search-inner{
-    border-radius:15px;
+    border-radius:10px;
     display:flex;
-    border:1px solid #ccc;
+    background: #fff
 }
 
 .search select {
@@ -28,7 +35,6 @@
     vertical-align: middle;
     height: 40px;
     border:none;
-    /* -webkit-appearance: none; */
     -webkit-border-radius: 0px;
     margin-right:5px;
     background: #ffffff;
@@ -38,6 +44,7 @@
 }
 
 .searchDate {
+    background: #fff;
     height: 100%;
     cursor: pointer;
     border: none;
@@ -45,27 +52,103 @@
     outline: 0;
     font-size: 1em;
     line-height: 1.5em;
-    padding: 8px 16px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-
-    /* background: #50b5a9; */
-    /* color: #ffffff; */
+    padding: 8px ;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    color: #585353;
     box-sizing: border-box;
+}
+
+.search-date-box{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border:3px solid #50b5a9;
+}
+
+.search-input-box{
+    display:flex;
+    align-items:center;
+    border-top:3px solid #50b5a9;
+    border-bottom:3px solid #50b5a9;
+    border-right:3px solid #50b5a9;
+}
+
+.search-input-button{
+    border: 3px solid #50b5a9;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #50b5a9;
 }
 
 .searchSubmit {
     height: 40px;
     cursor: pointer;
-    border: none;
     position: relative;
     outline: 0;
     font-size: 1em;
     line-height: 1.5em;
     padding: 8px 16px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     background: #50b5a9;
     color: #ffffff;
-    box-sizing: border-box;
+    border:none
+    /* box-sizing: border-box; */
 }
+
+.searchSubmit:hover{
+    background: #ffffff;
+    border-color:#fff;
+    color: #50b5a9;
+    transition:ease 0.2s
+}
+
+@media only screen and (max-width: 600px) {
+    .search-outer{
+        display:flex;
+        flex-direction: column;
+        align-items: center
+    }
+    .search-outer h1{
+        font-size:25px;
+        text-align:left;
+        padding-left:30px;
+        line-height:30px
+    }
+
+    .search {
+        flex-wrap:wrap;
+        width:70vw
+    }
+
+    .search-inner{
+        flex-wrap:wrap;
+        flex-direction:column;
+    }
+    .search-date-box{
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 5px;
+        border:3px solid #50b5a9;
+    }
+    .search-input-box{
+        border-bottom:3px solid #50b5a9;
+        border-top:0;
+        border-left:3px solid #50b5a9;
+        border-right:3px solid #50b5a9;
+    }
+    .search-input-button{
+        border: 3px solid #50b5a9;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        background-color: #50b5a9;
+        display:flex;
+        justify-content: center
+    }
+    .searchDate {
+       background: #fff
+    }
+    
+    
+  }

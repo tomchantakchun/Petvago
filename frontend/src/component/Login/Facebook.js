@@ -62,7 +62,8 @@ class Facebook extends React.Component {
                     autoLoad={false}
                     fields="name,email,picture"
                     onClick={this.facebookClicked}
-                    callback={this.responseFacebook} />
+                    callback={this.responseFacebook}
+                    cssClass='facebook-login btn' />
             )
         }
 

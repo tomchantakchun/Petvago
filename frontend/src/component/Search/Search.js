@@ -6,7 +6,7 @@ import * as actionTypes from '../../store/actions';
 import "./Search.css";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarkedAlt,faPaw } from '@fortawesome/free-solid-svg-icons'
+import { faMapMarkedAlt,faPaw, faCalendarAlt } from '@fortawesome/free-solid-svg-icons'
 
 
 //daterangepicker
@@ -16,6 +16,7 @@ import moment from 'moment'
 
 library.add(faMapMarkedAlt)
 library.add(faPaw)
+library.add(faCalendarAlt)
 
 const mapStateToProps = state => {
     return {
@@ -103,9 +104,14 @@ class Search extends React.Component {
         threeMonthLater = threeMonthLater.toISOString().split('T')[0];
                
         return (
+            <div className="search-outer">
+                <h1>Book a pet hotel in Hong Kong</h1>
             <div className="search">
+            
             <div className="search-inner">
                 <div className="search-date-box">
+                <FontAwesomeIcon icon="calendar-alt" style={{color:'#50b5a9', marginLeft:'10px'}}/>
+
                 <DateRangePicker
                     minDate={moment(new Date(today))}
                     maxDate={moment(new Date(threeMonthLater))}
@@ -113,13 +119,16 @@ class Search extends React.Component {
                     endDate={moment(new Date(this.props.search.endDate || today))}
                     onApply={this.dateChange}
                     props={this.props}>
-                    <button className="searchDate">DATE {this.props.search.startDate || today} {this.props.search.endDate || today} </button>
+                    <button className="searchDate">Date {moment(this.props.search.startDate).format('l') || 'Check-in'} - {moment(this.props.search.endDate).format('l')|| today} </button>
                 </DateRangePicker>
                 </div>
-                <FontAwesomeIcon icon="map-marker-alt" style={{color:'#50b5a9',margin:'10px 0 10px 10px'}}/>
-                    {serachDistricts}
+                <div className="search-input-box">
+                    <FontAwesomeIcon icon="map-marker-alt" style={{color:'#50b5a9', marginLeft:'10px'}}/>
+                        {serachDistricts}
+                </div>
 
-                <FontAwesomeIcon icon="paw" style={{color:'#50b5a9',margin:'10px 0 10px 10px'}}/>
+                <div className="search-input-box">
+                    <FontAwesomeIcon icon="paw" style={{color:'#50b5a9',marginLeft:'10px'}}/>
 
                     <select name="petType" onChange={this.petTypeChange} required>
                         <option value="all" disabled selected hidden>Type of Pet</option>
@@ -127,10 +136,13 @@ class Search extends React.Component {
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>
                     </select>
-
+                </div>
+                <div className="search-input-button">
                     <button className="searchSubmit" type="submit" value="Submit" onClick={this.handleSearch}>Search</button>                    
                     </div>
+                </div>
             </div>
+           </div>
         )
     }
 }
