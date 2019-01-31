@@ -1,11 +1,54 @@
 #HostManagement {
     font-family: 'Sarabun';
+    height: 100%;
+    min-height: 86vh;
+    width: 100%;
+    background-color: #aaaaaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#HostManagement .bg-image {
+    background-image: url("https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Edit-page-background(blur).jpg?alt=media&token=511c2b54-0ab9-456b-a137-e04136ab5b29");
+    height: 100%; 
+    min-height: 86vh;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+}
+
+#HostManagement section {
+    width: 100%;
+    max-width: 800px;
+    margin: 50px 50px;
+    padding: 30px;
+    background-color:#eeeeee;
+    color: #333333;
+    font-family: 'Sarabun';
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+    border-radius: 5px;
+    z-index: 50;
 }
 
 #HostManagement h2 {
     padding: 5px;
     margin: 5px;
     font-size: 36px;
+    border-radius: 5px;
+    border-bottom: 2px solid #111111;
+}
+
+#HostManagement .h2Title {
+    display: inline-block
+}
+
+#HostManagement .edit-detail {
+    float: right
 }
 
 #HostManagement div.edit-hotel {
@@ -32,6 +75,7 @@
 #HostManagement canvas {
     width: 100%;
     height: 50vh;
+    max-width: 800px;
 }
 
 #HostManagement tr {
