@@ -16,6 +16,13 @@
     height:6vh;
 }
 
+
+@media only screen and (max-width: 600px) {
+.responsive-nav{
+    width:100%
+}
+}
+
 .navbar-brand{
     background-image: url("./logo-big.png");
     background-size: 100% 100%;

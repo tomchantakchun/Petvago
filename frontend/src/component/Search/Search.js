@@ -13,6 +13,7 @@ import { faMapMarkedAlt,faPaw, faCalendarAlt } from '@fortawesome/free-solid-svg
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import moment from 'moment'
+
 library.add(faMapMarkedAlt)
 library.add(faPaw)
 library.add(faCalendarAlt)
@@ -147,4 +148,4 @@ class Search extends React.Component {
 }
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Search));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Search))

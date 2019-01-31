@@ -44,7 +44,7 @@ class Navigationbar extends React.Component {
         return (
             <div className="navbar-container">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
-                    <div className="d-flex w-100">
+                    <div className="d-flex flex-grow-1 responsive-nav">
                         {/* <span className="w-100 d-lg-none d-block"></span> */}
                         <a className="navbar-brand d-none d-lg-inline-block" href="/"> </a>
                         <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"> </a>
@@ -82,7 +82,7 @@ class Navigationbar extends React.Component {
         return (
             <div className="navbar-container">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
-                    <div className="d-flex w-100">
+                    <div className="d-flex flex-grow-1 responsive-nav">
                         {/* <span className="w-100 d-lg-none d-block"></span> */}
                         <a className="navbar-brand d-none d-lg-inline-block" href="/"> </a>
                         <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"> </a>
@@ -118,7 +118,7 @@ class Navigationbar extends React.Component {
         return (
             <div className="navbar-container">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-info fixed-top">
-                    <div className="d-flex w-100">
+                    <div className="d-flex flex-grow-1 responsive-nav">
                         {/* <span className="w-100 d-lg-none d-block"></span> */}
                         <a className="navbar-brand d-none d-lg-inline-block" href="/"> </a>
                         <a className="navbar-brand-two mx-auto d-lg-none d-inline-block" href="/"> </a>
