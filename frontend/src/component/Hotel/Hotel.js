@@ -62,7 +62,7 @@ class Hotel extends Component {
             endDate:"DD-MM-YYYY",
         }
 
-        if(this.state.hotelID == 0){
+        if(this.state.hotelID === 0){
             this.props.history.push('/')
         }
 
@@ -142,16 +142,18 @@ class Hotel extends Component {
                 
             const _gallaryArr = _hotelInfo.hotelPhoto.map((e) => e.path);
             const _fillterGallaryArr = _gallaryArr.filter(e => !!e);
-            {/* once photo uploaded to firebase, have to remove _temp array  */}
-            //     console.log(_fillterGallaryArr);
-            // const _tempGallaryArr = _fillterGallaryArr.map(e => '.'.concat(e));
-            //     console.log(_tempGallaryArr);
 
 
-            for (let i= 0; i<_hotelInfo.roomType.length; i++){
-                for (let j=0; j<_hotelInfo.roomType[i].photo.length;i++){
-                    if(_hotelInfo.roomType[i].photo[j].icon === true){
-                        _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo[j].path
+            for (let i = 0; i < _hotelInfo.roomType.length; i++) {
+                if (typeof (_hotelInfo.roomType[i].photo.length) === "undefined") {
+                    if (_hotelInfo.roomType[i].photo.icon === true) {
+                        _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo.path
+                    }
+                } else {
+                    for (let j = 0; j < _hotelInfo.roomType[i].photo.length; j++) {
+                        if (_hotelInfo.roomType[i].photo[j].icon === true) {
+                            _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo[j].path
+                        }
                     }
                 }
             }   

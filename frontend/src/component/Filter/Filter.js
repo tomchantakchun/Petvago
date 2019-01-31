@@ -126,7 +126,7 @@ class Filter extends React.Component {
                     <button className="filterDate">Date : {moment(this.props.SearchResult.startDate).format('l')}- {moment(this.props.SearchResult.endDate).format('l')} </button>
                 </DateRangePicker>
                     <div className='filterDistrict'>
-                    <select name="district" onChange={this.districtChange} required >
+                    <select name="district" defaultValue={this.props.SearchResult.district || "all"} onChange={this.districtChange} required >
                         <option value="all" disabled selected hidden >District</option>
                         <option value="all" >- All district -</option>
                         {this.districts.map((district, index) => {
@@ -135,8 +135,8 @@ class Filter extends React.Component {
                     </select>
                     </div>
                     <div className='filterPet'>
-                    <select name="petType" onChange={this.petTypeChange} required>
-                        <option value="all" disabled selected hidden>Type of Pet</option>
+                    <select name="petType" defaultValue={this.props.SearchResult.petType || "all"} onChange={this.petTypeChange} required>
+                        <option value="all" disabled hidden>Type of Pet</option>
                         <option value='all'>- All pet type -</option>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>

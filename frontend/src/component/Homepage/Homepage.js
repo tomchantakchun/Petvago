@@ -13,9 +13,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 library.add(faQuoteRight);
 
-const mapStateToProps = state => {
-};
-
 const mapDispatchToProps = dispatch => {
     return {
         changeHotelId:(hotelId) =>dispatch({type:actionTypes.CHANGEHOTELID, hotelId :hotelId})
@@ -88,4 +85,4 @@ class Homepage extends React.Component {
 }
 
 
-export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(Homepage));
+export default  withRouter(connect(null,mapDispatchToProps)(Homepage));
