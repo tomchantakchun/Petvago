@@ -1,7 +1,7 @@
 import React from 'react';
 import './HostManagement.css'
 import axios from 'axios';
-import { Bar, Chart } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import OrderModal from './OrderModal'
 
 //daterangepicker

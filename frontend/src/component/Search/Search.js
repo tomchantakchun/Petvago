@@ -87,8 +87,8 @@ class Search extends React.Component {
     render() {
         const serachDistricts = (
             
-            <select name="district" onChange={this.districtChange} required>
-                <option value="all" disabled selected hidden>District</option>
+            <select name="district" defaultValue={this.props.search.district || "all"} onChange={this.districtChange} required>
+                <option value="all" disabled hidden>District</option>
                 <option value="all">All District</option>
                 {this.districts.map((district, index) => {
                     return <option value={district} key={index}>{district}</option>
@@ -130,8 +130,8 @@ class Search extends React.Component {
                 <div className="search-input-box">
                     <FontAwesomeIcon icon="paw" style={{color:'#50b5a9',marginLeft:'10px',marginRight:'5px'}}/>
 
-                    <select name="petType" onChange={this.petTypeChange} required>
-                        <option value="all" disabled selected hidden>Type of Pet</option>
+                    <select name="petType" defaultValue={this.props.search.petType || "all"} onChange={this.petTypeChange} required>
+                        <option value="all" disabled hidden>Type of Pet</option>
                         <option value="all">All PetType</option>
                         <option value='dog'>Dog</option>
                         <option value='cat'>Cat</option>

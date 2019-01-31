@@ -82,7 +82,12 @@ exports.seed = function(knex, Promise) {
         {hotelID:1, roomTypeID:'1',icon:false, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fhotel-icon.jpg?alt=media&token=d9ad6d60-6ae4-4917-bd13-f23ea097229a'},
         {hotelID:1, roomTypeID:'1',icon:false, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fjet-palace.jpg?alt=media&token=e470030f-aec6-4dbd-aa82-e9ce6a89b536'},
         {hotelID:1, roomTypeID:'2',icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fking-suite.jpg?alt=media&token=d2bd53b3-73d3-43c5-ae93-f2dbf2193f3f'},
+        {hotelID:1, roomTypeID:'3',icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-4.jpg?alt=media&token=bf5f229e-ec4c-45e5-a8e3-5e5021570848'},
         {hotelID:2, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2FMason%20Hadley%20MA0177-L.jpg?alt=media&token=63410dfd-9ae4-406b-863b-373cd3db16ff'},
+        {hotelID:2, roomTypeID:'4', icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2FMason%20Hadley%20MA0177-L.jpg?alt=media&token=63410dfd-9ae4-406b-863b-373cd3db16ff'},
+        {hotelID:2, roomTypeID:'4', icon:false, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-7.jpeg?alt=media&token=3de5bdbe-1d99-439f-b249-bd5cb5190b1b'},
+        {hotelID:3, roomTypeID:'5', icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-6.jpeg?alt=media&token=48f3e0ad-6300-4fba-8cd1-1b364f6f9a46'},
+        {hotelID:3, roomTypeID:'6', icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-8.jpeg?alt=media&token=3227be84-d251-4778-ae9a-bc29f9274000'},
         {hotelID:3, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-1.jpg?alt=media&token=2244dfca-5eb5-461c-8e6c-a4fc60139305'},
                 //new
         {hotelID:4, icon:true, path:'https://firebasestorage.googleapis.com/v0/b/petvago-6b2c9.appspot.com/o/Sample%2Fpet-hotel-sample-10.jpeg?alt=media&token=bb730a92-036a-4228-8678-c9bf8588a3b3'},
