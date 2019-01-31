@@ -146,12 +146,20 @@ class Hotel extends Component {
             //     console.log(_fillterGallaryArr);
             // const _tempGallaryArr = _fillterGallaryArr.map(e => '.'.concat(e));
             //     console.log(_tempGallaryArr);
-
-
-            for (let i= 0; i<_hotelInfo.roomType.length; i++){
-                for (let j=0; j<_hotelInfo.roomType[i].photo.length;i++){
-                    if(_hotelInfo.roomType[i].photo[j].icon === true){
-                        _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo[j].path
+              
+                console.log(_hotelInfo.roomType[0].photo);
+                console.log(typeof(_hotelInfo.roomType[0].photo));
+                console.log(typeof(_hotelInfo.roomType[0].photo) === typeof({}));
+            for (let i = 0; i < _hotelInfo.roomType.length; i++) {
+                if (typeof (_hotelInfo.roomType[i].photo.length) === "undefined") {
+                    if (_hotelInfo.roomType[i].photo.icon === true) {
+                        _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo.path
+                    }
+                } else {
+                    for (let j = 0; j < _hotelInfo.roomType[i].photo.length; j++) {
+                        if (_hotelInfo.roomType[i].photo[j].icon === true) {
+                            _hotelInfo.roomType[i].icon = _hotelInfo.roomType[i].photo[j].path
+                        }
                     }
                 }
             }   
