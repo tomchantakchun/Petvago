@@ -53,7 +53,7 @@ class Booking extends Component {
     componentDidMount(){
 
         if (!this.state.bookingID) {
-            this.props.history.push('/home')
+            this.props.history.push('/')
         }
         
         //calculate duration

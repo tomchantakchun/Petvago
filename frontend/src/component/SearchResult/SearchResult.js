@@ -17,12 +17,32 @@ const mapStateToProps = state => {
     }
 };
 
+<<<<<<< HEAD
+=======
+const mapDispatchToProps = dispatch =>{
+    return {
+        changeHotelId:(hotelId) =>dispatch({type:actionTypes.CHANGEHOTELID, hotelId :hotelId})
+    }
+}
+
+>>>>>>> ef219ea01bae5347f5894dc8046eaeda4a9aff59
 class SearchResult extends React.Component {
-   
+    
+    onClickHotelInfo (e) {
+        console.log(Number(e.target.parentElement.id.replace('hotel-result-id-','')));
+        const _hotelId = Number(e.target.parentElement.id.replace('hotel-result-id-',''));
+        this.props.changeHotelId(_hotelId);
+        this.props.history.push('./hotel/');
+    }
+
     render() {
 
         if (!this.props.SearchAuthenticate){
+<<<<<<< HEAD
             this.props.history.push('./')
+=======
+            this.props.history.push('/')
+>>>>>>> ef219ea01bae5347f5894dc8046eaeda4a9aff59
         }
 
     
@@ -143,8 +163,8 @@ class SearchResult extends React.Component {
         //create list item with unique hotel list and map function
         const listItems = (
             uniqueArray.map((e) => {
-                return <div id={e.hotelID.toString()} key={e.hotelID.toString()} className="hotel-info-2"  >
-                    <img className="hotel-icon-2" src={e.photo} alt="NA" />
+                return <div id={`hotel-result-id-${e.hotelID.toString()}`} key={e.hotelID.toString()} className="hotel-info-2"  >
+                    <img className="hotel-icon-2" src={e.photo} onClick={(e)=>{this.onClickHotelInfo(e)}} alt="NA" />
                     <div className="hotel-detail-2">
                         <div className="hotel-row-2"> 
                             <div className="hotel-name-2">{e.name}</div>
@@ -158,7 +178,9 @@ class SearchResult extends React.Component {
                     </div>
                 </div>
             })
-        )
+        );
+
+        
         
             
         return (

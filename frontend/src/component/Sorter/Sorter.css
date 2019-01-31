@@ -1,10 +1,31 @@
 .sort{
     display: flex;
-    flex-wrap:wrap;
-    justify-content: flex-start;
-    width: 40%%;
+    
     height: 100%;
-    padding-left: 2vh;
-    border: #FB8F3D;
     align-content: right;
+}
+
+.sort-button{
+    font-family: 'Sarabun';
+    width:110px;
+    margin-right:10px;
+    height:48px
+}
+
+.sort-button-grey{
+    font-family: 'Sarabun';
+    border: 2px #50b5a9 solid;
+    background-color:white !important;
+    color:#50b5a9 !important
+    
+}
+
+@media only screen and (max-width: 500px) {
+    .sort-button{
+        font-family: 'Sarabun';
+        width:90px;
+        margin-right:5px;
+        height:40px;
+        font-size:15px
+    }
 }
