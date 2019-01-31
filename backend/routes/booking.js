@@ -291,6 +291,7 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
             await db.select('startDate','endDate','status')
               .from('booking')
               .where('roomTypeID',rows[i].id)
+              .where('hotelID',req.user.id)
               .then(async (rows2) => {
   
                 let processedDateArr = dateRangeArr.map((eDate) => {

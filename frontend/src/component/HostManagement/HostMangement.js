@@ -21,6 +21,12 @@ class HostManagement extends React.Component {
         return [dateObj.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('-')
     }
 
+    convertYMDFromDM(DMObj) {
+        let mm = DMObj.split('/')[1]
+        let dd = DMObj.split('/')[0]
+        return [new Date().getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('-')
+    }
+
     findLastDOW(dateObj) {
         while (dateObj.getDay() < 6) {
             dateObj = this.addDay(dateObj)
@@ -53,7 +59,9 @@ class HostManagement extends React.Component {
             bookingRoomType: '',
             bookingReference: '',
             isUpdateSuccessful: false,
-            orderBookingContent: '',
+            orderBookingContent: [],
+            orderRoomType: '',
+            orderRoomDate: '',
         }
         this.rooms = null;
         this.options = null;
@@ -175,9 +183,52 @@ class HostManagement extends React.Component {
 
     handleChartClick = (elems) => {
         if (elems[0]._chart !== undefined) {
-            console.log(`Room type ID: `, elems[0]._chart.titleBlock.options.text.replace('roomType-',''));
-            console.log(`Date: `, elems[0]._model.label);
+            axios.put(`http://localhost:8080/api/booking/hotel-by-day`,
+                {
+                    roomTypeID: elems[0]._chart.titleBlock.options.text.replace('roomType-',''),
+                    date: this.convertYMDFromDM(elems[0]._model.label),
+                }, 
+                { headers: { Authorization: `Bearer ${this.jwt}` } })
+                .then((res) => {
+                    let textOrderRoomType = this.state.booking.find(e =>  {
+                        return e.roomTypeID.toString() === elems[0]._chart.titleBlock.options.text.replace('roomType-','')
+                    }).roomType
+                    if (textOrderRoomType === undefined) {
+                        textOrderRoomType = '';
+                    }
+                    let newData = res.data.map((e) => {
+                        return {
+                            ...e,
+                            display: 'none',
+                        }
+                    })
+                    this.setState({
+                        orderBookingContent: newData,
+                        orderRoomDate: elems[0]._model.label,
+                        orderRoomType: textOrderRoomType,
+                    })
+                }).catch((err) => {
+                    console.log(`error: `,err);
+                })
         }
+    }
+
+    openOrder = (e) => {
+        let targetID = e.currentTarget.parentElement.parentElement.parentElement.id.replace('Order-','');
+        let newOrderBookingContent = this.state.orderBookingContent;
+        let newBooking = newOrderBookingContent.find((e) => {
+            return e.id.toString() === targetID;
+        });
+        let newBookingIndex = newOrderBookingContent.findIndex((e) => {
+            return e.id.toString() === targetID;
+        })
+        if (newBooking.display === 'none') {
+            newBooking.display = '';
+        } else {
+            newBooking.display = 'none';
+        }
+        newOrderBookingContent[newBookingIndex] = newBooking
+        this.setState({ orderBookingContent: newOrderBookingContent})
     }
 
     render() {
@@ -382,7 +433,11 @@ class HostManagement extends React.Component {
 
                 <OrderModal
                     // editRoomTypeID={this.state.editRoomTypeID}
-                    orderBookingContent={this.state.orderBookingContent}></OrderModal>
+                    orderBookingContent={this.state.orderBookingContent}
+                    orderRoomDate={this.state.orderRoomDate}
+                    orderRoomType={this.state.orderRoomType}
+                    openOrder={this.openOrder}
+                    ></OrderModal>
             </div>
         )
     }

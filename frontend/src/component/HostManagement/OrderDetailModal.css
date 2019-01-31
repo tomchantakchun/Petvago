@@ -1,21 +1,25 @@
-#OrderModal {
+#OrderDetailModal {
     font-family: 'Sarabun'
 }
 
-#OrderModal .modal-header {
+#OrderDetailModal .modal-header {
     flex-flow: column;
     font-size: 20px;
 }
 
-#OrderModal .close {
+#OrderDetailModal .close {
     position: absolute;
     right: 15px;
 }
 
-#OrderModal h6 {
+#OrderDetailModal h6 {
     margin-left: 20px;
 }
 
-#OrderModal svg {
+#OrderDetailModal svg {
     cursor: pointer;
+}
+
+#OrderDetailModal .detail {
+    display: none;
 }
