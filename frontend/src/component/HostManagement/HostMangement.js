@@ -21,6 +21,12 @@ class HostManagement extends React.Component {
         return [dateObj.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('-')
     }
 
+    convertYMDFromDM(DMObj) {
+        let mm = DMObj.split('/')[1]
+        let dd = DMObj.split('/')[0]
+        return [new Date().getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('-')
+    }
+
     findLastDOW(dateObj) {
         while (dateObj.getDay() < 6) {
             dateObj = this.addDay(dateObj)
@@ -53,7 +59,9 @@ class HostManagement extends React.Component {
             bookingRoomType: '',
             bookingReference: '',
             isUpdateSuccessful: false,
-            orderBookingContent: '',
+            orderBookingContent: [],
+            orderRoomType: '',
+            orderRoomDate: '',
         }
         this.rooms = null;
         this.options = null;
@@ -175,9 +183,52 @@ class HostManagement extends React.Component {
 
     handleChartClick = (elems) => {
         if (elems[0]._chart !== undefined) {
-            console.log(`Room type ID: `, elems[0]._chart.titleBlock.options.text.replace('roomType-',''));
-            console.log(`Date: `, elems[0]._model.label);
+            axios.put(`http://localhost:8080/api/booking/hotel-by-day`,
+                {
+                    roomTypeID: elems[0]._chart.titleBlock.options.text.replace('roomType-',''),
+                    date: this.convertYMDFromDM(elems[0]._model.label),
+                }, 
+                { headers: { Authorization: `Bearer ${this.jwt}` } })
+                .then((res) => {
+                    let textOrderRoomType = this.state.booking.find(e =>  {
+                        return e.roomTypeID.toString() === elems[0]._chart.titleBlock.options.text.replace('roomType-','')
+                    }).roomType
+                    if (textOrderRoomType === undefined) {
+                        textOrderRoomType = '';
+                    }
+                    let newData = res.data.map((e) => {
+                        return {
+                            ...e,
+                            display: 'none',
+                        }
+                    })
+                    this.setState({
+                        orderBookingContent: newData,
+                        orderRoomDate: elems[0]._model.label,
+                        orderRoomType: textOrderRoomType,
+                    })
+                }).catch((err) => {
+                    console.log(`error: `,err);
+                })
         }
+    }
+
+    openOrder = (e) => {
+        let targetID = e.currentTarget.parentElement.parentElement.parentElement.id.replace('Order-','');
+        let newOrderBookingContent = this.state.orderBookingContent;
+        let newBooking = newOrderBookingContent.find((e) => {
+            return e.id.toString() === targetID;
+        });
+        let newBookingIndex = newOrderBookingContent.findIndex((e) => {
+            return e.id.toString() === targetID;
+        })
+        if (newBooking.display === 'none') {
+            newBooking.display = '';
+        } else {
+            newBooking.display = 'none';
+        }
+        newOrderBookingContent[newBookingIndex] = newBooking
+        this.setState({ orderBookingContent: newOrderBookingContent})
     }
 
     render() {
@@ -286,103 +337,107 @@ class HostManagement extends React.Component {
 
         return (
             <div id='HostManagement'>
-                <h2>Hotel Name: <span className='hotel-name'>{this.state.hotelName}</span></h2>
-                <div className='edit-hotel'>
-                    <h2>Edit Hotel Information</h2>
-                    <button type="button" className="btn btn-outline-secondary" onClick={this.handleEditDetail}>Edit</button>
-                </div>
-                <h2>Booking Management:</h2>
-                <div className='booking-management'>
-                    <DateRangePicker
-                        singleDatePicker={true}
-                        minDate={moment(new Date(this.state.minDate))}
-                        startDate={moment(new Date(this.state.startDOW))}
-                        endDate={moment(new Date(this.state.endDate))}
-                        onApply={this.handleDateChange}
-                    >
-                        <button className="date-picker btn btn-lg btn-outline-secondary">From {this.state.startDOW} to {this.state.endDate} </button>
-                    </DateRangePicker>
-                    <table className='table table-hover table-bordered'>
-                        <thead className='thead-dark'>
-                            <tr>
-                                <th className=''></th>
-                                <th className='th-dow'>{this.convertDM(new Date(this.state.startDOW))}</th>
-                                <th className='th-dow'>
-                                    {this.convertDM(this.addDay(new Date(this.state.startDOW)))}
-                                </th>
-                                <th className='th-dow'>
-                                    {this.convertDM(this.addDay(new Date(this.state.startDOW), 2))}
-                                </th>
-                                <th className='th-dow'>
-                                    {this.convertDM(this.addDay(new Date(this.state.startDOW), 3))}
-                                </th>
-                                <th className='th-dow'>
-                                    {this.convertDM(this.addDay(new Date(this.state.startDOW), 4))}
-                                </th>
-                                <th className='th-dow'>
-                                    {this.convertDM(this.addDay(new Date(this.state.startDOW), 5))}
-                                </th>
-                                <th className='th-dow'>
-                                    {this.convertDM(this.addDay(new Date(this.state.startDOW), 6))}
-                                </th>
-                            </tr>
-                            <tr>
-                                <th className=''></th>
-                                <th className='th-dow'>Sun</th>
-                                <th className='th-dow'>Mon</th>
-                                <th className='th-dow'>Tue</th>
-                                <th className='th-dow'>Wed</th>
-                                <th className='th-dow'>Thu</th>
-                                <th className='th-dow'>Fri</th>
-                                <th className='th-dow'>Sat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.rooms}
-                        </tbody>
-                    </table>
-                </div>
-                <div id='OfflineBooking'>
-                    <h2>Offline Booking:</h2>
-                    {this.updateSuccess}
-                    <form onSubmit={this.handleAccidentalSubmit}>
-                        <table className="table">
-                            <tr className='table-light'>
-                                <td><label>Date: </label></td>
-                                <td><DateRangePicker
-                                    minDate={moment(new Date(this.state.minDate))}
-                                    startDate={moment(new Date(this.state.bookingStartDate))}
-                                    endDate={moment(new Date(this.state.bookingEndDate))}
-                                    onApply={this.handleBookingDateChange}
-                                >
-                                    <button className="date-picker btn btn-info">From {this.state.bookingStartDate} to {this.state.bookingEndDate} </button>
-                                </DateRangePicker></td>
-                            </tr>
-                            <tr className='table-light'>
-                                <td><label>Room Type: </label></td>
-                                <td><div>
-                                    <select className="form-control" id="sel1" onChange={this.handleRoomType}>
-                                        {this.options}
-                                    </select>
-                                </div></td>
-                            </tr>
-                            <tr className='table-light'>
-                                <td><label>Reference: </label></td>
-                                <td><textarea type='text' name='bookingReference' value={this.state.bookingReference} onChange={this.handleInputChange} className='inputField'></textarea></td>
-                            </tr>
+                <div className='bg-image'></div>
+                <section>
+                    <h2 className='h2Title'>Hotel Name: <span className='hotel-name'>{this.state.hotelName}</span></h2>
+                    <button type="button" className="btn btn-outline-secondary edit-detail" onClick={this.handleEditDetail}>Edit Detail</button>
+                    <div className='booking-management'>
+                        <DateRangePicker
+                            singleDatePicker={true}
+                            minDate={moment(new Date(this.state.minDate))}
+                            startDate={moment(new Date(this.state.startDOW))}
+                            endDate={moment(new Date(this.state.endDate))}
+                            onApply={this.handleDateChange}
+                        >
+                            <button className="date-picker btn btn-lg btn-outline-secondary">From {this.state.startDOW} to {this.state.endDate} </button>
+                        </DateRangePicker>
+                        <table className='table table-hover table-bordered'>
+                            <thead className='thead-dark'>
+                                <tr>
+                                    <th className=''></th>
+                                    <th className='th-dow'>{this.convertDM(new Date(this.state.startDOW))}</th>
+                                    <th className='th-dow'>
+                                        {this.convertDM(this.addDay(new Date(this.state.startDOW)))}
+                                    </th>
+                                    <th className='th-dow'>
+                                        {this.convertDM(this.addDay(new Date(this.state.startDOW), 2))}
+                                    </th>
+                                    <th className='th-dow'>
+                                        {this.convertDM(this.addDay(new Date(this.state.startDOW), 3))}
+                                    </th>
+                                    <th className='th-dow'>
+                                        {this.convertDM(this.addDay(new Date(this.state.startDOW), 4))}
+                                    </th>
+                                    <th className='th-dow'>
+                                        {this.convertDM(this.addDay(new Date(this.state.startDOW), 5))}
+                                    </th>
+                                    <th className='th-dow'>
+                                        {this.convertDM(this.addDay(new Date(this.state.startDOW), 6))}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th className=''></th>
+                                    <th className='th-dow'>Sun</th>
+                                    <th className='th-dow'>Mon</th>
+                                    <th className='th-dow'>Tue</th>
+                                    <th className='th-dow'>Wed</th>
+                                    <th className='th-dow'>Thu</th>
+                                    <th className='th-dow'>Fri</th>
+                                    <th className='th-dow'>Sat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.rooms}
+                            </tbody>
                         </table>
+                    </div>
+                    <div id='OfflineBooking'>
+                        <h2>Offline Booking:</h2>
+                        {this.updateSuccess}
+                        <form onSubmit={this.handleAccidentalSubmit}>
+                            <table className="table">
+                                <tr className='table-light'>
+                                    <td><label>Date: </label></td>
+                                    <td><DateRangePicker
+                                        minDate={moment(new Date(this.state.minDate))}
+                                        startDate={moment(new Date(this.state.bookingStartDate))}
+                                        endDate={moment(new Date(this.state.bookingEndDate))}
+                                        onApply={this.handleBookingDateChange}
+                                    >
+                                        <button className="date-picker btn btn-info">From {this.state.bookingStartDate} to {this.state.bookingEndDate} </button>
+                                    </DateRangePicker></td>
+                                </tr>
+                                <tr className='table-light'>
+                                    <td><label>Room Type: </label></td>
+                                    <td><div>
+                                        <select className="form-control" id="sel1" onChange={this.handleRoomType}>
+                                            {this.options}
+                                        </select>
+                                    </div></td>
+                                </tr>
+                                <tr className='table-light'>
+                                    <td><label>Reference: </label></td>
+                                    <td><textarea type='text' name='bookingReference' value={this.state.bookingReference} onChange={this.handleInputChange} className='inputField'></textarea></td>
+                                </tr>
+                            </table>
 
-                        <div class='form-footer'>
-                            <input type='submit' value='Submit' className='btn btn-success btn-lg px-5' onClick={this.handleSubmit}></input>
-                            <button onClick={this.handleReset} className='btn btn-lg px-5'>Reset</button>
-                        </div>
+                            <div class='form-footer'>
+                                <input type='submit' value='Submit' className='btn btn-success btn-lg px-5' onClick={this.handleSubmit}></input>
+                                <button onClick={this.handleReset} className='btn btn-lg px-5'>Reset</button>
+                            </div>
 
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                </section>
+                
 
                 <OrderModal
                     // editRoomTypeID={this.state.editRoomTypeID}
-                    orderBookingContent={this.state.orderBookingContent}></OrderModal>
+                    orderBookingContent={this.state.orderBookingContent}
+                    orderRoomDate={this.state.orderRoomDate}
+                    orderRoomType={this.state.orderRoomType}
+                    openOrder={this.openOrder}
+                    ></OrderModal>
             </div>
         )
     }

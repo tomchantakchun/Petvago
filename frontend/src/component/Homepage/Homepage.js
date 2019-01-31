@@ -70,10 +70,11 @@ class Homepage extends React.Component {
                 <div className="background" >
                  <Search history={this.redirectToSearchResult}/>
                 </div>
-                <div className="split text-left">Recommended Hotel:</div>
-                <div className="hotel-container">
-                    
-                    {this.state.hotelListItems}
+                <div className='hotel-container-container'>
+                    <div className="split text-left">Recommended Hotel:</div>
+                    <div className="hotel-container">
+                        {this.state.hotelListItems}
+                    </div>
                 </div>
                 
                 <div className="home-testamonial">

@@ -276,7 +276,6 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
       dateRangeArr.push(new Date(intDate));
       intDate = new Date(intDate.setTime( intDate.getTime() + 86400000 ))
     }
-    console.log(`dateRangeArr: `, dateRangeArr);
 
     let db=req.db;
     let promiseArr = [];
@@ -284,13 +283,12 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
       .from('roomType')
       .where('hotelID',req.user.id)
       .then((rows) => {
-        console.log(`/hotel-with-date: `, rows);
-
         for (let i in rows) {
           promiseArr.push(new Promise (async (resolve, reject) => {
             await db.select('startDate','endDate','status')
               .from('booking')
               .where('roomTypeID',rows[i].id)
+              .where('hotelID',req.user.id)
               .then(async (rows2) => {
   
                 let processedDateArr = dateRangeArr.map((eDate) => {
@@ -331,15 +329,12 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
                   roomTypeID: rows[i].id,
                   dateArr: processedDateArr
                 }
-                console.log(`newRooms: `, newRooms);
-                console.log(`processedDateArr: `, processedDateArr);
                 resolve(newRooms);
               })
           }))
         }
 
         Promise.all(promiseArr).then((result) => {
-          console.log(`result: `, result);
           res.send(result)
         })
       }).catch((error) => {

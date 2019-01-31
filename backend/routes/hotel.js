@@ -47,7 +47,7 @@ router.get('/', function (req, res, next) {
           path (icon path)}
       */
   var db = req.db;
-  let query = db.select("hotel.*", "photo.path").from("hotel").innerJoin("photo", "hotel.id", "photo.hotelID").whereNull("photo.roomTypeID").limit(8)
+  let query = db.select("hotel.*", "photo.path").from("hotel").innerJoin("photo", "hotel.id", "photo.hotelID").whereNull("photo.roomTypeID").limit(6)
   query.then((rows) => {
     rows.map((each) => {
       delete each.password
@@ -224,6 +224,8 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
     }
   */
 
+    console.log(`/edit/info req.user: `, req.user);
+
   if (req.user.isHotel != true) {
     res.status(500).send({ error: 'user is not hotel' })
   } else {
@@ -231,6 +233,8 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
     var db = req.db;
     let query = db.select('h.name', 'h.telephone', 'h.address', 'h.district', 'h.vaccineRequirement', 'h.description', 't.id as roomTypeID', 't.roomType', 't.price', 't.quantity').from("roomType as t").innerJoin('hotel as h', 'h.id', 't.hotelID').where('h.id', req.user.id)
     query.then((rows) => {
+
+      console.log(`/edit/info rows: `, rows);
 
       let newRow = rows.map((current, index, array) => {
         let room = {
@@ -241,8 +245,14 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
         }
 
         if (index == 0) {
-          if (array[index + 1]) {
+          if (array[index + 1] && current.roomTypeID!==null) {
             array[index + 1].rooms = [room]
+          }else if(!array[index + 1]&& current.roomTypeID==null){
+            current.rooms=[];
+            return current
+          }else{
+            current.rooms=[room];
+            return current
           }
         } else if (index < array.length - 1 && index > 0) {
           array[index + 1].rooms = [...current.rooms, room]
@@ -259,6 +269,8 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
           return true
         }
       })
+
+      console.log(`/edit/info newRow: `, newRow);
 
       newRow[0].userName = req.user.username
       res.send(newRow)
