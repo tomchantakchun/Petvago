@@ -29,7 +29,6 @@ const mapStateToProps = state => {
     }
 };
 
-
 const mapDispatchtoProps = dispatch => {
     return {
         chooseHotel: (data) => { dispatch(choose_hotel_to_book(data)) },
@@ -37,8 +36,6 @@ const mapDispatchtoProps = dispatch => {
         afterSearch: (result) => dispatch({ type: actionTypes.SEARCHRESULT, result: result })
     }
 };
-
-
 
 class Hotel extends Component {
     constructor(props) {
@@ -66,19 +63,54 @@ class Hotel extends Component {
         }
 
         if(this.state.hotelID == 0){
-            console.log('i am zero');
             this.props.history.push('/')
         }
+
+        if(!this.props.SearchResult.searchResult){ 
+            this.onLoadDateChange(); 
+        }
+        
     };
+    onLoadDateChange = async() =>{
+        this.props.SearchResult.startDate = moment(new Date( )).format("YYYY-MM-DD")
+        this.props.SearchResult.endDate = moment(new Date( )).format("YYYY-MM-DD")
+        this.props.onSearch(this.props.SearchResult);
 
+        await this.setState({ 
+            startDate : moment(new Date( )).format("YYYY-MM-DD"),
+            endDate: moment(new Date( )).format("YYYY-MM-DD")
+        })
 
-    dateChange = (e, picker) => {
+        axios.post(`http://localhost:8080/api/search/`,
+            {
+                startDate: this.props.SearchResult.startDate,
+                endDate: this.props.SearchResult.endDate,
+                district: this.props.SearchResult.district || "all",
+                petType: this.props.SearchResult.petType || "all",
+            })
+            .then(response => {
+                if (response === null) {
+                } else {
+                    this.props.afterSearch(response.data)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }
+
+    dateChange = async (e, picker) => {
         e.preventDefault();
-        console.log(this.props.SearchResult.startDate)
-        console.log(picker.startDate._d)
         this.props.SearchResult.startDate = moment(new Date(picker.startDate._d)).format("YYYY-MM-DD")
         this.props.SearchResult.endDate = moment(new Date(picker.endDate._d)).format("YYYY-MM-DD")
         this.props.onSearch(this.props.SearchResult);
+
+        await this.setState({ 
+            startDate : moment(new Date(picker.startDate._d)).format("YYYY-MM-DD"),
+            endDate: moment(new Date(picker.endDate._d)).format("YYYY-MM-DD")
+        })
+
         axios.post(`http://localhost:8080/api/search/`,
             {
                 startDate: this.props.SearchResult.startDate,
@@ -107,13 +139,13 @@ class Hotel extends Component {
             const _hotelInfo = _hotelInfoArrayData.data[0];
                 console.log(_hotelInfo);
             const _hotelReviewArray = _hotelReviewArrayData.data;
-                console.log(_hotelReviewArray);
+                
             const _gallaryArr = _hotelInfo.hotelPhoto.map((e) => e.path);
             const _fillterGallaryArr = _gallaryArr.filter(e => !!e);
             {/* once photo uploaded to firebase, have to remove _temp array  */}
-                console.log(_fillterGallaryArr);
-            const _tempGallaryArr = _fillterGallaryArr.map(e => '.'.concat(e));
-                console.log(_tempGallaryArr);
+            //     console.log(_fillterGallaryArr);
+            // const _tempGallaryArr = _fillterGallaryArr.map(e => '.'.concat(e));
+            //     console.log(_tempGallaryArr);
 
 
             for (let i= 0; i<_hotelInfo.roomType.length; i++){
@@ -126,8 +158,8 @@ class Hotel extends Component {
             await this.setState({
                 hotelID: _hotelInfo.id,
                 hotelName: _hotelInfo.name,
-                // hotelIcon: _fillterGallaryArr[0],
-                hotelIcon: _tempGallaryArr[0],
+                hotelIcon: _fillterGallaryArr[0],
+                // hotelIcon: _tempGallaryArr[0],
 
                 hotelAddress: _hotelInfo.address,
                 hotelAverageRating: _hotelInfo.averageRating,
@@ -138,8 +170,8 @@ class Hotel extends Component {
                 hotelLongitude:_hotelInfo.longitude,
                 roomTypeArr:_hotelInfo.roomType,
                 reviewArr: _hotelReviewArray,
-                // gallery: _fillterGallaryArr,
-                gallery: _tempGallaryArr,
+                gallery: _fillterGallaryArr,
+                // gallery: _tempGallaryArr,
 
                 vaccineRequirement: _hotelInfo.vaccineRequirement,
                 startDate: this.props.SearchResult.startDate,
@@ -235,18 +267,37 @@ class Hotel extends Component {
         const vaccineListItem = this.state.vaccineRequirement.vaccine.map((e,index) =>
             <li key={index} className="hotel-vaccine-list-3"> {e} </li>
         );
-        const roomTypeListItem = this.state.roomTypeArr.map((e) => 
-            <div key={e.roomTypeID} id={`roomType-id-${e.roomTypeID}`} className="hotel-room-data-card">
-                {/* once photo uploaded to firebase, change the source of icon */}
-                <img className="hotel-room-data-card-icon" src={`.${e.icon}`} alt="NA" />
-                <div id={`roomType-${e.roomType}`} className="hotel-room-data-card-type left-break-line">{e.roomType}</div>
-                <div className="hotel-room-data-card-description left-break-line">{e.description}</div>
-                <div id={`roomType-price-${e.price}`} className="hotel-room-data-card-price">
-                    ${e.price}
+        const roomTypeListItem = this.state.roomTypeArr.map((e) => {
+            let searchResultArr = this.props.SearchResult.searchResult;
+         
+            let _bookingButton = <button>NULL</button>;
+            if (searchResultArr){
+                const _filterSearchArr = searchResultArr.map(e => e.roomTypeID);
+                
+                if(_filterSearchArr.indexOf(e.roomTypeID) > -1  ){
+                    
+                    _bookingButton = <button className="btn btn-primary hotel-room-data-card-booking" onClick={this.handleBookingRoomType}>Book</button>
+                } else {
+                    _bookingButton = <button className="btn btn-danger hotel-room-data-card-booking disabled"> Full </button>
+                }
+    
+            }
+
+            
+            return (
+                <div key={e.roomTypeID} id={`roomType-id-${e.roomTypeID}`} className="hotel-room-data-card">
+                    {/* once photo uploaded to firebase, change the source of icon */}
+                    {/* <img className="hotel-room-data-card-icon" src={`.${e.icon}`} alt="NA" /> */}
+                    <img className="hotel-room-data-card-icon" src={e.icon} alt="NA" />
+                    <div id={`roomType-${e.roomType}`} className="hotel-room-data-card-type left-break-line">{e.roomType}</div>
+                    <div className="hotel-room-data-card-description left-break-line">{e.description}</div>
+                    <div id={`roomType-price-${e.price}`} className="hotel-room-data-card-price">
+                        ${e.price}
+                    </div>
+                    {_bookingButton}
                 </div>
-                <button className="btn btn-primary hotel-room-data-card-booking" onClick={this.handleBookingRoomType}>Book</button>
-            </div>
-        );
+            )
+        });
 
         const reviewListItem = this.state.reviewArr.map(e =>
             <div key={e.bookingID} className="hotel-review-box">
@@ -267,7 +318,9 @@ class Hotel extends Component {
                             <div className="hotel-rate-3">
                                 <RatingBarNonEdit rating={this.state.hotelAverageRating} />
                             </div>
-                            <div> <button onClick={()=>this.contactHotel(this.state.hotelID)} type="button" className="btn mybooking-button" data-dismiss="modal"><FontAwesomeIcon icon="comments" style={{marginRight:'10px', color:'#fff'}} />Contact Hotel</button>
+                           
+                            <div> 
+                                <button onClick={()=>this.contactHotel(this.state.hotelID)} type="button" className="btn mybooking-button" data-dismiss="modal"><FontAwesomeIcon icon="comments" style={{marginRight:'10px', color:'#fff'}} />Contact Hotel</button> 
                             </div>
                             <div className="hotel-telephone-3">
                                 < FontAwesomeIcon icon="phone-square"/>
