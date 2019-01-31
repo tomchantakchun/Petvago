@@ -135,4 +135,4 @@ class Search extends React.Component {
 }
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Search));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Search))
