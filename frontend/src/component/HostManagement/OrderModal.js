@@ -22,6 +22,79 @@ class OrderModal extends React.Component {
                 display: e.display
             }
 
+            let service = Object.keys(e.service).map((eServiceKey) => {
+                return (
+                    <li>{eServiceKey}: {e.service[eServiceKey]}</li>
+                )
+            })
+
+            let vaccineRequirement = null
+            if (e.vaccineRequirement !== null) {
+                vaccineRequirement = e.vaccineRequirement.vaccine.map((eVac) => {
+                    return (
+                        <li>{eVac}</li>
+                    )
+                });
+            }
+
+            let vaccineRequirementJSX = null
+            if (vaccineRequirement !== null) {
+                vaccineRequirementJSX = (
+                    <div>
+                        <br/>
+                        <h3>Vaccine Requirement:</h3>
+                        <ul>
+                            {vaccineRequirement}
+                        </ul>
+                    </div>
+                )
+            }
+
+            let totalPriceJSX = null
+            if (e.totalPrice !== null) {
+                totalPriceJSX = (
+                    <div>
+                        <h3>Total Price:</h3>
+                        {e.totalPrice}<br/>
+                        <br/>
+                    </div>
+                )
+            }
+
+            let petJSX = null
+            if (e.petName !== null) {
+                petJSX = (
+                    <div>
+                        <h3>Pet:</h3>
+                        Pet Name:   {e.petName}<br/>
+                        Pet Type:   {e.petType}<br/>
+                        Pet Weight: {e.petWeight}<br/>
+                        <br/>
+                    </div>
+                )
+            }
+
+            let serviceJSX = null
+            if (e.service.reference === undefined) {
+                serviceJSX = (
+                    <div>
+                        <h3>Service:</h3>
+                        <ul>
+                            {service}
+                        </ul>
+                    </div>
+                )
+            } else {
+                serviceJSX = (
+                    <div>
+                        <h3>Reference:</h3>
+                        <ul>
+                            {e.service.reference}
+                        </ul>
+                    </div>
+                )
+            }
+
             return (
                 <tbody key={e.id} id={`Order-${e.id}`}>
                     <tr>
@@ -34,7 +107,18 @@ class OrderModal extends React.Component {
                     <tr style={detailStyle}>
                         <td colSpan={5}>
                             <h1>Detail:</h1>
-
+                            <br/>
+                            <p>
+                                <h3>Booking Date:</h3>
+                                Start Date: {this.convertYMD(new Date(e.startDate))}<br/>
+                                End Date:   {this.convertYMD(new Date(e.endDate))}<br/>
+                                Duration:   {e.duration} days<br/>
+                                <br/>
+                                {totalPriceJSX}
+                                {petJSX}
+                                {serviceJSX}
+                                {vaccineRequirementJSX}
+                            </p>
                         </td>
                     </tr>
                 </tbody>
@@ -65,13 +149,8 @@ class OrderModal extends React.Component {
                         {orderList}
                     </table>
                 </div>
-                {/* <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Go Back</button>
-                </div> */}
                 </div>
             </div>
-
-            {/* <OrderDetailModal /> */}
             </div>
         )
     }

@@ -16,6 +16,19 @@
     margin-left: 20px;
 }
 
+#OrderModal h3, #OrderModal h5 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
 #OrderModal svg {
     cursor: pointer;
+}
+
+#OrderModal h1 {
+    font-size: 36px;
+}
+
+#OrderModal p {
+    font-size: 18px;
 }
