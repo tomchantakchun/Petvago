@@ -163,7 +163,7 @@ class Hotel extends Component {
 
                 hotelAddress: _hotelInfo.address,
                 hotelAverageRating: _hotelInfo.averageRating,
-                hotelDescription: _hotelInfo.description,
+                hotelDescription: _hotelInfo.hotelDescription,
                 hotelEmail: _hotelInfo.email,
                 hotelPhone: _hotelInfo.telephone,
                 hotelLatitude: _hotelInfo.latitude,
