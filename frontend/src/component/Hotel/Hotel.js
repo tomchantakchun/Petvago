@@ -45,10 +45,10 @@ class Hotel extends Component {
             endDate:"DD-MM-YYYY",
         }
 
-        // if(this.state.hotelID == 0){
-        //     console.log('i am zero');
-        //     this.props.history.push('/')
-        // }
+        if(this.state.hotelID == 0){
+            console.log('i am zero');
+            this.props.history.push('/')
+        }
 
     };
 
