@@ -2,7 +2,6 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook');
 const passportJWT = require('passport-jwt');
 const ExtractJwt = passportJWT.ExtractJwt;
-const bcrypt = require('./bcrypt');
 require('dotenv').config();
 const knex = require('knex')({
     client: 'pg',
