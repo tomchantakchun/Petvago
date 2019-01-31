@@ -47,7 +47,7 @@ router.get('/', function (req, res, next) {
           path (icon path)}
       */
   var db = req.db;
-  let query = db.select("hotel.*", "photo.path").from("hotel").innerJoin("photo", "hotel.id", "photo.hotelID").whereNull("photo.roomTypeID").limit(8)
+  let query = db.select("hotel.*", "photo.path").from("hotel").innerJoin("photo", "hotel.id", "photo.hotelID").whereNull("photo.roomTypeID").limit(6)
   query.then((rows) => {
     rows.map((each) => {
       delete each.password
