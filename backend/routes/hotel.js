@@ -241,8 +241,14 @@ router.get('/edit/info', passport.authenticate("jwt", { session: false }), (req,
         }
 
         if (index == 0) {
-          if (array[index + 1]) {
+          if (array[index + 1] && current.roomTypeID!==null) {
             array[index + 1].rooms = [room]
+          }else if(!array[index + 1]&& current.roomTypeID==null){
+            current.rooms=[];
+            return current
+          }else{
+            current.rooms=[room];
+            return current
           }
         } else if (index < array.length - 1 && index > 0) {
           array[index + 1].rooms = [...current.rooms, room]
