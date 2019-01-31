@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {withRouter} from "react-router-dom";
-import * as actionTypes from '../../store/actions';
 import "./SearchResult.css";
 import Filter from "../Filter/Filter";
 import Sorter from "../Sorter/Sorter";
@@ -18,16 +17,12 @@ const mapStateToProps = state => {
     }
 };
 
-const mapDispatchToProps = dispatch =>{
-    
-}
-
 class SearchResult extends React.Component {
    
     render() {
 
         if (!this.props.SearchAuthenticate){
-            this.props.history.push('./home')
+            this.props.history.push('./')
         }
 
     
@@ -196,5 +191,5 @@ class SearchResult extends React.Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(SearchResult));
+export default withRouter(connect(mapStateToProps)(SearchResult));
 
