@@ -22,11 +22,17 @@
 .hotel-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-around;
     width: 100%;
     padding-top: 0vh !important;
     font-size: 18px;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.hotel-container-container {
+    margin-top: 8vh;
+    padding: 0 8vw;
 }
 
 .hotel-info {
@@ -80,10 +86,16 @@
     width: 100%;
     padding-top: 2vh;
     padding-left: 2vh;
-    font-size: 3vh;
+    font-size: 4vh;
+    font-weight: 700;
+    color: #4c6189;
 }
 
 @media only screen and (max-width: 600px) {
+    .hotel-container-container {
+        padding: 0;
+    }
+
     .background {
         background-repeat: no-repeat;
         background-attachment: fixed;
