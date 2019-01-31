@@ -1,3 +1,23 @@
+#hotelPage .react-bootstrap-daterangepicker-container {
+    position: absolute;
+    right: 6vw;
+}
+
+#hotelPage .room-type-title {
+    margin-top: 10px;
+}
+
+#hotelPage .searchDate {
+    border: 0.5px solid #cccccc;
+}
+
+
+@media only screen and (min-width: 1200px) {
+    #hotelPage .hotel-border {
+        padding: 0 10vw;
+    }
+}
+
 .align-left {
     text-align: left;
     width: 100%;
@@ -5,6 +25,7 @@
     padding-left: 2vh;
     font-size: 3vh;
     font-weight: bold;
+    display: inline;
 }
 
 .hotel-body {
@@ -36,9 +57,9 @@
     margin-top: 2vh;
     width: 50vh;
     height: 60vh;
-    border-style: solid;
+    /* border-style: solid;
     border-radius: 20px;
-    border-width: 2px;
+    border-width: 2px; */
 }
 
 .hotel-address-3{
@@ -60,19 +81,23 @@
 }
 
 .hotel-description-3 {
-    height: 20vh;
+    min-height: 15vh;
     width: 90%;
-    text-align: center;
+    /* text-align: center; */
     vertical-align: middle;
-    line-height: 20vh;
-    border-style: solid;
+    line-height: 20px;
+    /* border-style: solid;
     border-radius: 20px;
-    border-width: 2px;
-    margin-top: 6vw;
+    border-width: 2px; */
+    margin-top: 6vh;
+    padding: 15px;
+    background-color: #eaf6f5;
+    border: none;
 }
 
 .hotel-room-type-3 {
     width: 90%;
+    padding-top: 30px;
 }
 
 .hotel-room-data-card {
@@ -81,11 +106,11 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2vh;
+    margin-top: 4vh;
     padding: 1vh 2vh 1vh 2vh;
-    border-style: solid;
-    border-radius: 20px;
-    border-width: 2px;
+    border: 4px solid #eaf6f5;
+    display: grid;
+    grid-auto-columns: 1fr;
 }
 
 .hotel-room-data-card:hover{
@@ -96,6 +121,8 @@
     height: 20vh;
     width: 20vh;
     object-fit: cover;
+    grid-row: 1/4;
+    grid-column: 1/2
 }
 
 .hotel-room-data-card-booking {
@@ -103,18 +130,44 @@
     width: 10vh;
 }
 
+.hotel-room-data-card-type {
+    grid-row: 1/2;
+    grid-column: 2/5;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.hotel-room-data-card-description {
+    grid-row: 2/4;
+    grid-column: 2/5;
+    align-self: start;
+}
+
+.hotel-room-data-card-left {
+    grid-row: 1/4;
+    grid-column: 5/6;
+    justify-self: end;
+}
+
+.hotel-room-data-card-price {
+    margin: 10px 0;
+}
+
 .left-break-line {
     border-right: 1px solid black;
     padding: 1vh 2vh 1vh 2vh;
     height: 100%;
+    
 }
 
 .hotel-vaccine-3 {
     width: 90%;
+    margin-top: 50px;
 }
 
 .hotel-review-3 {
     width: 90%;
+    margin: 30px 0;
 }
 
 .hotel-review-panel-3 {
@@ -123,15 +176,60 @@
     margin-bottom: 2vh;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    /* align-items: center; */
 }
+
+@media only screen and (max-width: 800px) {
+    .hotel-review-panel-3 {
+        flex-flow: column;
+    }
+
+    #hotelPage .react-bootstrap-daterangepicker-container {
+        position: relative;
+        margin: 10px 0;
+        left: 0;
+    }
+
+
+
+
+    .hotel-room-data-card {
+        
+    }
+    
+    .hotel-room-data-card-icon {
+        grid-column: 1/2;
+        grid-row: 1/3
+    }
+    
+    .hotel-room-data-card-type {
+        grid-column: 2/3;
+        grid-row: 1/2;
+        justify-self: center;
+    }
+    
+    .hotel-room-data-card-description {
+        grid-column: 1/3;
+        grid-row: 3/4;
+        /* align-self: start; */
+        margin: 10px 0;
+    }
+    
+    .hotel-room-data-card-left {
+        grid-column: 2/3;
+        grid-row: 2/3;
+        justify-self: center;
+    }
+}
+
 
 .hotel-review-box {
     padding: 2vh 0vh 2vh 2vh;
-    border-style: solid;
+    /* border-style: solid;
     border-radius: 20px;
-    border-width: 2px;
+    border-width: 2px; */
     width: 40vh;
+    margin: 15px;
 }
 
 .hotel-review-user-name {
@@ -151,9 +249,11 @@ ul.hotel-vaccine-list-3 {
     padding-bottom: 2vh;
     margin-top: 2vh;
     font-size: 2.5vh;
-    border-style: solid;
+    /* border-style: solid;
     border-radius: 20px;
-    border-width: 2px;
+    border-width: 2px; */
+    background-color: #eaf6f5;
+    border-radius: 5px;
 }
 
 li.hotel-vaccine-list-3 {

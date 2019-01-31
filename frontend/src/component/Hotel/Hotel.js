@@ -177,6 +177,8 @@ class Hotel extends Component {
                 startDate: this.props.SearchResult.startDate,
                 endDate: this.props.SearchResult.endDate,
              });
+
+             window.scrollTo(0, 0)
         } catch(err){
             console.log(err);
         }
@@ -276,7 +278,7 @@ class Hotel extends Component {
                 
                 if(_filterSearchArr.indexOf(e.roomTypeID) > -1  ){
                     
-                    _bookingButton = <button className="btn btn-primary hotel-room-data-card-booking" onClick={this.handleBookingRoomType}>Book</button>
+                    _bookingButton = <button className="btn btn-outline-info hotel-room-data-card-booking" onClick={this.handleBookingRoomType}>Book</button>
                 } else {
                     _bookingButton = <button className="btn btn-danger hotel-room-data-card-booking disabled"> Full </button>
                 }
@@ -289,18 +291,20 @@ class Hotel extends Component {
                     {/* once photo uploaded to firebase, change the source of icon */}
                     {/* <img className="hotel-room-data-card-icon" src={`.${e.icon}`} alt="NA" /> */}
                     <img className="hotel-room-data-card-icon" src={e.icon} alt="NA" />
-                    <div id={`roomType-${e.roomType}`} className="hotel-room-data-card-type left-break-line">{e.roomType}</div>
-                    <div className="hotel-room-data-card-description left-break-line">{e.description}</div>
-                    <div id={`roomType-price-${e.price}`} className="hotel-room-data-card-price">
-                        ${e.price}
+                    <div id={`roomType-${e.roomType}`} className="hotel-room-data-card-type">{e.roomType}</div>
+                    <div className="hotel-room-data-card-description">{e.description}</div>
+                    <div className='hotel-room-data-card-left'>
+                        <div id={`roomType-price-${e.price}`} className="hotel-room-data-card-price">
+                            ${e.price}
+                        </div>
+                        {_bookingButton}
                     </div>
-                    {_bookingButton}
                 </div>
             )
         });
 
         const reviewListItem = this.state.reviewArr.map(e =>
-            <div key={e.bookingID} className="hotel-review-box">
+            <div key={e.bookingID} className="hotel-review-box card">
                 <p className="hotel-review-user-name"> {e.username} </p>
                 <RatingBarNonEdit rating={e.rating}/>
                 <div className="hotel-review-text">
@@ -313,7 +317,7 @@ class Hotel extends Component {
                 <div className="hotel-body">
                     {this.state.chosenHotel}
                     <div className="hotel-row-3">
-                        <div className="hotel-row-3-a">
+                        <div className="hotel-row-3-a card">
                             <div className="hotel-name-3">{this.state.hotelName}</div>
                             <div className="hotel-rate-3">
                                 <RatingBarNonEdit rating={this.state.hotelAverageRating} />
@@ -345,24 +349,19 @@ class Hotel extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="hotel-description-3">{this.state.hotelDescription}</div>
-
-                    <div className="align-left hotel-date-3">
-                    
-                    <DateRangePicker
-                    minDate={moment(new Date(today))}
-                    maxDate={moment(new Date(threeMonthLater))}
-                    startDate={moment(new Date(this.props.SearchResult.startDate || today))}
-                    endDate={moment(new Date(this.props.SearchResult.endDate || today))}
-                    onApply={this.dateChange}
-                    props={this.props}>
-                    <button className="searchDate">DATE {this.props.SearchResult.startDate || today} {this.props.SearchResult.endDate || today} </button>
-                     </DateRangePicker>
-                                       
-                    </div>
+                    <div className="hotel-description-3 card">{this.state.hotelDescription}</div>
 
                     <div className="hotel-room-type-3">
-                        <p className="align-left"> Room type</p>
+                        <p className="align-left room-type-title"> Room type</p>
+                        <DateRangePicker
+                            minDate={moment(new Date(today))}
+                            maxDate={moment(new Date(threeMonthLater))}
+                            startDate={moment(new Date(this.props.SearchResult.startDate || today))}
+                            endDate={moment(new Date(this.props.SearchResult.endDate || today))}
+                            onApply={this.dateChange}
+                            props={this.props}>
+                            <button className="searchDate btn btn-outline-secondary">From {this.props.SearchResult.startDate || today} to {this.props.SearchResult.endDate || today} </button>
+                            </DateRangePicker>
                         <div className="hotel-room-data-card-container">
                             {roomTypeListItem}
                         </div>
@@ -384,8 +383,10 @@ class Hotel extends Component {
         )
 
         return (
-            <div className="hotel-upper-body">
-                {hotelBody}
+            <div className="hotel-upper-body" id='hotelPage'>
+                <div className='hotel-border'>
+                    {hotelBody}
+                </div>  
             </div>
         )
     }
