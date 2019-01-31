@@ -8,6 +8,7 @@ import logger from 'redux-logger'
 import searchReducer from './store/reducers/search';
 import hotelReducer from './store/reducers/hotel';
 import hotelIdReducer from './store/reducers/hotelId';
+import loginReducer from './store/reducers/login';
 
 
 import './index.css';
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     search: searchReducer,
     hotel:hotelReducer,
     hotelId:hotelIdReducer,
+    login:loginReducer
 });
 
 const store = createStore(rootReducer,applyMiddleware(logger));
