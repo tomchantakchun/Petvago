@@ -1,7 +1,8 @@
 import React from 'react';
 import './HostManagement.css'
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Chart } from 'react-chartjs-2';
+import OrderModal from './OrderModal'
 
 //daterangepicker
 import DateRangePicker from 'react-bootstrap-daterangepicker';
@@ -52,6 +53,7 @@ class HostManagement extends React.Component {
             bookingRoomType: '',
             bookingReference: '',
             isUpdateSuccessful: false,
+            orderBookingContent: '',
         }
         this.rooms = null;
         this.options = null;
@@ -171,27 +173,38 @@ class HostManagement extends React.Component {
         window.scrollTo(0, 0)
     }
 
+    handleChartClick = (elems) => {
+        if (elems[0]._chart !== undefined) {
+            console.log(`Room type ID: `, elems[0]._chart.titleBlock.options.text.replace('roomType-',''));
+            console.log(`Date: `, elems[0]._model.label);
+        }
+    }
+
     render() {
         if (this.state.isDataReceived) {
-            let chartOptions = {
-                tooltips: {
-                    mode: 'index',
-                    intersect: false
-                },
-                responsive: true,
-                scales: {
-                    yAxes: [{
-                        stacked: true
-                    }],
-                    xAxes: [{
-                        stacked: true
-                    }]
-                }
-            }
             this.rooms = this.state.booking.map((e) => {
                 let dowArr = [];
                 for (let i = 0; i < 7; i++) {
                     dowArr.push(this.convertDM(this.addDay(new Date(this.state.startDOW), i)))
+                }
+
+                let chartOptions = {
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    responsive: true,
+                    scales: {
+                        yAxes: [{
+                            stacked: true
+                        }],
+                        xAxes: [{
+                            stacked: true
+                        }]
+                    },
+                    title: {
+                        text: `roomType-${e.roomTypeID}`
+                    }
                 }
 
                 let availableArr = [];
@@ -245,10 +258,12 @@ class HostManagement extends React.Component {
                 return (
                     <tr key={e.roomTypeID}>
                         <td>{e.roomType}</td>
-                        <td colSpan={7}>
+                        <td colSpan={7} data-toggle="modal" data-target="#OrderModal">
                             <Bar
                                 data={chartData}
-                                options={chartOptions} />
+                                options={chartOptions}
+                                onElementsClick={elems => this.handleChartClick(elems)}
+                                 />
                         </td>
                     </tr>
                 )
@@ -364,6 +379,10 @@ class HostManagement extends React.Component {
 
                     </form>
                 </div>
+
+                <OrderModal
+                    // editRoomTypeID={this.state.editRoomTypeID}
+                    orderBookingContent={this.state.orderBookingContent}></OrderModal>
             </div>
         )
     }

@@ -349,10 +349,11 @@ router.put('/hotel-with-date', passport.authenticate("jwt", { session: false }),
   }
 })
 
-//8.Get all booking of a hotel booking by day
+//8.Get all booking of a hotel roomType booking by day
 router.put('/hotel-by-day', passport.authenticate("jwt", { session: false }), (req, res) => {
   /* data this function needs:
     {
+      roomTypeID,
       date (format: '2019-02-02')
     }
 
@@ -366,6 +367,7 @@ router.put('/hotel-by-day', passport.authenticate("jwt", { session: false }), (r
     let query=db.select()
     .from('booking')
     .where('hotelID',req.user.id)
+    .where('roomTypeID',req.body.roomTypeID)
     .andWhere('startDate','<=',req.body.date)
     .andWhere('endDate','>=',req.body.date)
 
