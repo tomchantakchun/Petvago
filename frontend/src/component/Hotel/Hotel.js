@@ -5,9 +5,16 @@ import { choose_hotel_to_book } from '../../store/actions';
 import axios from 'axios';
 import GoogleMap from "../GoogleMap/GoogleMap";
 import RatingBarNonEdit from "./RatingBar-non-edit";
+import * as actionTypes from '../../store/actions';
+
 // import Slideshow from "../Slideshow/Slideshow";
 import ImageShow from "../ImageShow/ImageShow";
 import "./Hotel.css"
+
+//daterangepicker
+import DateRangePicker from 'react-bootstrap-daterangepicker';
+import 'bootstrap-daterangepicker/daterangepicker.css';
+import moment from 'moment'
 
 const mapStateToProps = state => {
     return {
@@ -15,6 +22,17 @@ const mapStateToProps = state => {
         HotelID : state.hotelId,
     }
 };
+
+
+const mapDispatchtoProps = dispatch => {
+    return {
+        chooseHotel: (data) => { dispatch(choose_hotel_to_book(data)) },
+        onSearch: (history) => dispatch({ type: actionTypes.SEARCHHOTEL, history: history }),
+        afterSearch: (result) => dispatch({ type: actionTypes.SEARCHRESULT, result: result })
+    }
+};
+
+
 
 class Hotel extends Component {
     constructor(props) {
@@ -44,10 +62,35 @@ class Hotel extends Component {
             console.log('i am zero');
             this.props.history.push('/')
         }
-
-        
-
     };
+
+
+    dateChange = (e, picker) => {
+        e.preventDefault();
+        console.log(this.props.SearchResult.startDate)
+        console.log(picker.startDate._d)
+        this.props.SearchResult.startDate = moment(new Date(picker.startDate._d)).format("YYYY-MM-DD")
+        this.props.SearchResult.endDate = moment(new Date(picker.endDate._d)).format("YYYY-MM-DD")
+        this.props.onSearch(this.props.SearchResult);
+        axios.post(`http://localhost:8080/api/search/`,
+            {
+                startDate: this.props.SearchResult.startDate,
+                endDate: this.props.SearchResult.endDate,
+                district: this.props.SearchResult.district || "all",
+                petType: this.props.SearchResult.petType || "all",
+            })
+            .then(response => {
+                if (response === null) {
+                    console.log('you are living failure')
+                } else {
+                    console.log(response.data)
+                    this.props.afterSearch(response.data)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 
     async componentDidMount() {
         
@@ -160,6 +203,13 @@ class Hotel extends Component {
     }
 
     render() {
+
+        let today = new Date().toISOString().split('T')[0];
+        
+        //find 12 weeks later
+        let threeMonthLater = new Date();
+        threeMonthLater.setDate(threeMonthLater.getDate()+84);
+        threeMonthLater = threeMonthLater.toISOString().split('T')[0];
        
         const vaccineListItem = this.state.vaccineRequirement.vaccine.map((e,index) =>
             <li key={index}> {e} </li>
@@ -217,7 +267,19 @@ class Hotel extends Component {
                     </div>
                     <div className="hotel-description-3">{this.state.hotelDescription}</div>
 
-                    <div className="align-left hotel-date-3">DATE INPUT </div>
+                    <div className="align-left hotel-date-3">
+                    
+                    <DateRangePicker
+                    minDate={moment(new Date(today))}
+                    maxDate={moment(new Date(threeMonthLater))}
+                    startDate={moment(new Date(this.props.SearchResult.startDate || today))}
+                    endDate={moment(new Date(this.props.SearchResult.endDate || today))}
+                    onApply={this.dateChange}
+                    props={this.props}>
+                    <button className="searchDate">DATE {this.props.SearchResult.startDate || today} {this.props.SearchResult.endDate || today} </button>
+                     </DateRangePicker>
+                                       
+                    </div>
 
                     <div className="hotel-room-type-3">
                         <p className="align-left"> Room type</p>
@@ -248,13 +310,6 @@ class Hotel extends Component {
                 {hotelBody}
             </div>
         )
-    }
-}
-
-
-const mapDispatchtoProps = (dispatch) => {
-    return {
-        chooseHotel: (data) => { dispatch(choose_hotel_to_book(data)) },
     }
 }
 

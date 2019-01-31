@@ -13,6 +13,7 @@ import { faMapMarkedAlt,faPaw } from '@fortawesome/free-solid-svg-icons'
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import moment from 'moment'
+
 library.add(faMapMarkedAlt)
 library.add(faPaw)
 
