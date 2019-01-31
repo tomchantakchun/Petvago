@@ -7,6 +7,11 @@ import GoogleMap from "../GoogleMap/GoogleMap";
 import RatingBarNonEdit from "./RatingBar-non-edit";
 import * as actionTypes from '../../store/actions';
 
+//daterangepicker
+import DateRangePicker from 'react-bootstrap-daterangepicker';
+import 'bootstrap-daterangepicker/daterangepicker.css';
+import moment from 'moment'
+
 // import Slideshow from "../Slideshow/Slideshow";
 import ImageShow from "../ImageShow/ImageShow";
 import "./Hotel.css"
@@ -16,10 +21,6 @@ import { faComments,faPhoneSquare } from '@fortawesome/free-solid-svg-icons';
 library.add(faComments);
 library.add(faPhoneSquare);
 
-//daterangepicker
-import DateRangePicker from 'react-bootstrap-daterangepicker';
-import 'bootstrap-daterangepicker/daterangepicker.css';
-import moment from 'moment'
 
 const mapStateToProps = state => {
     return {
@@ -70,9 +71,6 @@ class Hotel extends Component {
         }
     };
 
-<<<<<<< HEAD
-    };
-=======
 
     dateChange = (e, picker) => {
         e.preventDefault();
@@ -100,7 +98,6 @@ class Hotel extends Component {
                 console.log(error)
             })
     }
->>>>>>> a9a37940b8edd8f4dfd333742d96c5d016f398e7
 
     async componentDidMount() {
         

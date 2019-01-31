@@ -6,10 +6,23 @@
     display:flex;
     justify-content: left;
     flex-flow: row wrap;
+    font-family: 'Sarabun';
+}
+
+.filter-box{
+    /* border:1px solid #50b5a9; */
+    border-radius:5px;
+    display:flex
+}
+
+@media only screen and (max-width: 600px) {
+    .filter{
+        display:none
+    }
 }
 
 .filterDate {
-    height: 100%;
+    height: 48px;
     cursor: pointer;
     border: none;
     position: relative;
@@ -17,9 +30,9 @@
     font-size: 1em;
     line-height: 1.5em;
     padding: 8px 16px;
-    border-radius: 4px;
-
-    background: rgba(23,179,163,1);
+    border-radius: 5px 0 0 5px ;
+    border:2px solid #50b5a9;
+    background: #50b5a9 ;
     color: #ffffff;
     box-sizing: border-box;
 }
@@ -29,13 +42,39 @@
     box-sizing: border-box;
     text-align: center;
     vertical-align: middle;
-    height: 100%;
-    border-top: 1px solid #eeeeee;
-    border-right: 1px solid #eeeeee;
-    background: #ffffff;
+    height: 44px;
     padding: 10px 0;
     color: #585353;
     font-size: 16px !important;
+    border:none;
+    -webkit-border-radius: 0px;
+    margin-right:5px;
+    background: #ffffff;
+
+}
+
+.filter select:focus{
+    outline-width: 0;
+}
+
+.filter button:focus{
+    outline-width: 0;
+}
+
+.filterDistrict{
+    border-top:2px solid #50b5a9;
+    border-bottom:2px solid #50b5a9;
+    border-right:2px solid #50b5a9;
+    height: 48px;
+}
+
+.filterPet{
+    border-top:2px solid #50b5a9;
+    border-bottom:2px solid #50b5a9;
+    border-right:2px solid #50b5a9;
+    height: 48px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 

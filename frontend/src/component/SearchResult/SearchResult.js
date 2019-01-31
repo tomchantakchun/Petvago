@@ -36,7 +36,7 @@ class SearchResult extends React.Component {
     render() {
 
         if (!this.props.SearchAuthenticate){
-            this.props.history.push('./home')
+            this.props.history.push('/')
         }
 
     

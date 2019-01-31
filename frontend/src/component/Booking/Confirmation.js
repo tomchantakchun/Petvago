@@ -36,7 +36,7 @@ class Confirmation extends Component {
 
         if(!this.props.location.state===true){
             console.log('123')
-            this.props.history.push('/home')
+            this.props.history.push('/')
         }else if (!this.props.location.state===false) {
             let promise=new Promise((resolve,reject)=>{
                 this.setState({
@@ -113,7 +113,7 @@ class Confirmation extends Component {
 
     done=()=>{
 
-            this.props.history.push('/home')
+            this.props.history.push('/')
 
     }
 
