@@ -104,7 +104,7 @@ class Search extends React.Component {
                
         return (
             <div className="search-outer">
-                <h1>Book a pet hotel with instant confirmation</h1>
+                <h1>Book a pet hotel in Hong Kong</h1>
             <div className="search">
             
             <div className="search-inner">

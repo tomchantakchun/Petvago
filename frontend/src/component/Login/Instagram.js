@@ -53,7 +53,8 @@ class Instagram extends React.Component {
                     clientId={process.env.REACT_APP_INSTAGRAM_CLIENT_ID || ''}
                     buttonText="Login with Instagram"
                     onSuccess={this.responseInstagram}
-                    onFailure={this.responseInstagram} />
+                    onFailure={this.responseInstagram} 
+                    cssClass='instagram-login btn'/>
             )
         }
 
