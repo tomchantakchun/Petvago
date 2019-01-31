@@ -23,9 +23,14 @@
 @media only screen and (max-width: 500px) {
     .sort-button{
         font-family: 'Sarabun';
-        width:90px;
+        width:100px;
         margin-right:5px;
         height:40px;
         font-size:15px
+    }
+    .filter-container{
+        justify-content: flex-start;
+        margin-left:20px;
+        margin-bottom:-25px !important
     }
 }
