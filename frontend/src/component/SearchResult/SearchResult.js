@@ -17,15 +17,12 @@ const mapStateToProps = state => {
     }
 };
 
-<<<<<<< HEAD
-=======
 const mapDispatchToProps = dispatch =>{
     return {
         changeHotelId:(hotelId) =>dispatch({type:actionTypes.CHANGEHOTELID, hotelId :hotelId})
     }
 }
 
->>>>>>> ef219ea01bae5347f5894dc8046eaeda4a9aff59
 class SearchResult extends React.Component {
     
     onClickHotelInfo (e) {
@@ -38,11 +35,7 @@ class SearchResult extends React.Component {
     render() {
 
         if (!this.props.SearchAuthenticate){
-<<<<<<< HEAD
-            this.props.history.push('./')
-=======
             this.props.history.push('/')
->>>>>>> ef219ea01bae5347f5894dc8046eaeda4a9aff59
         }
 
     
