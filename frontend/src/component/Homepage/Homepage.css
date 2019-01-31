@@ -91,10 +91,13 @@
     color: #4c6189;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1000px) {
     .hotel-container-container {
         padding: 0;
     }
+}
+
+@media only screen and (max-width: 600px) {
 
     .background {
         background-repeat: no-repeat;
