@@ -40,7 +40,7 @@ class Search extends React.Component {
 
     handleSearch = (e) => {
         e.preventDefault();
-        axios.post(`http://localhost:8080/api/search/`,
+        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/search/`,
             {
                 startDate: this.props.search.startDate || moment(new Date()).format("YYYY-MM-DD"),
                 endDate: this.props.search.endDate || moment(new Date()).format("YYYY-MM-DD"),

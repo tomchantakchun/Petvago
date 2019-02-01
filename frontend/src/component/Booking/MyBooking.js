@@ -52,7 +52,7 @@ class Confirmation extends Component {
         if (!jwt) {
             this.props.history.push('/login')
         }
-        axios.get(`http://localhost:8080/api/userprofile`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+        axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/userprofile`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
 
             this.setState({
                 username:result.data[0].username,
@@ -62,7 +62,7 @@ class Confirmation extends Component {
             
         }).catch((err)=>console.log(err))
 
-        axios.get(`http://localhost:8080/api/booking/user`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+        axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/booking/user`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
             console.log('result',result)
             this.setState({
                 pastBooking:result.data[0].pastBooking,
@@ -77,7 +77,7 @@ class Confirmation extends Component {
     getReview=()=>{
         const jwt = localStorage.getItem('petvago-token');
 
-        axios.get(`http://localhost:8080/api/review/user`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+        axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/review/user`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
             this.setState({
                 reviewArray:result.data
             })
@@ -110,7 +110,7 @@ class Confirmation extends Component {
     contactHotel=(hotelID)=>{
         const jwt = localStorage.getItem('petvago-token');
         let history=this.props.history;
-        axios.post('http://localhost:8080/api/chatroom/addchat',{hotelID}, { headers: { Authorization: `Bearer ${jwt}` } })
+        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/addchat`,{hotelID}, { headers: { Authorization: `Bearer ${jwt}` } })
         .then((result)=>{
             console.log('contact',result.data.conversationID)
             history.push({pathname:'/chatroom',state:{conversationID:result.data.conversationID}})
@@ -124,7 +124,7 @@ class Confirmation extends Component {
         if(this.state.bookingID){
             const jwt = localStorage.getItem('petvago-token');
 
-            axios.get(`http://localhost:8080/api/booking/info/${this.state.bookingID}`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+            axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/booking/info/${this.state.bookingID}`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
                 
                 let data=result.data[0];
                 let vaccine=data.vaccineRequirement.vaccine.join(', ')
@@ -346,7 +346,7 @@ class Confirmation extends Component {
         const jwt = localStorage.getItem('petvago-token');
         const getReview=this.getReview
 
-        axios.post('http://localhost:8080/api/review',data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/review`,data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
             getReview()
         }).catch(err=>console.log(err))
     }

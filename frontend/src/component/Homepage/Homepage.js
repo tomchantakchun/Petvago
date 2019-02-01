@@ -30,7 +30,7 @@ class Homepage extends React.Component {
     async componentDidMount() {
         //    call hotel info api from backend,then set state
         try {
-            const _hotelInfo = await Axios.get('http://localhost:8080/api/hotel');
+            const _hotelInfo = await Axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel`);
             this.setState({ hotelInfo: _hotelInfo.data });
             const listItems = this.state.hotelInfo.map(
                 (e) => <div key={e.id.toString()} id={`hotel-id-${e.id}`} className="hotel-info"  >

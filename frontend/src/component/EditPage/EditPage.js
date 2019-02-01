@@ -104,7 +104,7 @@ class EditPage extends React.Component {
     }
 
     handleAddRoomType = () => {
-        axios.post('http://localhost:8080/api/hotel/edit/new-room-type', {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
+        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/edit/new-room-type`, {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
             .then(res => {
                 this.constructEditPage();
                 let newAddedButNotUpdatedRoomType = this.state.addedButNotUpdatedRoomType;
@@ -156,8 +156,7 @@ class EditPage extends React.Component {
     }
 
     handleConfirmDeleteRoomType = (e) => {
-        console.log(`http://localhost:8080/api/hotel/edit/delete-room-type/${this.state.editRoomTypeID}`);
-        axios.put(`http://localhost:8080/api/hotel/edit/delete-room-type/${this.state.editRoomTypeID}`, {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
+        axios.put(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/edit/delete-room-type/${this.state.editRoomTypeID}`, {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
             .then(() => {
                 this.constructEditPage();
             })
@@ -292,7 +291,7 @@ class EditPage extends React.Component {
 
         let promiseSubmit = new Promise((resolve, reject) => {
             axios.post(
-                `http://localhost:8080/api/hotel/edit/submit`,
+                `${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/edit/submit`,
                 {
                     name: this.state.hotelName,
                     telephone: this.state.hotelTel,
@@ -314,9 +313,8 @@ class EditPage extends React.Component {
 
         for (let i in this.state.roomType) {
             promiseArray.push(new Promise((resolve, reject) => {
-                console.log(`http://localhost:8080/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`);
                 axios.put(
-                    `http://localhost:8080/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`,
+                    `${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`,
                     {
                         roomType: this.state.roomType[i].roomType,
                         price: this.state.roomType[i].price,
@@ -339,7 +337,7 @@ class EditPage extends React.Component {
 
             promiseArray.push(new Promise((resolve, reject) => {
                 axios.post(
-                    `http://localhost:8080/api/hotel/uploadPhoto`,
+                    `${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/uploadPhoto`,
                     formData,
                     { headers: { Authorization: `Bearer ${this.jwt}` } }
                 ).then((res) => {
@@ -356,7 +354,7 @@ class EditPage extends React.Component {
 
             promiseArray.push(new Promise((resolve, reject) => {
                 axios.post(
-                    `http://localhost:8080/api/hotel/uploadBigIcon`,
+                    `${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/uploadBigIcon`,
                     formData,
                     { headers: { Authorization: `Bearer ${this.jwt}` } }
                 ).then((res) => {
@@ -410,8 +408,7 @@ class EditPage extends React.Component {
 
     constructEditPage() {
         if (this.jwt) {
-            console.log(`http://localhost:8080/api/hotel/edit/info`);
-            axios.get(`http://localhost:8080/api/hotel/edit/info`, { headers: { Authorization: `Bearer ${this.jwt}` } })
+            axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/edit/info`, { headers: { Authorization: `Bearer ${this.jwt}` } })
                 .then(async (res) => {
                     let resVaccines = res.data[0].vaccineRequirement.vaccine
                     let newResVaccines = resVaccines.map((vaccine) => {
@@ -424,7 +421,7 @@ class EditPage extends React.Component {
 
                     let processedRoomType = [];
                     for (let i in res.data[0].rooms) {
-                        await axios.get(`http://localhost:8080/api/hotel/edit/roomtype/${res.data[0].rooms[i].roomTypeID}`)
+                        await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/edit/roomtype/${res.data[0].rooms[i].roomTypeID}`)
                             .then((res2) => {
                                 if (res2.data[0] !== undefined) {
                                     processedRoomType.push({
@@ -449,7 +446,7 @@ class EditPage extends React.Component {
                     })
 
                     await axios.get(
-                        `http://localhost:8080/api/hotel/edit/bigicon`,
+                        `${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/edit/bigicon`,
                         { headers: { Authorization: `Bearer ${this.jwt}` } }
                     ).then((res) => {
                         this.setState({hotelIcon: res.data})

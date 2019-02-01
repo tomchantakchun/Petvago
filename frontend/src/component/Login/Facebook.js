@@ -18,8 +18,7 @@ class Facebook extends React.Component {
     responseFacebook = (response) => {
 
         if (this.state.isClicked) {
-            console.log(`http://localhost:8080/auth/facebook`);
-            axios.post(`http://localhost:8080/auth/facebook`,
+            axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/auth/facebook`,
                 {
                     name: response.name,
                     password: response.name,

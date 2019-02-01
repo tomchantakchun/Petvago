@@ -25,7 +25,7 @@ class Chatroom extends React.Component {
             body:null,
             conversationID:null,
         };
-        this.socket = socketIOClient('http://localhost:8080',{
+        this.socket = socketIOClient(`${process.env.REACT_APP_BACKEND_DOMAIN}`,{
             transports: [ 'websocket' ]
         });
     }
@@ -50,7 +50,7 @@ class Chatroom extends React.Component {
         })
 
         promise.then(()=>{
-            axios.get(`http://localhost:8080/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+            axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArr=res.data.map((each)=>{
                 each.text=each.body;
                 each.dateString=moment(new Date(each.created_at)).format('HH:mm');               
@@ -65,7 +65,7 @@ class Chatroom extends React.Component {
         })
 
             if(this.state.author==='users'){
-                axios.get(`http://localhost:8080/api/chatroom/activebooking/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+                axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/activebooking/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     this.setState({
                         activeBooking:res.data[0],
                         conversationID:this.props.location.state.conversationID
@@ -74,7 +74,7 @@ class Chatroom extends React.Component {
                     console.log(err)
                 })
             }else{
-                axios.get(`http://localhost:8080/api/chatroom/userinfo/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+                axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/userinfo/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     this.setState({
                         activeBooking:res.data[0],
                         conversationID:this.props.location.state.conversationID
@@ -91,7 +91,7 @@ class Chatroom extends React.Component {
         const jwt = localStorage.getItem('petvago-token');
 
         this.socket.on('connect',() => {
-            axios.get(`http://localhost:8080/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+            axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArr=res.data.map((each)=>{
                 each.text=each.body;
                 each.dateString=moment(new Date(each.created_at)).format('HH:mm');
@@ -208,7 +208,7 @@ class Chatroom extends React.Component {
         //database
         const jwt = localStorage.getItem('petvago-token');
 
-        axios.post(`http://localhost:8080/api/chatroom/sendmessage/${this.state.conversationID}`,data,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/sendmessage/${this.state.conversationID}`,data,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArray=[...chat,{text:data.body,type:data.type,position:'right',dateString} ]
             this.setState({chat:newArray})
            

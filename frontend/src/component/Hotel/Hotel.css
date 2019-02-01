@@ -18,6 +18,19 @@
     }
 }
 
+#hotelPage .slide-show {
+    height: 50vh;
+}
+
+#hotelPage .slide-show .ss-images-size {
+    height: 50vh;
+}
+
+#hotelPage .slide-show .ss-fixed-height .ss-slide-image {
+    height: 50vh;
+    border-radius: 5px;
+}
+
 .align-left {
     text-align: left;
     width: 100%;
@@ -122,7 +135,8 @@
     width: 20vh;
     object-fit: cover;
     grid-row: 1/4;
-    grid-column: 1/2
+    grid-column: 1/2;
+    border-radius: 5px;
 }
 
 .hotel-room-data-card-booking {
