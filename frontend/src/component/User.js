@@ -17,7 +17,7 @@ class User extends React.Component {
             this.props.history.push('/login')
         }
 
-        axios.get(`http://petvago.site/api/userprofile`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+        axios.get(`https://petvago.site/api/userprofile`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             this.setState({response:res.data[0]})
             console.log('userprofile',this.state.response)
         }).catch(err => {

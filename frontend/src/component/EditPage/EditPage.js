@@ -104,7 +104,7 @@ class EditPage extends React.Component {
     }
 
     handleAddRoomType = () => {
-        axios.post(`http://petvago.site/api/hotel/edit/new-room-type`, {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
+        axios.post(`https://petvago.site/api/hotel/edit/new-room-type`, {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
             .then(res => {
                 this.constructEditPage();
                 let newAddedButNotUpdatedRoomType = this.state.addedButNotUpdatedRoomType;
@@ -156,7 +156,7 @@ class EditPage extends React.Component {
     }
 
     handleConfirmDeleteRoomType = (e) => {
-        axios.put(`http://petvago.site/api/hotel/edit/delete-room-type/${this.state.editRoomTypeID}`, {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
+        axios.put(`https://petvago.site/api/hotel/edit/delete-room-type/${this.state.editRoomTypeID}`, {}, { headers: { Authorization: `Bearer ${this.jwt}` } })
             .then(() => {
                 this.constructEditPage();
             })
@@ -291,7 +291,7 @@ class EditPage extends React.Component {
 
         let promiseSubmit = new Promise((resolve, reject) => {
             axios.post(
-                `http://petvago.site/api/hotel/edit/submit`,
+                `https://petvago.site/api/hotel/edit/submit`,
                 {
                     name: this.state.hotelName,
                     telephone: this.state.hotelTel,
@@ -314,7 +314,7 @@ class EditPage extends React.Component {
         for (let i in this.state.roomType) {
             promiseArray.push(new Promise((resolve, reject) => {
                 axios.put(
-                    `http://petvago.site/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`,
+                    `https://petvago.site/api/hotel/edit/roomType/${this.state.roomType[i].roomTypeID}`,
                     {
                         roomType: this.state.roomType[i].roomType,
                         price: this.state.roomType[i].price,
@@ -337,7 +337,7 @@ class EditPage extends React.Component {
 
             promiseArray.push(new Promise((resolve, reject) => {
                 axios.post(
-                    `http://petvago.site/api/hotel/uploadPhoto`,
+                    `https://petvago.site/api/hotel/uploadPhoto`,
                     formData,
                     { headers: { Authorization: `Bearer ${this.jwt}` } }
                 ).then((res) => {
@@ -354,7 +354,7 @@ class EditPage extends React.Component {
 
             promiseArray.push(new Promise((resolve, reject) => {
                 axios.post(
-                    `http://petvago.site/api/hotel/uploadBigIcon`,
+                    `https://petvago.site/api/hotel/uploadBigIcon`,
                     formData,
                     { headers: { Authorization: `Bearer ${this.jwt}` } }
                 ).then((res) => {
@@ -408,7 +408,7 @@ class EditPage extends React.Component {
 
     constructEditPage() {
         if (this.jwt) {
-            axios.get(`http://petvago.site/api/hotel/edit/info`, { headers: { Authorization: `Bearer ${this.jwt}` } })
+            axios.get(`https://petvago.site/api/hotel/edit/info`, { headers: { Authorization: `Bearer ${this.jwt}` } })
                 .then(async (res) => {
                     let resVaccines = res.data[0].vaccineRequirement.vaccine
                     let newResVaccines = resVaccines.map((vaccine) => {
@@ -421,7 +421,7 @@ class EditPage extends React.Component {
 
                     let processedRoomType = [];
                     for (let i in res.data[0].rooms) {
-                        await axios.get(`http://petvago.site/api/hotel/edit/roomtype/${res.data[0].rooms[i].roomTypeID}`)
+                        await axios.get(`https://petvago.site/api/hotel/edit/roomtype/${res.data[0].rooms[i].roomTypeID}`)
                             .then((res2) => {
                                 if (res2.data[0] !== undefined) {
                                     processedRoomType.push({
@@ -446,7 +446,7 @@ class EditPage extends React.Component {
                     })
 
                     await axios.get(
-                        `http://petvago.site/api/hotel/edit/bigicon`,
+                        `https://petvago.site/api/hotel/edit/bigicon`,
                         { headers: { Authorization: `Bearer ${this.jwt}` } }
                     ).then((res) => {
                         this.setState({hotelIcon: res.data})

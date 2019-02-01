@@ -13,7 +13,7 @@ class Instagram extends React.Component {
     responseInstagram = (response) => {
         console.log(response);
 
-        axios.post(`http://petvago.site/auth/instagram`,
+        axios.post(`https://petvago.site/auth/instagram`,
             {
                 accessToken: response,
             })

@@ -112,7 +112,7 @@ class HostManagement extends React.Component {
         }).roomTypeID
 
         axios.post(
-            `http://petvago.site/api/booking/offline-booking`,
+            `https://petvago.site/api/booking/offline-booking`,
             {
                 startDate: new Date(this.state.bookingStartDate),
                 endDate: new Date(this.state.bookingEndDate),
@@ -147,7 +147,7 @@ class HostManagement extends React.Component {
     searchBookingRecord(startDate, endDate) {
         return new Promise((resolve, reject) => {
             axios.put(
-                `http://petvago.site/api/booking/hotel-with-date`,
+                `https://petvago.site/api/booking/hotel-with-date`,
                 {
                     startDate: startDate,
                     endDate: endDate,
@@ -175,7 +175,7 @@ class HostManagement extends React.Component {
     async componentDidMount() {
         await this.searchBookingRecord(this.state.startDate, this.state.endDate)
         await this.setState({ bookingRoomType: this.state.booking[0].roomType })
-        await axios.get(`http://petvago.site/api/hotel/edit/info`, { headers: { Authorization: `Bearer ${this.jwt}` } }).then(async (res) => {
+        await axios.get(`https://petvago.site/api/hotel/edit/info`, { headers: { Authorization: `Bearer ${this.jwt}` } }).then(async (res) => {
             await this.setState({ hotelName: res.data[0].name })
         })
         window.scrollTo(0, 0)
@@ -183,7 +183,7 @@ class HostManagement extends React.Component {
 
     handleChartClick = (elems) => {
         if (elems[0]._chart !== undefined) {
-            axios.put(`http://petvago.site/api/booking/hotel-by-day`,
+            axios.put(`https://petvago.site/api/booking/hotel-by-day`,
                 {
                     roomTypeID: elems[0]._chart.titleBlock.options.text.replace('roomType-',''),
                     date: this.convertYMDFromDM(elems[0]._model.label),

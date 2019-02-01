@@ -25,7 +25,7 @@ class Chatroom extends React.Component {
             body:null,
             conversationID:null,
         };
-        this.socket = socketIOClient(`http://petvago.site`,{
+        this.socket = socketIOClient(`https://petvago.site`,{
             transports: [ 'websocket' ]
         });
     }
@@ -50,7 +50,7 @@ class Chatroom extends React.Component {
         })
 
         promise.then(()=>{
-            axios.get(`http://petvago.site/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+            axios.get(`https://petvago.site/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArr=res.data.map((each)=>{
                 each.text=each.body;
                 each.dateString=moment(new Date(each.created_at)).format('HH:mm');               
@@ -65,7 +65,7 @@ class Chatroom extends React.Component {
         })
 
             if(this.state.author==='users'){
-                axios.get(`http://petvago.site/api/chatroom/activebooking/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+                axios.get(`https://petvago.site/api/chatroom/activebooking/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     this.setState({
                         activeBooking:res.data[0],
                         conversationID:this.props.location.state.conversationID
@@ -74,7 +74,7 @@ class Chatroom extends React.Component {
                     console.log(err)
                 })
             }else{
-                axios.get(`http://petvago.site/api/chatroom/userinfo/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+                axios.get(`https://petvago.site/api/chatroom/userinfo/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     this.setState({
                         activeBooking:res.data[0],
                         conversationID:this.props.location.state.conversationID
@@ -91,7 +91,7 @@ class Chatroom extends React.Component {
         const jwt = localStorage.getItem('petvago-token');
 
         this.socket.on('connect',() => {
-            axios.get(`http://petvago.site/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+            axios.get(`https://petvago.site/api/chatroom/message/${this.props.location.state.conversationID}`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArr=res.data.map((each)=>{
                 each.text=each.body;
                 each.dateString=moment(new Date(each.created_at)).format('HH:mm');
@@ -208,7 +208,7 @@ class Chatroom extends React.Component {
         //database
         const jwt = localStorage.getItem('petvago-token');
 
-        axios.post(`http://petvago.site/api/chatroom/sendmessage/${this.state.conversationID}`,data,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+        axios.post(`https://petvago.site/api/chatroom/sendmessage/${this.state.conversationID}`,data,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
             let newArray=[...chat,{text:data.body,type:data.type,position:'right',dateString} ]
             this.setState({chat:newArray})
            

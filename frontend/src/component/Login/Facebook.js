@@ -18,7 +18,7 @@ class Facebook extends React.Component {
     responseFacebook = (response) => {
 
         if (this.state.isClicked) {
-            axios.post(`http://petvago.site/auth/facebook`,
+            axios.post(`https://petvago.site/auth/facebook`,
                 {
                     name: response.name,
                     password: response.name,
