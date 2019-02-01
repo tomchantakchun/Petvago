@@ -25,9 +25,10 @@ class Chatroom extends React.Component {
             body:null,
             conversationID:null,
         };
-        this.socket = socketIOClient(window.location.origin,{
-            transports: [ 'websocket' ]
-        });
+        this.socket = socketIOClient();
+        // this.socket = socketIOClient(window.location.origin,{
+        //     transports: [ 'websocket' ]
+        // });
     }
 
 
