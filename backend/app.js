@@ -45,7 +45,9 @@ app.use(function(req, res, next) {
 });
 
 // Login
-app.use(cors());
+app.use(cors({
+  origin: 'https://petvago.site:3000'
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', authRoutes)

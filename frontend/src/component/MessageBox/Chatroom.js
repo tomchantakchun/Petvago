@@ -25,7 +25,7 @@ class Chatroom extends React.Component {
             body:null,
             conversationID:null,
         };
-        this.socket = socketIOClient(`https://petvago.site`,{
+        this.socket = socketIOClient(`https://localhost`,{
             transports: [ 'websocket' ]
         });
     }
