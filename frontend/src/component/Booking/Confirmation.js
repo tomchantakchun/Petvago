@@ -53,7 +53,7 @@ class Confirmation extends Component {
             
         }
 
-        axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/booking/info/${this.state.bookingID}`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+        axios.get(`http://petvago.site/api/booking/info/${this.state.bookingID}`, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
             let data=result.data[0];
             let vaccine=data.vaccineRequirement.vaccine.join(', ')
             let service=data.service;

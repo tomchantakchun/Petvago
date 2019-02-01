@@ -247,7 +247,7 @@ class Booking extends Component {
 
             let history=this.props.history
 
-            axios.put(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/booking/update-booking`,data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
+            axios.put(`http://petvago.site/api/booking/update-booking`,data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result)=>{
                 history.push({pathname:'/confirmation',state:{bookingID:data.id}})
                 
     

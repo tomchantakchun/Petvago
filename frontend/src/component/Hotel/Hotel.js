@@ -81,7 +81,7 @@ class Hotel extends Component {
             endDate: moment(new Date( )).format("YYYY-MM-DD")
         })
 
-        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/search/`,
+        axios.post(`http://petvago.site/api/search/`,
             {
                 startDate: this.props.SearchResult.startDate,
                 endDate: this.props.SearchResult.endDate,
@@ -111,7 +111,7 @@ class Hotel extends Component {
             endDate: moment(new Date(picker.endDate._d)).format("YYYY-MM-DD")
         })
 
-        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/search/`,
+        axios.post(`http://petvago.site/api/search/`,
             {
                 startDate: this.props.SearchResult.startDate,
                 endDate: this.props.SearchResult.endDate,
@@ -134,8 +134,8 @@ class Hotel extends Component {
     async componentDidMount() {
         
         try{
-            const _hotelInfoArrayData = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/hotel/`+ this.state.hotelID);
-            const _hotelReviewArrayData = await axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/review/hotel/`+this.state.hotelID);
+            const _hotelInfoArrayData = await axios.get(`http://petvago.site/api/hotel/`+ this.state.hotelID);
+            const _hotelReviewArrayData = await axios.get(`http://petvago.site/api/review/hotel/`+this.state.hotelID);
             const _hotelInfo = _hotelInfoArrayData.data[0];
                 console.log(_hotelInfo);
             const _hotelReviewArray = _hotelReviewArrayData.data;
@@ -216,7 +216,7 @@ class Hotel extends Component {
             this.props.history.push('/login')
         }
 
-        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/booking/create-booking`, data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result) => {
+        axios.post(`http://petvago.site/api/booking/create-booking`, data, { headers: { Authorization: `Bearer ${jwt}` } }).then((result) => {
             let payload = {
                 bookingStartDate: data.startDate,
                 bookingEndDate: data.endDate,
@@ -250,7 +250,7 @@ class Hotel extends Component {
             if (user.isHotel) {
                 alert('only customers are able to contact hotel');
             } else {
-                axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/addchat`, { hotelID }, { headers: { Authorization: `Bearer ${jwt}` } })
+                axios.post(`http://petvago.site/api/chatroom/addchat`, { hotelID }, { headers: { Authorization: `Bearer ${jwt}` } })
                     .then((result) => {
                         console.log('contact', result.data.conversationID)
                         history.push({ pathname: '/chatroom', state: { conversationID: result.data.conversationID } })

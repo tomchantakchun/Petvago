@@ -30,7 +30,7 @@ class Filter extends React.Component {
     districtChange = (e) => {
         e.preventDefault();
         this.props.SearchResult.district = e.target.value
-        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/search/`,
+        axios.post(`http://petvago.site/api/search/`,
             {
                 startDate: this.props.SearchResult.startDate,
                 endDate: this.props.SearchResult.endDate,
@@ -56,7 +56,7 @@ class Filter extends React.Component {
         e.preventDefault();
         this.props.SearchResult.petType = e.target.value
         console.log(this.props.SearchResult.petType)
-        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/search/`,
+        axios.post(`http://petvago.site/api/search/`,
             {
                 startDate: this.props.SearchResult.startDate,
                 endDate: this.props.SearchResult.endDate,
@@ -84,7 +84,7 @@ class Filter extends React.Component {
         console.log(picker.startDate._d)
         this.props.SearchResult.startDate = moment(new Date(picker.startDate._d)).format("YYYY-MM-DD")
         this.props.SearchResult.endDate = moment(new Date(picker.endDate._d)).format("YYYY-MM-DD")
-        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/search/`,
+        axios.post(`http://petvago.site/api/search/`,
             {
                 startDate: this.props.SearchResult.startDate,
                 endDate: this.props.SearchResult.endDate,

@@ -29,7 +29,7 @@ class MessageBox extends React.Component {
 
         promise.then(()=>{
             if(this.state.who==='users'){
-                axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/chatlist/user`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+                axios.get(`http://petvago.site/api/chatroom/chatlist/user`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     res.data=res.data.sort(function(a,b){
                         return new Date(b.lastMessageTime) - new Date(a.lastMessageTime);
                       });
@@ -40,7 +40,7 @@ class MessageBox extends React.Component {
                     console.log(err)
                 })
             }else{
-                axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/api/chatroom/chatlist/hotel`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
+                axios.get(`http://petvago.site/api/chatroom/chatlist/hotel`,{ headers: { Authorization: `Bearer ${jwt}` } }).then(res=>{
                     this.setState({chatlist:res.data})
                     console.log(res.data)
         

@@ -18,7 +18,7 @@ class AuthenticatedComponent extends React.Component {
             this.props.history.push('/login')
         }
 
-        axios.get(`${process.env.REACT_APP_BACKEND_DOMAIN}/auth/verifyjwt`, { headers: { Authorization: `Bearer ${jwt}` } })
+        axios.get(`http://petvago.site/auth/verifyjwt`, { headers: { Authorization: `Bearer ${jwt}` } })
             .then(res => {
                 this.setState({ userid: res.data.id, username: res.data.username })
             })

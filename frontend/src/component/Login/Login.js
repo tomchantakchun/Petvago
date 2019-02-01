@@ -25,7 +25,7 @@ class Login extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/auth/jwt`,
+        axios.post(`http://petvago.site/auth/jwt`,
             {
                 name: this.state.name,
                 password: this.state.password,
@@ -58,7 +58,7 @@ class Login extends React.Component {
         if (this.state.isHotel) {
             this.setState({ name: '', password: '', signupHotelFailed: true })
         } else {
-            axios.post(`${process.env.REACT_APP_BACKEND_DOMAIN}/auth/signupjwt`,
+            axios.post(`http://petvago.site/auth/signupjwt`,
             {
                 name: this.state.name,
                 password: this.state.password
