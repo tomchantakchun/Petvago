@@ -188,9 +188,9 @@ class Hotel extends Component {
 
     handleBookingRoomType = async(e) =>{
         
-        const _roomTypeId = Number(e.target.parentElement.id.replace('roomType-id-',''));
-        const _roomType = (e.target.parentElement.children[1].id.replace('roomType-',''));
-        const _roomPrice = (e.target.parentElement.children[3].id.replace('roomType-price-',''));
+        const _roomTypeId = Number(e.currentTarget.parentElement.id.replace('roomType-id-',''));
+        const _roomType = (e.currentTarget.parentElement.children[1].id.replace('roomType-',''));
+        const _roomPrice = (e.currentTarget.parentElement.children[3].id.replace('roomType-price-',''));
         await this.setState({
             roomTypeID: _roomTypeId,
             roomType: _roomType,
@@ -295,12 +295,12 @@ class Hotel extends Component {
                     <img className="hotel-room-data-card-icon" src={e.icon} alt="NA" />
                     <div id={`roomType-${e.roomType}`} className="hotel-room-data-card-type">{e.roomType}</div>
                     <div className="hotel-room-data-card-description">{e.description}</div>
-                    <div className='hotel-room-data-card-left'>
+                    {/* <div className='hotel-room-data-card-left'> */}
                         <div id={`roomType-price-${e.price}`} className="hotel-room-data-card-price">
                             ${e.price}
                         </div>
                         {_bookingButton}
-                    </div>
+                    {/* </div> */}
                 </div>
             )
         });
