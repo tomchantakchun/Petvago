@@ -25,7 +25,7 @@ class Chatroom extends React.Component {
             body:null,
             conversationID:null,
         };
-        this.socket = socketIOClient(`https://localhost`,{
+        this.socket = socketIOClient(window.location.origin,{
             transports: [ 'websocket' ]
         });
     }
