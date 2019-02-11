@@ -91,7 +91,7 @@ router.post('/instagram', async (req, res) => {
                 client_id: process.env.INSTAGRAM_CLIENT_ID,
                 client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
                 grant_type: 'authorization_code',
-                redirect_uri: 'https://localhost:3000/login',
+                redirect_uri: 'https://petvago.site/login',
                 code: accessToken
             }
         };
