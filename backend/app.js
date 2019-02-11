@@ -44,6 +44,13 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Serving website
+app.use('/public',express.static(__dirname + '/public'));
+
+app.get('/',(req,res)=>{
+  res.sendFile(__dirname + '/public/index.html')
+});
+
 // Login
 app.use(cors({
   origin: 'https://petvago.site:3000'
